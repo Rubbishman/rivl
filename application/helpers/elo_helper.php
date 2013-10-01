@@ -1,0 +1,18 @@
+<?php
+if(!function_exists('elo_helper')) {
+	function elo_helper($elo_winner,$elo_loser){
+		$winner_chance = 1/(1 + pow(10,(($elo_loser - $elo_winner)/400)));
+		$loser_chance = 1/(1 + pow(10,(($elo_winner - $elo_loser)/400)));
+		
+		$results = array(
+			'winner_elo' => ($elo_winner + 16*(1-$winner_chance)),
+			'loser_elo' => ($elo_loser + 16*(0-$loser_chance)));
+		return $results;
+	}
+}
+/*
+ Ea = 1/(1 + 10 ^ ((Rb-Ra) / 400) )
+Eb = 1/(1 + 10 ^ ((Ra-Rb) / 400) )
+Ex is the expected probability that X will win the match. Ea + Eb = 1. Rx is the rating of X, which changes after every match, according to the formula:
+Rx = Rx(old) + 32 * ( W – Ex ) where W=1 if X wins and W=0 if X loses.
+ */
