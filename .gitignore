@@ -167,3 +167,6 @@ application/logs/*
 
 #database configs
 application/config/database.php
+
+#removing ideas folder
+.idea/*
