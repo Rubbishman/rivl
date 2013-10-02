@@ -170,3 +170,5 @@ application/config/database.cfg
 application/config/database.php
 
 .htaccess
+
+.idea/*
