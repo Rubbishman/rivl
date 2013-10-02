@@ -17,7 +17,14 @@
     <script src=<?=base_url("/js/views/allCompetitionsView.js")?>></script>
     <script src=<?=base_url("/js/router.js")?>></script>
 
+<<<<<<< HEAD
 	<title>vs!</title>
+=======
+	<link rel="shortcut icon" href="<?=base_url("/favicon.ico" )?>"/>
+
+	<title>rivl</title>
+
+>>>>>>> committing all...
 
 </head>
 

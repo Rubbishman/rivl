@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <title>Rivl!</title>
 
+<link rel="shortcut icon" href="<?=base_url("/favicon.ico" )?>"/>
+
 </head>
 
 <body>
