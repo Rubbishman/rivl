@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #################
 ## Eclipse
 #################
@@ -167,3 +168,6 @@ application/logs/*
 
 #database configs
 application/config/database.cfg
+application/config/database.php
+
+.htaccess

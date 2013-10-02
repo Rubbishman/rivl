@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +16,7 @@
     <script src=<?=base_url("/js/views/allCompetitionsView.js")?>></script>
     <script src=<?=base_url("/js/router.js")?>></script>
 
-	<title>vs!</title>
+<title>rivl!</title>
 
 </head>
 
