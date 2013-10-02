@@ -19,7 +19,40 @@ class Game_Saver extends CI_Controller{
         }
     }
 
-    public function new_game() {
+    public function delete_game() {
+        try {
+            $game_id = $this->input->get('game_id');
+
+            if(!$game_id) {
+                $this->output->set_status_header(400,'No game_id!');
+                $this->output->set_output('DAFAQ'); die();
+            }
+
+            $res = $this->game_model->delete_game($game_id);
+
+            if($res == true) {
+                $response = 'OK!';
+                $this->_render($response);
+            } else {
+                $this->output->set_status_header(500,'Could not delete game');
+                $this->output->set_output('DAFAQ'); die();
+            }
+        } catch (Exception $e) {
+            $this->output->set_status_header(500,$e->getMessage());
+            $this->output->set_output('DAFAQ'); die();
+        }
+
+
+
+    }
+
+    public function recalculate_games() {
+        $res = $this->game_model->recalculate_games();
+        $response = array('data'=>$res);
+        $this->_render($response);
+    }
+
+    private function new_game() {
 
         try {
             $game = $this->input->get('model');

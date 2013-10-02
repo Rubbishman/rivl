@@ -43,6 +43,88 @@ class Game_model extends CI_Model {
 		return $query->result();
 	}
 
+    public function delete_game($game_id = FALSE) {
+        if(!$game_id) {
+            return false;;
+        }
+        $this->db->where('id',$game_id);
+        $this->db->delete('game');
+
+        $this->db->where('game_id',$game_id);
+        $this->db->delete('score');
+
+        $this->recalculate_games();
+
+        return true;
+    }
+
+    public function recalculate_games() {
+        $this->db->update('competitor_elo',array('elo' => 1500));
+
+        $this->db->select('max(CASE WHEN rank = 1 THEN competitor_id ELSE NULL END) winner_id, max(CASE WHEN rank = 2 THEN competitor_id ELSE NULL END) loser_id, game_id, competition_id');
+        $this->db->from('score');
+        $this->db->join('game','game.id = score.game_id');
+        $this->db->group_by('game_id');
+        $allGames = $this->db->get()->result_array();
+
+        foreach($allGames as &$game) {
+            $this->db->from('competitor_elo');
+            $this->db->where('competitor_elo.competition_id',$game['competition_id']);
+            $this->db->where('competitor_elo.competitor_id',$game['winner_id']);
+            $res = $this->db->get()->row_array();
+            $winner_details = $res;
+
+            $this->db->from('competitor_elo');
+            $this->db->where('competitor_elo.competition_id',$game['competition_id']);
+            $this->db->where('competitor_elo.competitor_id',$game['loser_id']);
+            $res = $this->db->get()->row_array();
+            $loser_details = $res;
+
+            $game['winner_elo_before'] = $winner_details['elo'];
+            $game['loser_elo_before'] = $loser_details['elo'];
+
+            $elo_after = elo_helper($winner_details['elo'],$loser_details['elo']);
+
+            $game['winner_elo_after'] = $elo_after['winner_elo'];
+            $game['loser_elo_after'] = $elo_after['loser_elo'];
+
+
+            $this->db->where(array(
+                'competitor_id' => $winner_details['competitor_id'],
+                'competition_id' => $game['competition_id']));
+            $this->db->update('competitor_elo',
+                array('elo' => $elo_after['winner_elo']));
+
+
+            $this->db->where(array(
+                'competitor_id' => $loser_details['competitor_id'],
+                'competition_id' => $game['competition_id']));
+            $this->db->update('competitor_elo',
+                array('elo' => $elo_after['loser_elo']));
+
+
+            $this->db->where(array(
+                'competitor_id' => $loser_details['competitor_id'],
+                'game_id' => $game['game_id']));
+            $this->db->update('score',
+                array(
+                    'elo_after' => $elo_after['loser_elo'],
+                    'elo_before' => $loser_details['elo']));
+
+
+            $this->db->where(array(
+                'competitor_id' => $winner_details['competitor_id'],
+                'game_id' => $game['game_id']));
+            $this->db->update('score',
+                array(
+                    'elo_after' => $elo_after['winner_elo'],
+                    'elo_before' => $winner_details['elo']));
+        }
+
+
+        return $allGames;
+    }
+
 	public function save_game($new_data = FALSE) {
 
 		if ($new_data === FALSE || !$new_data['competition_id'] || !$new_data['results']) {
@@ -50,7 +132,6 @@ class Game_model extends CI_Model {
 		}
 		
 		foreach($new_data['results'] as $result){
-			$this->db->flush_cache();
 			
 			$this->db->from('competitor_elo');
 			$this->db->where('competitor_elo.competition_id',$new_data['competition_id']);
@@ -81,7 +162,7 @@ class Game_model extends CI_Model {
     			'elo_before' => $winner_details['elo'],
     			'elo_after' => $elo_after['winner_elo']));
 		
-		$this->db->flush_cache();
+
 		$this->db->where(array(
 				'competitor_id' => $winner_details['competitor_id'],
 				'competition_id' => $new_data['competition_id']));
@@ -96,7 +177,7 @@ class Game_model extends CI_Model {
     			'score' => $loser_details['score'],
     			'elo_before' => $loser_details['elo'],
     			'elo_after' => $elo_after['loser_elo']));
-		$this->db->flush_cache();
+
 		$this->db->where(array(
 				'competitor_id' => $loser_details['competitor_id'],
 				'competition_id' => $new_data['competition_id']));
