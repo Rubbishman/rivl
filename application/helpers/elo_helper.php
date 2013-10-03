@@ -1,12 +1,22 @@
 <?php
 if(!function_exists('elo_helper')) {
-	function elo_helper($elo_winner,$elo_loser){
+	function elo_helper($elo_winner,$elo_loser, $winner_games, $loser_games){
 		$winner_chance = 1/(1 + pow(10,(($elo_loser - $elo_winner)/400)));
 		$loser_chance = 1/(1 + pow(10,(($elo_winner - $elo_loser)/400)));
-		
+
+        $win_k_val = 32;
+        $lose_k_val = 32;
+        if($winner_games < 64) {
+            $win_k_val = 96 - (64*($winner_games/64));
+        }
+
+        if($loser_games < 64) {
+            $lose_k_val = 96 - (64*($loser_games/64));
+        }
+
 		$results = array(
-			'winner_elo' => ($elo_winner + 16*(1-$winner_chance)),
-			'loser_elo' => ($elo_loser + 16*(0-$loser_chance)));
+			'winner_elo' => ($elo_winner + $win_k_val*(1-$winner_chance)),
+			'loser_elo' => ($elo_loser + $lose_k_val*(0-$loser_chance)));
 		return $results;
 	}
 }

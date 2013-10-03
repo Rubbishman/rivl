@@ -83,7 +83,12 @@ class Game_model extends CI_Model {
             $game['winner_elo_before'] = $winner_details['elo'];
             $game['loser_elo_before'] = $loser_details['elo'];
 
-            $elo_after = elo_helper($winner_details['elo'],$loser_details['elo']);
+            $this->db->select('count(CASE WHEN competitor_id = '.$game['winner_id'].' THEN 1 ELSE NULL END) winner_games, count(CASE WHEN competitor_id = '.$game['loser_id'].' THEN 1 ELSE NULL END) loser_games');
+            $this->db->from('score');
+            $this->db->where('game_id <',$game['game_id']);
+            $game_number = $this->db->get()->row_array();
+
+            $elo_after = elo_helper($winner_details['elo'],$loser_details['elo'],$game_number['winner_games'],$game_number['loser_games']);
 
             $game['winner_elo_after'] = $elo_after['winner_elo'];
             $game['loser_elo_after'] = $elo_after['loser_elo'];
@@ -148,7 +153,11 @@ class Game_model extends CI_Model {
 
 		//TODO make this handle doubles etc.
 
-		$elo_after = elo_helper($winner_details['elo'],$loser_details['elo']);
+        $this->db->select('count(CASE WHEN competitor_id = '.$winner_details['competitor_id'].' THEN 1 ELSE NULL END) winner_games, count(CASE WHEN competitor_id = '.$loser_details['competitor_id'].' THEN 1 ELSE NULL END) loser_games');
+        $this->db->from('score');
+        $game_number = $this->db->get()->row_array();
+
+		$elo_after = elo_helper($winner_details['elo'],$loser_details['elo'],$game_number['winner_games'],$game_number['loser_games']);
 
         $this->db->insert('game', array('competition_id' => $new_data['competition_id']));
     	$game_id = $this->db->insert_id();
