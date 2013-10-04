@@ -31,8 +31,9 @@ class Game_model extends CI_Model {
 		$this->db->from('game');
 		$this->db->join('score', 'game.id = score.game_id');
 		$this->db->join('competitor', 'score.competitor_id = competitor.id');
-		$this->db->order_by('game.date desc,score.rank asc');
+		$this->db->order_by('game.id desc,score.rank asc');
 		$this->db->where(array('game.competition_id' => $params['competition_id']));
+
 		// foreach ($params as $key => $value) {
 			// $this->db->where('game.'.$key, $value);
 		// }
@@ -42,6 +43,20 @@ class Game_model extends CI_Model {
 		
 		return $query->result();
 	}
+
+    public function get_elo_graph($params = FALSE) {
+        $this->db->select('(score.elo_after - score.elo_before) elo_change');
+        $this->db->from('game');
+        $this->db->join('score', 'game.id = score.game_id');
+        $this->db->join('competitor', 'score.competitor_id = competitor.id');
+        $this->db->order_by('game.id', 'asc');
+        $this->db->where(array('game.competition_id' => $params['competition_id']));
+        $this->db->where(array('score.competitor_id' => $params['competitor_id']));
+
+        $query = $this->db->get();
+
+        return $query->result_array();
+    }
 
     public function delete_game($game_id = FALSE) {
         if(!$game_id) {
