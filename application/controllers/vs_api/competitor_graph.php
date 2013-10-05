@@ -67,11 +67,22 @@ class Competitor_Graph extends CI_Controller{
     private function get_graph(){
 		$competitor = $this->competitor_model->get_competitor($this->input->get('competition_id'),$this->input->get('competitor_id'));
 		
-        $res = $this->game_model->get_elo_graph(array(
+		$params = array(
             'competitor_id' => $this->input->get('competitor_id'),
-            'competition_id' => $this->input->get('competition_id')));
+            'competition_id' => $this->input->get('competition_id'));
+		
+        $res = $this->game_model->get_elo_graph($params);
 
-        $graphData = array('playerName' => $competitor[0]->name,'data' => array(1500), 'labels' => array());
+		$stat_details = $this->game_model->get_competitor_stats($params);
+
+        $graphData = array(
+        	'playerName' => $competitor[0]->name,
+        	'data' => array(1500), 
+        	'labels' => array(),
+			'stat_details' => array(
+				'avg_loss_score' => $competitor[0]->avg_loss_score,
+				'avg_opp_loss_score' => $competitor[0]->avg_opp_loss_score,
+				'stat_array' => $stat_details));
 		
 		$red = round(rand(0,255));
 		$green = round(rand(0,255));
