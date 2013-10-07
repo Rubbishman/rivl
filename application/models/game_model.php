@@ -31,8 +31,9 @@ class Game_model extends CI_Model {
 		$this->db->from('game');
 		$this->db->join('score', 'game.id = score.game_id');
 		$this->db->join('competitor', 'score.competitor_id = competitor.id');
-		$this->db->order_by('game.date desc,score.rank asc');
+		$this->db->order_by('game.id desc,score.rank asc');
 		$this->db->where(array('game.competition_id' => $params['competition_id']));
+
 		// foreach ($params as $key => $value) {
 			// $this->db->where('game.'.$key, $value);
 		// }
@@ -42,6 +43,55 @@ class Game_model extends CI_Model {
 		
 		return $query->result();
 	}
+
+	public function get_competitor_stats($params) {
+		
+		$res =$this->db->query('select count(CASE WHEN s1.rank = 1 THEN 1 ELSE null END) win_num, 
+    count(CASE WHEN s1.rank = 2 THEN 1 ELSE null END) loss_num,
+    AVG(CASE WHEN s1.rank = 2 THEN s1.score ELSE null END) avg_loss_score,
+    AVG(CASE WHEN s2.rank = 2 THEN s2.score ELSE null END) avg_win_opp_score,
+    c1.name player, c2.name opponent_name
+    from score s1 
+    	join game on s1.game_id = game.id
+        join score s2 on s1.game_id = s2.game_id 
+            and s1.competitor_id != s2.competitor_id
+        join competitor c1 on c1.id = s1.competitor_id
+        join competitor c2 on c2.id = s2.competitor_id
+    where s1.competitor_id = '.$params['competitor_id'].'
+    	and game.competition_id = '.$params['competition_id'].'
+    group by s1.competitor_id, s2.competitor_id;');
+		return $res->result_array();
+		/*
+		 select count(CASE WHEN s1.rank = 1 THEN 1 ELSE null END) win_num, 
+    count(CASE WHEN s1.rank = 2 THEN 1 ELSE null END) loss_num,
+    AVG(CASE WHEN s1.rank = 2 THEN s1.score ELSE null END) avg_loss_score,
+    c1.name player, c2.name opponent
+    from score s1 
+        join score s2 on s1.game_id = s2.game_id 
+            and s1.competitor_id != s2.competitor_id
+        join competitor c1 on c1.id = s1.competitor_id
+        join competitor c2 on c2.id = s2.competitor_id
+    where s1.competitor_id = 1
+    group by s1.competitor_id, s2.competitor_id;
+
+select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from score where competitor_id = 1 group by competitor_id;
+		 */
+	}
+
+    public function get_elo_graph($params = FALSE) {
+        //$this->db->select('(score.elo_after - score.elo_before) elo_change');
+        $this->db->select('score.elo_after');
+        $this->db->from('game');
+        $this->db->join('score', 'game.id = score.game_id');
+        $this->db->join('competitor', 'score.competitor_id = competitor.id');
+        $this->db->order_by('game.id', 'asc');
+        $this->db->where(array('game.competition_id' => $params['competition_id']));
+        $this->db->where(array('score.competitor_id' => $params['competitor_id']));
+
+        $query = $this->db->get();
+
+        return $query->result_array();
+    }
 
     public function delete_game($game_id = FALSE) {
         if(!$game_id) {
@@ -83,7 +133,12 @@ class Game_model extends CI_Model {
             $game['winner_elo_before'] = $winner_details['elo'];
             $game['loser_elo_before'] = $loser_details['elo'];
 
-            $elo_after = elo_helper($winner_details['elo'],$loser_details['elo']);
+            $this->db->select('count(CASE WHEN competitor_id = '.$game['winner_id'].' THEN 1 ELSE NULL END) winner_games, count(CASE WHEN competitor_id = '.$game['loser_id'].' THEN 1 ELSE NULL END) loser_games');
+            $this->db->from('score');
+            $this->db->where('game_id <',$game['game_id']);
+            $game_number = $this->db->get()->row_array();
+
+            $elo_after = elo_helper($winner_details['elo'],$loser_details['elo'],$game_number['winner_games'],$game_number['loser_games']);
 
             $game['winner_elo_after'] = $elo_after['winner_elo'];
             $game['loser_elo_after'] = $elo_after['loser_elo'];
@@ -148,7 +203,11 @@ class Game_model extends CI_Model {
 
 		//TODO make this handle doubles etc.
 
-		$elo_after = elo_helper($winner_details['elo'],$loser_details['elo']);
+        $this->db->select('count(CASE WHEN competitor_id = '.$winner_details['competitor_id'].' THEN 1 ELSE NULL END) winner_games, count(CASE WHEN competitor_id = '.$loser_details['competitor_id'].' THEN 1 ELSE NULL END) loser_games');
+        $this->db->from('score');
+        $game_number = $this->db->get()->row_array();
+
+		$elo_after = elo_helper($winner_details['elo'],$loser_details['elo'],$game_number['winner_games'],$game_number['loser_games']);
 
         $this->db->insert('game', array('competition_id' => $new_data['competition_id']));
     	$game_id = $this->db->insert_id();
