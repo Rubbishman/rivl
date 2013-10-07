@@ -29,6 +29,7 @@
     <script id="competitionTemplate" type="text/template">
         <h1>Competition: <%=name%></h1>
         <div id="newGame"></div>
+        <h2><a href="http://192.168.2.202/vs-master/vs_api/competitor_graph/get_all_graphs?competition_id=2">Graph Beta</a></h2>
         <h2>Competitors:</h2>
         <table id="competitors"></table>
         <h2>Game History:</h2>
