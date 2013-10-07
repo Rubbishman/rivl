@@ -20,7 +20,7 @@ $(function () {
 			Vs.competitionView = new Vs.CompetitionView({model: Vs.competition});
             Vs.competitionView.render();
             
-            this._fetchCompetitors(Vs.competition.get('id'), function() {
+            Vs.router._fetchCompetitors(Vs.competition.get('id'), function() {
 
                 Vs.competitorView = new Vs.CompetitorView({el:$("#competitors"),model: Vs.competition, collection: Vs.competitors});
                 Vs.competitorView.render();
@@ -29,7 +29,7 @@ $(function () {
                 Vs.newGameView.render();
             });
             
-            this._fetchGames(Vs.competition.get('id'), function() {
+            Vs.router._fetchGames(Vs.competition.get('id'), function() {
                 Vs.gameHistoryView = new Vs.GameHistoryView({model: Vs.competition, collection: Vs.games});
                 Vs.gameHistoryView.render();
             });
@@ -38,7 +38,7 @@ $(function () {
         showCompetition: function(id) {
 
             //show competition view
-            this._fetchCompetition(id, this.refreshCompetition);
+            Vs.router._fetchCompetition(id, this.refreshCompetition);
         },
         showAllCompetitions: function() {
 
@@ -69,8 +69,8 @@ $(function () {
             if (!Vs.competition || Vs.competition.get('id') !== id) {
                 delete Vs.competition;
                 delete Vs.competitors;
-                this._fetchCompetition(id, renderGameView);
-                this._fetchCompetitors(id, renderGameView);
+                Vs.router._fetchCompetition(id, renderGameView);
+                Vs.router._fetchCompetitors(id, renderGameView);
             } else {
                 renderGameView();
             }            
