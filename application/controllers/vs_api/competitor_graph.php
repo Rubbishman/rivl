@@ -20,6 +20,60 @@ class Competitor_Graph extends CI_Controller{
         }
     }
 
+    public function get_all_graphs_better() {
+        $allCompetitors = $this->competitor_model->get_competitor($this->input->get('competition_id'));
+
+        $maxGames = 0;
+
+        $graphData = array('playerName' => 'All Competitors','data' => array(), 'labels' => array());
+
+        foreach($allCompetitors as $competitor){
+            $res = $this->game_model->get_elo_graph(array(
+                'competitor_id' => $competitor->competitor_id,
+                'competition_id' => $this->input->get('competition_id')));
+
+            $red = round(rand(0,255));
+            $green = round(rand(0,255));
+            $blue = round(rand(0,255));
+
+            $playerGames = (Object)array(
+                'player' => $competitor->name,
+                'playerId' => $competitor->competitor_id,
+                'fillColor' => "rgba(0,0,0,0)",
+                'strokeColor' => "rgba(".$red.",".$green.",".$blue.",1)",
+                'pointColor' => "rgba(".$red.",".$green.",".$blue.",1)",
+                'pointStrokeColor' => "#fff",
+                'data' => array(1500));
+
+            $last_game = 0;
+            $last_elo = 1500;
+
+            foreach($res as $elo_change){
+
+                if($last_game + 1 != $elo_change['game_id']) {
+                    for($i = $last_game; $i < $elo_change['game_id']; $i++){
+                        $playerGames->data[] = $last_elo;
+                    }
+                }
+                //$graphData['data'][] = $elo_change['elo_change'];
+                $playerGames->data[] = $elo_change['elo_after'];
+                $last_elo = $elo_change['elo_after'];
+                $last_game = $elo_change['game_id'];
+                if($last_game > $maxGames) {
+                    $maxGames = $last_game;
+                }
+            }
+            $graphData['data'][] = $playerGames;
+        }
+
+        for($i = 0; $i <= $maxGames; $i++){
+            $graphData['labels'][] = $i;
+        }
+
+        //$this->_render($graphData);
+        $this->load->view('competitor_graph',$graphData);
+    }
+
 	public function get_all_graphs() {
 		$allCompetitors = $this->competitor_model->get_competitor($this->input->get('competition_id'));
 		

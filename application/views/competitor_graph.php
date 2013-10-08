@@ -18,7 +18,8 @@
 				labels : <?=json_encode($labels)?>,
 				datasets : <?=json_encode($data)?>
 			};
-			myNewChart = new Chart(mainGraph).Line(data);
+            options = {'pointDot' : false };
+			myNewChart = new Chart(mainGraph).Line(data,options);
     	});
     </script>
 </head>

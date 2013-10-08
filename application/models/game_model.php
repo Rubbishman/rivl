@@ -80,7 +80,7 @@ select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from scor
 
     public function get_elo_graph($params = FALSE) {
         //$this->db->select('(score.elo_after - score.elo_before) elo_change');
-        $this->db->select('score.elo_after');
+        $this->db->select('game_id, score.elo_after');
         $this->db->from('game');
         $this->db->join('score', 'game.id = score.game_id');
         $this->db->join('competitor', 'score.competitor_id = competitor.id');
