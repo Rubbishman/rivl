@@ -3,8 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rivl!</title>
+    
+    <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
+    <title>rivl</title>
 
     <link rel="shortcut icon" href="<?=base_url("/favicon.ico" )?>"/>
     <link rel="stylesheet" href="<?=base_url("/css/main.css")?>"  media="screen"/>
@@ -27,34 +28,60 @@
     </script>
 
     <script id="competitionTemplate" type="text/template">
-        <h1>Competition: <%=name%></h1>
-        <div id="newGame"></div>
-        <h2><a href="http://192.168.2.202/vs-master/vs_api/competitor_graph/get_all_graphs?competition_id=2">Graph Beta</a></h2>
-        <h2>Competitors:</h2>
-        <table id="competitors"></table>
-        <h2>Game History:</h2>
-        <table id="gameHistory"></table>
+        <h1>New <%=name%> game</h1>
+        <div class="sectionBody">
+            <div id="newGame"></div>
+            <a href="http://192.168.2.202/vs-master/vs_api/competitor_graph/get_all_graphs?competition_id=2">Graph Beta</a>
+        </div>
+        <h1>Leader board</h1>
+        <div class="sectionBody">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Elo</th>
+                        <th></th>
+                        <th></th>
+                    </th>
+                </thead>
+                <tbody id="competitors"></tbody>
+            </table>
+        </div>
+        <h1>Game history</h1>
+        <div class="sectionBody">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Game</th>
+                        <th colspan="2">Players</th>
+                        <th>Score</th>
+                        <th>Elo change</th>
+                    </tr>
+                </thead>
+                <tbody id="gameHistory"></tbody>
+            </table>
+        </div>
     </script>
     
     <script id="newGameTemplate" type="text/template">
-        <h2>Make new <%=name%> game</h2>
         <div style="margin-left: 50px;">
             
-        <table>
+        <table style="width: 50%">
             <tr>
-                <td><Strong>Winner:</Strong></td> <td><select id="winner"></select></td>
+                <td><strong>Winner:</strong></td> <td><select id="winner"></select></td>
             </tr>
             <tr>
-                <td><Strong>Score:</Strong></td>
+                <td><strong>Score:</strong></td>
                 <td>
                     <strong id="winner_score">11</strong>
                 </td>
             </tr>
             <tr>
-                <td><Strong>Loser:</Strong></td> <td><select id="loser"></select></td>
+                <td><strong>Loser:</strong></td> <td><select id="loser"></select></td>
             </tr>
             <tr>
-                <td><Strong>Score:</Strong></td>
+                <td><strong>Score:</strong></td>
                 <td>
                     <select id="loser_score">
                         <?php
@@ -66,10 +93,13 @@
                         ?>
                     </select>
                 </td>
-                <td>Notes: in case of deuce put 10pts for the loser</td>
+                <td></td>
             </tr>
         </table>
-        <button id="makeGame">Make game</button>
+
+        <br />(in case of deuce put 10pts for the loser)<br />
+
+        <span id="makeGame" class="button">Save game</span>
         </div>
     </script>
     
@@ -100,8 +130,8 @@
     
     <script id="competitorRowTemplate" type="text/template">
         <% var elo = Math.round(elo); %>
-    	<td><Strong>Name:</Strong><%=name%></td>
-    	<td><Strong>Elo:</Strong><%=elo%></td>
+    	<td><%=name%></td>
+    	<td><%=elo%></td>
         <td>(:)</td>
         <% var games = Number(wins) + Number(loses); %>
         <td class="details" hidden> Games: <%=games%> (W:<%=wins%>,L:<%=loses%>)</td>
@@ -109,45 +139,46 @@
 
     <script id="gameRowTemplate" type="text/template">
         <% if(rank == 2) { %>
-    			<td>
-    		<% } else { %>
-    			<td style="border-top: 1px;border-top-style: solid;border-top-color: #112211;">
-    		<% } %>
-    		<%=date%></td>
+                <td>
+            <% } else { %>
+                <td>
+            <% } %>
+            <%=date%></td>
         <% if(rank == 2) { %>
-    			<td>
-    		<% } else { %>
-    			<td style="border-top: 1px;border-top-style: solid;border-top-color: #112211;">
-    		<% } %>
-    		Game <%=game_id%></td>
+                <td>
+            <% } else { %>
+                <td>
+            <% } %>
+            <%=game_id%></td>
         <% if(rank == 2) { %>
-    			<td>
-    		<% } else { %>
-    			<td style="border-top: 1px;border-top-style: solid;border-top-color: #112211;">
-    		<% } %>
-        	Rank: <%=rank%> 
-        	<% if(rank == 1) { %>
-    			(Winner)
-    		<% } %>
+                <td>
+            <% } else { %>
+                <td>
+            <% } %>
         </td>
         <% if(rank == 2) { %>
-    			<td>
-    		<% } else { %>
-    			<td style="border-top: 1px;border-top-style: solid;border-top-color: #112211;">
-    		<% } %>
-    		Player: <%=name%></td>
+                <td>
+            <% } else { %>
+                <td>
+            <% } %>
+        <% if(rank == 1) { %>
+                <strong><%=name%></strong>
+            <% } else { %>
+                <%=name%>
+            <% } %>
+            </td>
         <% if(rank == 2) { %>
-    			<td>
-    		<% } else { %>
-    			<td style="border-top: 1px;border-top-style: solid;border-top-color: #112211;">
-    		<% } %>
-    		Score: <%=score%> pts</td>
+                <td>
+            <% } else { %>
+                <td>
+            <% } %>
+            <%=score%></td>
         <% if(rank == 2) { %>
         <td>
             <% } else { %>
-        <td style="border-top: 1px;border-top-style: solid;border-top-color: #112211;">
+        <td>
             <% }  %>
-            Elo Diff: <%=elo_change%></td>
+            <%=elo_change%></td>
     </script>
 
 
