@@ -1,12 +1,14 @@
 Vs.NewGameView2 = Backbone.View.extend({   
 
-	template : _.template($('#newGame2Template').html()),    
-	el: 'div',
+    gameTemplate : _.template($('#newGame2Template').html()),    
+    scoreTemplate : _.template($('#newScoreTemplate').html()),    
+	el: $('#mainContainer'),
 	
     initialize: function () {},
 
 	events : {
-		"click #makeGame": "makeGame"
+        "click #addScore": "_renderScoreRow",
+        "click #submitScore": "makeGame",
     },
     
     makeGame: function() {
@@ -41,20 +43,25 @@ Vs.NewGameView2 = Backbone.View.extend({
     
     render: function() {
 
-        this.$el.html(this.template(this.model.toJSON()));
-        $el = this.$el;
         var array = this.collection.models;
 
-        $('.titleGraphic').hide();
+        this.$el.html(this.gameTemplate(this.model.toJSON()));
+        this._renderScoreRow();
 
         array.sort(function(a,b){return a.attributes.name < b.attributes.name ? -1 : a.attributes.name > b.attributes.name ? 1 : 0});
-        this.collection.each(this._renderRow);
-        return this;
+        this._renderCompetitorRows();
     },
 
-    _renderRow: function(game) {
-        var cr = new Vs.CompetitorSelectionRow({model: game});
-        $el.find('#winner').append(cr.render().el);
-        $el.find('#loser').append(cr.render().el);
+    _renderCompetitorRows: function() {
+
+        this.collection.each(function(game) {
+            var cr = new Vs.CompetitorSelectionRow({model: game});
+            $('#player1').append(cr.render().el);
+            $('#player2').append(cr.render().el);
+        });
+    },
+
+    _renderScoreRow: function() {
+        $('#scoresSection').append(this.scoreTemplate());
     }
 });

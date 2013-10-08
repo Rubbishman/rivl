@@ -3,20 +3,48 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <title>Rivl!</title>
 
     <link rel="shortcut icon" href="<?=base_url("/favicon.ico" )?>"/>
-    <link rel="stylesheet" href="<?=base_url("/css/main.css")?>"  media="screen"/>
     <link rel="stylesheet" href="<?=base_url("/css/bootstrap.css")?>"  media="screen"/>
+
+    <style>
+        body {
+            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        }
+    </style>
+
+    <link rel="stylesheet" href="<?=base_url("/css/bootstrap-responsive.css")?>"  media="screen"/>
+    <link rel="stylesheet" href="<?=base_url("/css/main.css")?>"  media="screen"/>
 
 </head>
 
 <body>
 
-    <img class="titleGraphic" src=<?=base_url("/images/graphic.png")?> />
 
-    <div id="mainContainer">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Project name</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+
+    <div id="mainContainer" class="container">
 
     </div>
 
@@ -27,6 +55,8 @@
     </script>
 
     <script id="competitionTemplate" type="text/template">
+
+        <img class="titleGraphic" src=<?=base_url("/img/graphic.png")?> />
         <h1>Competition: <%=name%></h1>
         <div id="newGame"></div>
         <h2><a href="http://192.168.2.202/vs-master/vs_api/competitor_graph/get_all_graphs?competition_id=2">Graph Beta</a></h2>
@@ -75,24 +105,47 @@
     
     <script id="newGame2Template" type="text/template">
             
-        <select class="test" id="winner"></select>
-        <img src=<?=base_url("/images/graphic_short.png")?> />
-        <select class="test" id="loser"></select>
-        <br />
-        <strong class="test" id="winner_score">11</strong>
-        <select class="test" id="loser_score">
-            <?php
-                for($i = 0; $i < 11; $i++) {
-            ?>
-                    <option value='<?=$i?>'><?=$i?></option>
-            <?php       
-                }
-            ?>
-        </select>
-        <br />
-        <button id="makeGame">Make game</button>
+        <div class="row text-center">
+            <div class="span12">
+                <select id="player1">
+                    <option value=''></option>
+                </select>
+                <span> vs </span>
+                <select id="player2">
+                    <option value=''></option>
+                </select>
+            </div>
+        </div>
+        <div id="scoresSection" class="row text-center">
+        </div>
+        <div class="row text-center">
+            <div class="span12">
+                <button id="addScore">Add another score</button>
+                <button id="submitScore">Submit scores</button>
+            </div>
+        </div>
 
     </script>
+
+    <script id="newScoreTemplate" type="text/template">
+
+        <div class="scoreRow span12">
+            <select class="score1">
+                <option value=''></option>
+                <?php for($i = 11; $i >= 0; $i--) { ?>
+                    <option value='<?=$i?>'><?=$i?></option>
+                <?php } ?>
+            </select>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <select class="score2">
+                <option value=''></option>
+                <?php for($i = 11; $i >= 0; $i--) { ?>
+                    <option value='<?=$i?>'><?=$i?></option>
+                <?php } ?>
+            </select>
+        </div>
+    </script>
+            
     
     <script id="competitorSelectionRowTemplate" type="text/template">
     	<option value="<%=competitor_id%>"><%=name%></option>
@@ -155,8 +208,7 @@
     <script src=<?=base_url("/js/lib/jquery-1.7.1.js")?>></script>
     <script src=<?=base_url("/js/lib/underscore.js")?>></script>
     <script src=<?=base_url("/js/lib/backbone.js")?>></script>
-    
-    <script src=<?=base_url("/js/bootstrap.js")?>></script>
+    <script src=<?=base_url("/js/lib/bootstrap.js")?>></script>
 
     <script src=<?=base_url("/js/vs.js")?>></script>
     <script src=<?=base_url("/js/models/competition.js")?>></script>
