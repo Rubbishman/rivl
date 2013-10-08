@@ -3,15 +3,18 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rivl!</title>
 
-<link rel="shortcut icon" href="<?=base_url("/favicon.ico" )?>"/>
+    <link rel="shortcut icon" href="<?=base_url("/favicon.ico" )?>"/>
+    <link rel="stylesheet" href="<?=base_url("/css/main.css")?>"  media="screen"/>
+    <link rel="stylesheet" href="<?=base_url("/css/bootstrap.css")?>"  media="screen"/>
 
 </head>
 
 <body>
 
-    <img src=<?=base_url("/images/graphic.png")?> />
+    <img class="titleGraphic" src=<?=base_url("/images/graphic.png")?> />
 
     <div id="mainContainer">
 
@@ -26,6 +29,7 @@
     <script id="competitionTemplate" type="text/template">
         <h1>Competition: <%=name%></h1>
         <div id="newGame"></div>
+        <h2><a href="http://192.168.2.202/vs-master/vs_api/competitor_graph/get_all_graphs?competition_id=2">Graph Beta</a></h2>
         <h2>Competitors:</h2>
         <table id="competitors"></table>
         <h2>Game History:</h2>
@@ -33,40 +37,61 @@
     </script>
     
     <script id="newGameTemplate" type="text/template">
-    	<h2>Make new <%=name%> game</h2>
-    	<div style="margin-left: 50px;">
-    		
-		<table>
-			<tr>
-				<td><Strong>Winner:</Strong></td> <td><select id="winner"></select></td>
-			</tr>
-			<tr>
-				<td><Strong>Score:</Strong></td>
-				<td>
-					<strong id="winner_score">11</strong>
-				</td>
-			</tr>
-			<tr>
-				<td><Strong>Loser:</Strong></td> <td><select id="loser"></select></td>
-			</tr>
-			<tr>
-				<td><Strong>Score:</Strong></td>
-				<td>
-					<select id="loser_score">
-			    		<?php
-			    			for($i = 0; $i < 11; $i++) {
-						?>
-			    				<option value='<?=$i?>'><?=$i?></option>
-						<?php		
-			    			}
-			    		?>
-			    	</select>
-				</td>
+        <h2>Make new <%=name%> game</h2>
+        <div style="margin-left: 50px;">
+            
+        <table>
+            <tr>
+                <td><Strong>Winner:</Strong></td> <td><select id="winner"></select></td>
+            </tr>
+            <tr>
+                <td><Strong>Score:</Strong></td>
+                <td>
+                    <strong id="winner_score">11</strong>
+                </td>
+            </tr>
+            <tr>
+                <td><Strong>Loser:</Strong></td> <td><select id="loser"></select></td>
+            </tr>
+            <tr>
+                <td><Strong>Score:</Strong></td>
+                <td>
+                    <select id="loser_score">
+                        <?php
+                            for($i = 0; $i < 11; $i++) {
+                        ?>
+                                <option value='<?=$i?>'><?=$i?></option>
+                        <?php       
+                            }
+                        ?>
+                    </select>
+                </td>
                 <td>Notes: in case of deuce put 10pts for the loser</td>
-			</tr>
-		</table>
-    	<button id="makeGame">Make game</button>
-    	</div>
+            </tr>
+        </table>
+        <button id="makeGame">Make game</button>
+        </div>
+    </script>
+    
+    <script id="newGame2Template" type="text/template">
+            
+        <select class="test" id="winner"></select>
+        <img src=<?=base_url("/images/graphic_short.png")?> />
+        <select class="test" id="loser"></select>
+        <br />
+        <strong class="test" id="winner_score">11</strong>
+        <select class="test" id="loser_score">
+            <?php
+                for($i = 0; $i < 11; $i++) {
+            ?>
+                    <option value='<?=$i?>'><?=$i?></option>
+            <?php       
+                }
+            ?>
+        </select>
+        <br />
+        <button id="makeGame">Make game</button>
+
     </script>
     
     <script id="competitorSelectionRowTemplate" type="text/template">
@@ -131,6 +156,8 @@
     <script src=<?=base_url("/js/lib/underscore.js")?>></script>
     <script src=<?=base_url("/js/lib/backbone.js")?>></script>
     
+    <script src=<?=base_url("/js/bootstrap.js")?>></script>
+
     <script src=<?=base_url("/js/vs.js")?>></script>
     <script src=<?=base_url("/js/models/competition.js")?>></script>
     <script src=<?=base_url("/js/models/competitionCollection.js")?>></script>
@@ -144,6 +171,7 @@
     <script src=<?=base_url("/js/views/competitorRow.js")?>></script>
     <script src=<?=base_url("/js/views/competitorView.js")?>></script>
     <script src=<?=base_url("/js/views/newGameView.js")?>></script>
+    <script src=<?=base_url("/js/views/newGameView2.js")?>></script>
     <script src=<?=base_url("/js/views/gameHistoryView.js")?>></script>
     <script src=<?=base_url("/js/views/competitorSelectionRow.js")?>></script>
     <script src=<?=base_url("/js/views/gameRow.js")?>></script>
