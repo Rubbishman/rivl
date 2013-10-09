@@ -26,11 +26,12 @@ Vs.NewGameView = Backbone.View.extend({
     	
     	var game = new Vs.GameSaver();
     	game.fetch({
-    		data: {model:
+    		data: {gameModels: [
     				{competition_id: this.model.id, 
     				results: [
     					{competitor_id: winner_id, rank: '1', score: winner_score},
-						{competitor_id: loser_id, rank: '2', score: loser_score}]}},
+						{competitor_id: loser_id, rank: '2', score: loser_score}]}
+                    ]},
     		success: function(collection, response) {
     			Vs.router.refreshCompetition();	
     		},

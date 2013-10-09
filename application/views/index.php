@@ -8,6 +8,7 @@
     <title>rivl</title>
 
     <link rel="shortcut icon" href="<?=base_url("/favicon.ico" )?>"/>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="<?=base_url("/css/bootstrap.css")?>"  media="screen"/>
 
     <style>
@@ -16,7 +17,6 @@
         }
     </style>
 
-    <link rel="stylesheet" href="<?=base_url("/css/bootstrap-responsive.css")?>"  media="screen"/>
     <link rel="stylesheet" href="<?=base_url("/css/main.css")?>"  media="screen"/>
 
 </head>
@@ -24,23 +24,23 @@
 <body>
 
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+   <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#">Project name</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
+          <a class="navbar-brand" href="#">Project name</a>
         </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
       </div>
     </div>
 
@@ -56,7 +56,7 @@
     </script>
 
     <script id="competitionTemplate" type="text/template">
-        <h1>New <%=name%> game</h1>
+        <a>New <%=name%> game</a>
         <div class="sectionBody">
             <div id="newGame"></div>
             <a href="http://192.168.2.202/vs-master/vs_api/competitor_graph/get_all_graphs?competition_id=2">Graph Beta</a>
@@ -133,23 +133,27 @@
     
     <script id="newGame2Template" type="text/template">
             
-        <div class="row text-center">
-            <div class="span12">
-                <select id="player1">
-                    <option value=''></option>
-                </select>
-                <span> vs </span>
-                <select id="player2">
-                    <option value=''></option>
-                </select>
+        <div class="newGameContainer">
+            <div id="playerSection" class="row text-left">
+                <div class="col-xs-6">
+                    <select id="player1">
+                        <option value=''></option>
+                    </select>
+                </div>
+                <div class="col-xs-6 text-right">
+                    <select id="player2">
+                        <option value=''></option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div id="scoresSection" class="row text-center">
-        </div>
-        <div class="row text-center">
-            <div class="span12">
-                <button id="addScore">Add another score</button>
-                <button id="submitScore">Submit scores</button>
+            <div id="scoresSection" class="row"></div>
+            <div class="row">
+                <div class="col-xs-6 text-right">
+                    <button id="addScore">Add another score</button>
+                </div>
+                <div class="col-xs-6 text-left">
+                    <button id="submitScore">Submit scores</button>
+                </div>
             </div>
         </div>
 
@@ -158,19 +162,22 @@
     <script id="newScoreTemplate" type="text/template">
 
         <div class="scoreRow span12">
-            <select class="score1">
-                <option value=''></option>
-                <?php for($i = 11; $i >= 0; $i--) { ?>
-                    <option value='<?=$i?>'><?=$i?></option>
-                <?php } ?>
-            </select>
-            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <select class="score2">
-                <option value=''></option>
-                <?php for($i = 11; $i >= 0; $i--) { ?>
-                    <option value='<?=$i?>'><?=$i?></option>
-                <?php } ?>
-            </select>
+            <div class="col-xs-6 text-center">
+                <select class="scoreP1">
+                    <option value=''></option>
+                    <?php for($i = 11; $i >= 0; $i--) { ?>
+                        <option value='<?=$i?>'><?=$i?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="col-xs-6 text-center">
+                <select class="scoreP2">
+                    <option value=''></option>
+                    <?php for($i = 11; $i >= 0; $i--) { ?>
+                        <option value='<?=$i?>'><?=$i?></option>
+                    <?php } ?>
+                </select>
+            </div>
         </div>
     </script>
             
