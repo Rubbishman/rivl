@@ -220,10 +220,12 @@
     <script id="newButtonsTemplate" type="text/template">
 
         <div class="col-xs-6 text-right">
-            <button id="addScore">Add another score</button>
+            <button id="addScore" class="btn btn-lg btn-success btn-block">Add another score</button>
+
         </div>
         <div class="col-xs-6 text-left">
-            <button id="submitScore">Submit scores</button>
+            <button type="button" id="submitScore" class="btn btn-lg btn-success btn-block">Save scores</button>                
+
         </div>
     </script>
             
