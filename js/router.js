@@ -24,9 +24,6 @@ $(function () {
 
                 Vs.competitorView = new Vs.CompetitorView({el:$("#competitors"),model: Vs.competition, collection: Vs.competitors});
                 Vs.competitorView.render();
-
-                Vs.newGameView = new Vs.NewGameView({el:$('#newGame'),model: Vs.competition, collection: Vs.competitors});
-                Vs.newGameView.render();
             });
             
             Vs.router._fetchGames(Vs.competition.get('id'), function() {

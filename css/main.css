@@ -42,3 +42,23 @@ body {
 .scoreRow .losingScore {
 	background-color: #EEE;
 }
+#resultsSection {
+	margin-bottom: 20px;
+}
+#resultsSection span {
+	font-size: 30px;
+	padding-left: 55px;
+}
+#resultsSection span.rankUp {
+	background-image: url("../img/up_arrow_48.png");
+	background-repeat:no-repeat;
+	background-position:left;
+}
+#resultsSection span.rankDown {
+	background-image: url("../img/down_arrow_48.png");
+	background-repeat:no-repeat;
+	background-position:left;
+}
+#competitors td, #gameHistory td {
+	padding: 1px 40px 1px 2px;
+}

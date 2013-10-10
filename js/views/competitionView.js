@@ -1,6 +1,7 @@
 Vs.CompetitionView = Backbone.View.extend({
 
-    template : _.template($('#competitionTemplate').html()),   
+    template : _.template($('#competitionTemplate').html()),  
+    navbarTemplate : _.template($('#navbarTemplate').html()),   
 
     initialize: function () {
         $mainPage = $("#mainContainer");
@@ -8,7 +9,8 @@ Vs.CompetitionView = Backbone.View.extend({
 
     render: function() {
 
-        $mainPage.html(this.template(this.model.toJSON()));
+        $mainPage.html(this.navbarTemplate(this.model.toJSON()));
+        $mainPage.append(this.template(this.model.toJSON()));
         return this;
     }
 });

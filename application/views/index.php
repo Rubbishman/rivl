@@ -24,26 +24,7 @@
 <body>
 
 
-   <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Project name</a>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </div>
-
+   
 
     <div id="mainContainer" class="container">
 
@@ -51,24 +32,47 @@
 
 
     <!-- Templates -->
+
+    <script id="navbarTemplate" type="text/template">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">rivl</a>
+            </div>
+            <div class="collapse navbar-collapse">
+              <% if (id !== 0) { %>
+              <ul class="nav navbar-nav">
+                <li><a href="#competition/<%=id%>">Home</a></li>
+                <li><a href="#competition/<%=id%>/game">Enter scores</a></li>
+                <li><a href="vs_api/competitor_graph/get_all_graphs?competition_id=<%=id%>">Graph</a></li>
+              </ul>
+              <% } %>
+            </div><!--/.nav-collapse -->
+          </div>
+        </div>
+
+    </script>
+
     <script id="competitionRowTemplate" type="text/template">
         <a><%=name%></a>
     </script>
 
     <script id="competitionTemplate" type="text/template">
-        <a>New <%=name%> game</a>
-        <div class="sectionBody">
-            <div id="newGame"></div>
-            <a href="http://192.168.2.202/vs-master/vs_api/competitor_graph/get_all_graphs?competition_id=2">Graph Beta</a>
-        </div>
-        <h1>Leader board</h1>
+
+        <h1><%=name%> Leaderboard</h1>
         <div class="sectionBody">
             <table>
                 <thead>
                     <tr>
+                        <th>Rank</th>
                         <th>Name</th>
                         <th>Elo</th>
-                        <th></th>
+                        <th>Games</th>
                         <th></th>
                     </th>
                 </thead>
@@ -80,9 +84,9 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Date</th>
                         <th>Game</th>
-                        <th colspan="2">Players</th>
+                        <th>Date</th>
+                        <th>Players</th>
                         <th>Score</th>
                         <th>Elo change</th>
                     </tr>
@@ -91,6 +95,32 @@
             </table>
         </div>
     </script>
+    
+    <script id="competitorSelectionRowTemplate" type="text/template">
+    	<option value="<%=competitor_id%>"><%=name%></option>
+    </script>
+    
+    <script id="competitorRowTemplate" type="text/template">
+        <% var elo = Math.round(elo); %>
+        <td><%=document.getElementById('competitors').getElementsByTagName("tr").length + 1 %></td>
+        <td><%=name%></td>
+    	<td><%=elo%></td>
+        <% var games = Number(wins) + Number(loses); %>
+        <td class="details"><%=games%></td>
+        <td> (W:<%=wins%>  L:<%=loses%>)</td>
+    </script>
+
+    <script id="gameRowTemplate" type="text/template">
+        <tr>
+            <td><%=game1.game_id%></td>
+            <td><%=game1.date%></td>
+            <td><strong><%=game1.name%></strong> vs <%=game2.name%></td>
+            <td><strong><%=game1.score%></strong> - <%=game2.score%></td>
+            <td><strong>+<%=game1.elo_change%></strong>&nbsp;&nbsp;<%=game2.elo_change%></td>
+        </tr>
+    </script>
+
+
     
     <script id="newGameTemplate" type="text/template">
         <div style="margin-left: 50px;">
@@ -147,14 +177,8 @@
                 </div>
             </div>
             <div id="scoresSection" class="row"></div>
-            <div class="row">
-                <div class="col-xs-6 text-right">
-                    <button id="addScore">Add another score</button>
-                </div>
-                <div class="col-xs-6 text-left">
-                    <button id="submitScore">Submit scores</button>
-                </div>
-            </div>
+            <div id="resultsSection" class="row"></div>
+            <div id="buttonsSection" class="row"></div>
         </div>
 
     </script>
@@ -180,66 +204,29 @@
             </div>
         </div>
     </script>
+
+    <script id="newResultsTemplate" type="text/template">
+
+        <div class="resultsRow span12">
+            <div class="col-xs-6 text-center">
+                <span class="resultsP1 <% if (p1eloDelta > 0) { %>rankUp<% } else { %>rankDown<% } %>"><%= p1eloDelta %></span>
+            </div>
+            <div class="col-xs-6 text-center">
+                <span class="resultsP2 <% if (p2eloDelta > 0) { %>rankUp<% } else { %>rankDown<% } %>"><%= p2eloDelta %></span>
+            </div>
+        </div>
+    </script>
             
-    
-    <script id="competitorSelectionRowTemplate" type="text/template">
-    	<option value="<%=competitor_id%>"><%=name%></option>
-    </script>
-    
-    <script id="competitorRowTemplate" type="text/template">
-        <% var elo = Math.round(elo); %>
-    	<td><%=name%></td>
-    	<td><%=elo%></td>
-        <td>(:)</td>
-        <% var games = Number(wins) + Number(loses); %>
-        <td class="details" hidden> Games: <%=games%> (W:<%=wins%>,L:<%=loses%>)</td>
-    </script>
+    <script id="newButtonsTemplate" type="text/template">
 
-    <script id="gameRowTemplate" type="text/template">
-        <% if(rank == 2) { %>
-                <td>
-            <% } else { %>
-                <td>
-            <% } %>
-            <%=date%></td>
-        <% if(rank == 2) { %>
-                <td>
-            <% } else { %>
-                <td>
-            <% } %>
-            <%=game_id%></td>
-        <% if(rank == 2) { %>
-                <td>
-            <% } else { %>
-                <td>
-            <% } %>
-        </td>
-        <% if(rank == 2) { %>
-                <td>
-            <% } else { %>
-                <td>
-            <% } %>
-        <% if(rank == 1) { %>
-                <strong><%=name%></strong>
-            <% } else { %>
-                <%=name%>
-            <% } %>
-            </td>
-        <% if(rank == 2) { %>
-                <td>
-            <% } else { %>
-                <td>
-            <% } %>
-            <%=score%></td>
-        <% if(rank == 2) { %>
-        <td>
-            <% } else { %>
-        <td>
-            <% }  %>
-            <%=elo_change%></td>
+        <div class="col-xs-6 text-right">
+            <button id="addScore">Add another score</button>
+        </div>
+        <div class="col-xs-6 text-left">
+            <button id="submitScore">Submit scores</button>
+        </div>
     </script>
-
-
+            
     <script src=<?=base_url("/js/lib/json2.js")?>></script>
     <script src=<?=base_url("/js/lib/jquery-1.7.1.js")?>></script>
     <script src=<?=base_url("/js/lib/underscore.js")?>></script>

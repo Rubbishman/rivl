@@ -1,7 +1,10 @@
 Vs.NewGameView2 = Backbone.View.extend({   
 
+    navbarTemplate : _.template($('#navbarTemplate').html()),    
     gameTemplate : _.template($('#newGame2Template').html()),    
-    scoreTemplate : _.template($('#newScoreTemplate').html()),    
+    scoreTemplate : _.template($('#newScoreTemplate').html()),   
+    buttonsTemplate : _.template($('#newButtonsTemplate').html()),   
+    resultsTemplate : _.template($('#newResultsTemplate').html()),    
 	el: $('#mainContainer'),
 	
     initialize: function () {},
@@ -70,25 +73,52 @@ Vs.NewGameView2 = Backbone.View.extend({
             return;
         }
 
-        
     	var games = new Vs.GameSaver();
+
     	games.fetch({
             data: { gameModels: gameModels },
     		success: function(collection, response) {
-    			self.render();
+
+                self.oldCollection = self.collection;
+                
+                Vs.router._fetchCompetitors(self.model.get('id'), function() {
+
+                    self.collection = Vs.competitors;
+
+                    var p1Id = $p1Name.val(),
+                        p2Id = $p2Name.val();
+
+                    self._renderResults({
+                        p1eloDelta: self._getEloDelta(
+                            self.oldCollection.where({'competitor_id': p1Id})[0],
+                            self.collection.where({'competitor_id': p1Id})[0]
+                        ),
+                        p2eloDelta: self._getEloDelta(
+                            self.oldCollection.where({'competitor_id': p2Id})[0],
+                            self.collection.where({'competitor_id': p2Id})[0]
+                        )
+                    });
+                });
     		},
     		error: function(collection, response) {
     			console.log(response);
     		}
 		});
     },
+
+    _getEloDelta: function(model1, model2) {
+        var diff = model2.get('elo') - model1.get('elo');
+        return Math.round(diff * 10) / 10;
+    },
     
     render: function() {
 
         var array = this.collection.models;
 
-        this.$el.html(this.gameTemplate(this.model.toJSON()));
+        this.$el.html(this.navbarTemplate(this.model.toJSON()));
+        this.$el.append(this.gameTemplate(this.model.toJSON()));
         this._renderNewScoreRow();
+        this._renderButtonsRow();
 
         array.sort(function(a,b){return a.attributes.name < b.attributes.name ? -1 : a.attributes.name > b.attributes.name ? 1 : 0});
         this._renderCompetitorRows();
@@ -104,7 +134,17 @@ Vs.NewGameView2 = Backbone.View.extend({
     },
 
     _renderNewScoreRow: function() {
+        $('#resultsSection').html('');
         $('#scoresSection').append(this.scoreTemplate());
+    },
+
+    _renderButtonsRow: function() {
+        $('#buttonsSection').append(this.buttonsTemplate());
+    },
+
+    _renderResults: function(results) {
+        $('#scoresSection').html('');
+        $('#resultsSection').html(this.resultsTemplate(results));
     },
 
     _renderScoreUpdate: function(e) {

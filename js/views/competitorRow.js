@@ -7,10 +7,6 @@ Vs.CompetitorRow = Backbone.View.extend({
     },
 
     events : {
-        'click' : 'toggleDetails'
-    },
-    toggleDetails: function() {
-        $(this.el).find(".details").toggle();
     },
     render: function() {
 
