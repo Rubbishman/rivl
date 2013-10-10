@@ -224,7 +224,7 @@
 
         </div>
         <div class="col-xs-6 text-left">
-            <button type="button" id="submitScore" class="btn btn-lg btn-success btn-block">Save scores</button>                
+            <button id="submitScore" class="btn btn-lg btn-success btn-block">Save scores</button>                
 
         </div>
     </script>
