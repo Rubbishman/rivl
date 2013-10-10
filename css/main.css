@@ -1,5 +1,6 @@
 body {
-	font-family: 'Source Sans Pro';
+/* 	font-family: 'Source Sans Pro'; TODO: nice typeface but maybe not the right fit... 
+plus needs separate font to support bold etc styles */
     padding-top: 50px;
 }
 .newGameContainer {
@@ -41,4 +42,8 @@ body {
 }
 .scoreRow .losingScore {
 	background-color: #EEE;
+}
+
+#gameHistory tr:nth-child(odd) {
+	border-top: 1px solid #aaa;
 }
