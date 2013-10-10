@@ -219,13 +219,9 @@
             
     <script id="newButtonsTemplate" type="text/template">
 
-        <div class="col-xs-6 text-right">
-            <button id="addScore" class="btn btn-lg btn-success btn-block">Add another score</button>
-
-        </div>
-        <div class="col-xs-6 text-left">
-            <button id="submitScore" class="btn btn-lg btn-success btn-block">Save scores</button>                
-
+        <div class="col-xs-12 text-center">
+            <button id="addScore" class="btn btn-sm btn-default ">Add another score</button>
+            <button id="submitScore" class="btn btn-lg btn-success btn-block">Save scores</button>
         </div>
     </script>
             
