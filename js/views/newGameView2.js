@@ -10,6 +10,7 @@ Vs.NewGameView2 = Backbone.View.extend({
 
 	events : {
         "click #addScore": "_renderNewScoreRow",
+        "click #removeScore": "_deleteScoreRow",
         "click #submitScore": "saveGames",
         "change .scoreRow select": "_renderScoreUpdate"
     },
@@ -130,7 +131,9 @@ Vs.NewGameView2 = Backbone.View.extend({
             $('#player2').append(cr.render().el);
         });
     },
-
+    _deleteScoreRow: function() {
+        $('#scoresSection').children().last().remove();
+    },
     _renderNewScoreRow: function() {
         $('#resultsSection').html('');
         $('#scoresSection').append(this.scoreTemplate());
