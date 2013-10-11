@@ -178,7 +178,17 @@
             </div>
             <div id="scoresSection" class="row"></div>
             <div id="resultsSection" class="row"></div>
-            <div id="buttonsSection" class="row"></div>
+            
+            <div id="buttonsSection" class="row">
+                <div class="col-xs-6 text-right">
+                    <button id="addScore" class="btn btn-lg btn-success btn-block">Add another score</button>
+
+                </div>
+                <div class="col-xs-6 text-left">
+                    <button id="submitScore" class="btn btn-lg btn-success btn-block">Save scores</button>                
+
+                </div>
+            </div>
         </div>
 
     </script>
@@ -214,18 +224,6 @@
             <div class="col-xs-6 text-center">
                 <span class="resultsP2 <% if (p2eloDelta > 0) { %>rankUp<% } else { %>rankDown<% } %>"><%= p2eloDelta %></span>
             </div>
-        </div>
-    </script>
-            
-    <script id="newButtonsTemplate" type="text/template">
-
-        <div class="col-xs-6 text-right">
-            <button id="addScore" class="btn btn-lg btn-success btn-block">Add another score</button>
-
-        </div>
-        <div class="col-xs-6 text-left">
-            <button id="submitScore" class="btn btn-lg btn-success btn-block">Save scores</button>                
-
         </div>
     </script>
             
