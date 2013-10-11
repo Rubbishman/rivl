@@ -3,7 +3,6 @@ Vs.NewGameView2 = Backbone.View.extend({
     navbarTemplate : _.template($('#navbarTemplate').html()),    
     gameTemplate : _.template($('#newGame2Template').html()),    
     scoreTemplate : _.template($('#newScoreTemplate').html()),   
-    buttonsTemplate : _.template($('#newButtonsTemplate').html()),   
     resultsTemplate : _.template($('#newResultsTemplate').html()),    
 	el: $('#mainContainer'),
 	
@@ -118,7 +117,6 @@ Vs.NewGameView2 = Backbone.View.extend({
         this.$el.html(this.navbarTemplate(this.model.toJSON()));
         this.$el.append(this.gameTemplate(this.model.toJSON()));
         this._renderNewScoreRow();
-        this._renderButtonsRow();
 
         array.sort(function(a,b){return a.attributes.name < b.attributes.name ? -1 : a.attributes.name > b.attributes.name ? 1 : 0});
         this._renderCompetitorRows();
@@ -136,10 +134,6 @@ Vs.NewGameView2 = Backbone.View.extend({
     _renderNewScoreRow: function() {
         $('#resultsSection').html('');
         $('#scoresSection').append(this.scoreTemplate());
-    },
-
-    _renderButtonsRow: function() {
-        $('#buttonsSection').append(this.buttonsTemplate());
     },
 
     _renderResults: function(results) {

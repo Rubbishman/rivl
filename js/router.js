@@ -58,7 +58,8 @@ $(function () {
 
             var renderGameView = function () {
                 if (Vs.competition.loaded && Vs.competitors.loaded) {
-                    Vs.newGameView2 = new Vs.NewGameView2({model: Vs.competition, collection: Vs.competitors});
+                    Vs.newGameView2.model = Vs.competition;
+                    Vs.newGameView2.collection = Vs.competitors;
                     Vs.newGameView2.render();
                 }
             };
@@ -129,6 +130,7 @@ $(function () {
     });
     
 	Vs.allCompetitionsView = new Vs.AllCompetitionsView();
+    Vs.newGameView2 = new Vs.NewGameView2();
 
     // Initiate the router
     Vs.router = new Vs.Router();
