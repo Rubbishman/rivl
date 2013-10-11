@@ -1,3 +1,65 @@
-.test {
-	font-size: 24px;
+body {
+/* 	font-family: 'Source Sans Pro'; TODO: nice typeface but maybe not the right fit... 
+plus needs separate font to support bold etc styles */
+    padding-top: 50px;
+}
+.newGameContainer {
+	max-width: 500px;
+	padding: 20px 10px;
+}
+.newGameContainer select {
+	font-size: 20px;
+	width: 75%;
+}
+.newGameContainer div {
+	padding: 0;
+}
+#playerSection {
+	background-image: url("../img/graphic_sm.png");
+	background-repeat:no-repeat;
+	background-position:center; 
+	padding: 15px 0;
+}
+#scoresSection {
+	border-top: solid 1px #CCC;	
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.scoreRow select {
+	font-size: 30px;
+	width: 80px;
+	margin: 10px 0 10px;
+}
+.scoreRow div {
+	background-color: #F7F7F7;
+}
+.scoreRow .winningScore {
+	background-color: #FFFF9E;
+	background-image: url("../img/trophy_32.png");
+	background-repeat:no-repeat;
+	background-position:left; 
+	background-position-x: 5%;
+}
+.scoreRow .losingScore {
+	background-color: #EEE;
+}
+#resultsSection {
+	margin-bottom: 20px;
+}
+#resultsSection span {
+	font-size: 30px;
+	padding-left: 55px;
+}
+#resultsSection span.rankUp {
+	background-image: url("../img/up_arrow_48.png");
+	background-repeat:no-repeat;
+	background-position:left;
+}
+#resultsSection span.rankDown {
+	background-image: url("../img/down_arrow_48.png");
+	background-repeat:no-repeat;
+	background-position:left;
+}
+#competitors td, #gameHistory td {
+	padding: 1px 40px 1px 2px;
 }

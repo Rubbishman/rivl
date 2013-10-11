@@ -1,7 +1,7 @@
 Vs.CompetitionRow = Backbone.View.extend({
 
 	template : _.template($('#competitionRowTemplate').html()),            
-    tagName : "li",
+    tagName : "h4",
 
     initialize: function () {
     },

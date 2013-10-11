@@ -24,9 +24,6 @@ $(function () {
 
                 Vs.competitorView = new Vs.CompetitorView({el:$("#competitors"),model: Vs.competition, collection: Vs.competitors});
                 Vs.competitorView.render();
-
-                Vs.newGameView = new Vs.NewGameView({el:$('#newGame'),model: Vs.competition, collection: Vs.competitors});
-                Vs.newGameView.render();
             });
             
             Vs.router._fetchGames(Vs.competition.get('id'), function() {
@@ -60,15 +57,14 @@ $(function () {
         showNewGame: function(id) {
 
             var renderGameView = function () {
-                if (Vs.competition && Vs.competitors) {
-                    Vs.newGameView2 = new Vs.NewGameView2({model: Vs.competition, collection: Vs.competitors});
+                if (Vs.competition.loaded && Vs.competitors.loaded) {
+                    Vs.newGameView2.model = Vs.competition;
+                    Vs.newGameView2.collection = Vs.competitors;
                     Vs.newGameView2.render();
                 }
             };
 
             if (!Vs.competition || Vs.competition.get('id') !== id) {
-                delete Vs.competition;
-                delete Vs.competitors;
                 Vs.router._fetchCompetition(id, renderGameView);
                 Vs.router._fetchCompetitors(id, renderGameView);
             } else {
@@ -81,10 +77,12 @@ $(function () {
         _fetchCompetition: function(id, callback) {
 
             Vs.competition = new Vs.Competition();
+            Vs.competition.loaded = false;
 
             Vs.competition.fetch({
                 data: { id: id},
                 success: function(model, response)  {
+                    Vs.competition.loaded = true;
                     callback();
 
                 },
@@ -97,10 +95,13 @@ $(function () {
         _fetchCompetitors: function(id, callback) {
 
             Vs.competitors = new Vs.CompetitorCollection();
+            Vs.competitors.loaded = false;
+
             //_id needs to be set so fetch can run without data.
             Vs.competitors.fetch({
                 data: { competition_id: id},
                 success: function(collection, response)  {
+                    Vs.competitors.loaded = true;
                     console.log(collection);
                     callback();
                 },
@@ -129,6 +130,7 @@ $(function () {
     });
     
 	Vs.allCompetitionsView = new Vs.AllCompetitionsView();
+    Vs.newGameView2 = new Vs.NewGameView2();
 
     // Initiate the router
     Vs.router = new Vs.Router();

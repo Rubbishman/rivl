@@ -55,8 +55,8 @@ class Game_Saver extends CI_Controller{
     private function new_game() {
 
         try {
-            $game = $this->input->get('model');
-            if (!$game) {
+            $games = $this->input->get('gameModels');
+            if (!$games) {
                 $this->output->set_status_header(400,'No game submitted ');
 				$this->output->set_output('DAFAQ'); die();
             }
@@ -65,10 +65,13 @@ class Game_Saver extends CI_Controller{
                 // $this->output->set_status_header(400,'JSON parse error when reading game: '+$game_JSON);
 				// $this->output->set_output('DAFAQ'); die();
             // }
-			
-            $game_id = $this->game_model->save_game($game);
+            $game_ids = array();
+			foreach ($games as $game) {
+                $game_id = $this->game_model->save_game($game);
+                array_push($game_ids, $game_id);
+            }
 
-            $response = array('data'=>array('id'=>$game_id));
+            $response = array('data'=>array('ids'=>$game_ids));
             $this->_render($response);
 
         }
