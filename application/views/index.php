@@ -182,7 +182,7 @@
             <div id="buttonsSection" class="row">
                 <div class="col-xs-12 text-center">
                     <button id="addScore" class="btn btn-sm btn-default">Add another score</button>
-                    <button id="removeScore" class="btn btn-sm btn-default">Remove last score</button>
+                    <button id="removeScore" class="btn btn-sm btn-danger">Remove last score</button>
                     <button id="submitScore" class="btn btn-lg btn-success btn-block">Save scores</button>                
                 </div>
             </div>
