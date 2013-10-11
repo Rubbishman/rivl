@@ -79,12 +79,11 @@
                 <tbody id="competitors"></tbody>
             </table>
         </div>
-        <h1>Game history</h1>
+        <h1>[n] games played</h1>
         <div class="sectionBody">
             <table>
                 <thead>
                     <tr>
-                        <th>Game</th>
                         <th>Date</th>
                         <th>Players</th>
                         <th>Score</th>
@@ -112,7 +111,6 @@
 
     <script id="gameRowTemplate" type="text/template">
         <tr>
-            <td><%=game1.game_id%></td>
             <td><%=game1.date%></td>
             <td><strong><%=game1.name%></strong> vs <%=game2.name%></td>
             <td><strong><%=game1.score%></strong> - <%=game2.score%></td>
@@ -165,12 +163,14 @@
             
         <div class="newGameContainer">
             <div id="playerSection" class="row text-left">
-                <div class="col-xs-6">
+                <div class="col-xs-5">
                     <select id="player1">
                         <option value=''></option>
                     </select>
                 </div>
-                <div class="col-xs-6 text-right">
+                <div id="vsLabel" class="col-xs-2">
+                </div>
+                <div class="col-xs-5 text-right">
                     <select id="player2">
                         <option value=''></option>
                     </select>
