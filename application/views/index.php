@@ -48,7 +48,7 @@
                 <li><a href="#competition/<%=id%>">Home</a></li>
                 <li><a href="#competition/<%=id%>/game">Enter scores</a></li>
                 <li><a href="vs_api/competitor_graph/get_all_graphs?competition_id=<%=id%>">Graph</a></li>
-                <li id="myDetails" hidden><a href="#competitor_home/<%=id%>">MyDetails</a></li>
+                <li id="notifications" hidden><a href="#competitor_home/<%=id%>">Notifications <span class="badge">4</span></a></li>
                 <li id="login" hidden><a>Login</a></li>
                 <li id="logout" hidden><a>Logout</a></li>
               </ul>
@@ -57,6 +57,10 @@
           </div>
         </div>
 
+    </script>
+
+    <script id="notifications" type="text/template">
+        Notifications go here
     </script>
 
     <script id="competitionRowTemplate" type="text/template">
@@ -80,12 +84,11 @@
                 <tbody id="competitors"></tbody>
             </table>
         </div>
-        <h1>Game history</h1>
+        <h1>[n] games played</h1>
         <div class="sectionBody">
             <table>
                 <thead>
                     <tr>
-                        <th>Game</th>
                         <th>Date</th>
                         <th>Players</th>
                         <th>Score</th>
@@ -113,7 +116,6 @@
 
     <script id="gameRowTemplate" type="text/template">
         <tr>
-            <td><%=game1.game_id%></td>
             <td><%=game1.date%></td>
             <td><strong><%=game1.name%></strong> vs <%=game2.name%></td>
             <td><strong><%=game1.score%></strong> - <%=game2.score%></td>
@@ -166,12 +168,14 @@
             
         <div class="newGameContainer">
             <div id="playerSection" class="row text-left">
-                <div class="col-xs-6">
+                <div class="col-xs-5">
                     <select id="player1">
                         <option value=''></option>
                     </select>
                 </div>
-                <div class="col-xs-6 text-right">
+                <div id="vsLabel" class="col-xs-2">
+                </div>
+                <div class="col-xs-5 text-right">
                     <select id="player2">
                         <option value=''></option>
                     </select>
@@ -183,7 +187,7 @@
             <div id="buttonsSection" class="row">
                 <div class="col-xs-12 text-center">
                     <button id="addScore" class="btn btn-sm btn-default">Add another score</button>
-                    <button id="removeScore" class="btn btn-sm btn-default">Remove last score</button>
+                    <button id="removeScore" class="btn btn-sm btn-danger">Remove last score</button>
                     <button id="submitScore" class="btn btn-lg btn-success btn-block">Save scores</button>                
                 </div>
             </div>
@@ -248,13 +252,13 @@
 				      success: function(res, status, xhr) { 
 				      	$('#login').hide();
 				      	$('#logout').show();
-				      	$('#myDetails').show();
+				      	$('#notifications').show();
 				      },
 				      error: function(xhr, status, err) {
 				        navigator.id.logout();
 				        $('#login').show();
 				      	$('#logout').hide();
-				      	$('#myDetails').hide();
+				      	$('#notifications').hide();
 				      }
 			    });
 		  	},
@@ -269,7 +273,7 @@
 			      success: function(res, status, xhr) { 
 			      	$('#login').show();
 			      	$('#logout').hide();
-			      	$('#myDetails').hide(); 
+			      	$('#notifications').hide(); 
 		      	},
 			      error: function(xhr, status, err) { alert("Logout failure: " + err); }
 			    });
