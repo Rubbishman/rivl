@@ -50,12 +50,17 @@
                 <li><a href="#competition/<%=id%>">Home</a></li>
                 <li><a href="#competition/<%=id%>/game">Enter scores</a></li>
                 <li><a href="vs_api/competitor_graph/get_all_graphs?competition_id=<%=id%>">Graph</a></li>
+                <li><a href="#notifications">Notifications <span class="badge">4</span></a></li>
               </ul>
               <% } %>
             </div><!--/.nav-collapse -->
           </div>
         </div>
 
+    </script>
+
+    <script id="notifications" type="text/template">
+        Notifications go here
     </script>
 
     <script id="competitionRowTemplate" type="text/template">
