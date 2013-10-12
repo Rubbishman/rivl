@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+	
     <meta charset="utf-8">
     
     <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
@@ -22,9 +23,6 @@
 </head>
 
 <body>
-
-
-   
 
     <div id="mainContainer" class="container">
 
@@ -50,6 +48,9 @@
                 <li><a href="#competition/<%=id%>">Home</a></li>
                 <li><a href="#competition/<%=id%>/game">Enter scores</a></li>
                 <li><a href="vs_api/competitor_graph/get_all_graphs?competition_id=<%=id%>">Graph</a></li>
+                <li id="myDetails" hidden><a href="#competitor_home/<%=id%>">MyDetails</a></li>
+                <li id="login" hidden><a>Login</a></li>
+                <li id="logout" hidden><a>Logout</a></li>
               </ul>
               <% } %>
             </div><!--/.nav-collapse -->
@@ -224,11 +225,68 @@
         </div>
     </script>
             
+            
+    <script src="https://login.persona.org/include.js"></script>
     <script src=<?=base_url("/js/lib/json2.js")?>></script>
     <script src=<?=base_url("/js/lib/jquery-1.7.1.js")?>></script>
     <script src=<?=base_url("/js/lib/underscore.js")?>></script>
     <script src=<?=base_url("/js/lib/backbone.js")?>></script>
     <script src=<?=base_url("/js/lib/bootstrap.js")?>></script>
+
+	<script type="text/javascript">
+	    navigator.id.watch({
+	        loggedInUser: <?= $email ? "'$email'" : 'null' ?>,
+	        // A user has logged in! Here you need to:
+		    // 1. Send the assertion to your backend for verification and to create a session.
+		    // 2. Update your UI.
+			onlogin: function(assertion) {
+				
+			    $.ajax({ /* <-- This example uses jQuery, but you can use whatever you'd like */
+				      type: 'POST',
+				      url: "<?=base_url('/auth/login')?>", // This is a URL on your website.
+				      data: {assertion: assertion},
+				      success: function(res, status, xhr) { 
+				      	$('#login').hide();
+				      	$('#logout').show();
+				      	$('#myDetails').show();
+				      },
+				      error: function(xhr, status, err) {
+				        navigator.id.logout();
+				        $('#login').show();
+				      	$('#logout').hide();
+				      	$('#myDetails').hide();
+				      }
+			    });
+		  	},
+		  onlogout: function() {
+			    // A user has logged out! Here you need to:
+			    // Tear down the user's session by redirecting the user or making a call to your backend.
+			    // Also, make sure loggedInUser will get set to null on the next page load.
+			    // (That's a literal JavaScript null. Not false, 0, or undefined. null.)
+			    $.ajax({
+			      type: 'POST',
+			      url: "<?=base_url('/auth/logout')?>", // This is a URL on your website.
+			      success: function(res, status, xhr) { 
+			      	$('#login').show();
+			      	$('#logout').hide();
+			      	$('#myDetails').hide(); 
+		      	},
+			      error: function(xhr, status, err) { alert("Logout failure: " + err); }
+			    });
+		   }
+	    });
+    </script>
+
+	<script type="text/javascript">
+			$(function() {
+	    		$('#mainContainer').on('click','#login',function(){
+	    			navigator.id.request();
+	    		});
+	    		$('#mainContainer').on('click','#logout',function(){
+	    			navigator.id.logout();
+	    		});
+			});
+	</script>
 
     <script src=<?=base_url("/js/vs.js")?>></script>
     <script src=<?=base_url("/js/models/competition.js")?>></script>

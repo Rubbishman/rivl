@@ -10,7 +10,10 @@ class Vs extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('index');	
+		$data = array(
+			'email' => $this->input->cookie('user_email', TRUE),
+			'assertion' => $this->input->cookie('assertion', TRUE));
+		$this->load->view('index',$data);	
 	}
 
 

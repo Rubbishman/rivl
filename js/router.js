@@ -5,7 +5,7 @@ $(function () {
     Vs.Router = Backbone.Router.extend({
 
         routes: {
-
+			"competitor_home/:id" : "showCompetitorHome",
             "competition" : "showAllCompetitions",
             "competition/:id" : "showCompetition",
             "competition/:id/game" : "showNewGame",
@@ -15,6 +15,9 @@ $(function () {
         //constructor
         initialize : function () {
 
+        },
+        showCompetitorHome: function(competition_id) {
+        	
         },
 		refreshCompetition: function() {
 			Vs.competitionView = new Vs.CompetitionView({model: Vs.competition});
