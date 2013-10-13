@@ -27,10 +27,12 @@ class Game_model extends CI_Model {
 	}
 
 	public function get_games($params = FALSE) {
-		$this->db->select('score.id, score.game_id, game.date, competitor.name, score.rank, score.score, (score.elo_after - score.elo_before) elo_change');
+		$this->db->select('score.id, score.game_id, game.date, competitor.name, score.rank, score.score, 
+                                (score.elo_after - score.elo_before) elo_change, score_details.detail_id');
 		$this->db->from('game');
 		$this->db->join('score', 'game.id = score.game_id');
-		$this->db->join('competitor', 'score.competitor_id = competitor.id');
+        $this->db->join('competitor', 'score.competitor_id = competitor.id');
+        $this->db->join('score_details', 'score_details.score_id = score.id', 'left outer');
 		$this->db->order_by('game.id desc,score.rank asc');
 		$this->db->where(array('game.competition_id' => $params['competition_id']));
 
@@ -48,7 +50,7 @@ class Game_model extends CI_Model {
 		$res =$this->db->query('select game.date, 
 		CASE WHEN s1.rank = 1 THEN c1.name ELSE c2.name END winner_name, 
     CASE WHEN s1.rank = 2 THEN c1.name ELSE c2.name END loser_name,
-    CASE WHEN s1.rank = 1 THEN s1.score ELSE s2.score END winner_score,
+    CASE WHEN s1.rank = 1 THEN s1.score ELSE s2.scandir(directory)ore END winner_score,
     CASE WHEN s1.rank = 2 THEN s1.score ELSE s2.score END loser_score,
     CASE WHEN s1.rank = 1 THEN (s1.elo_after - s1.elo_before) ELSE (s2.elo_after - s2.elo_before) END winner_elo_change,
     CASE WHEN s1.rank = 2 THEN (s1.elo_after - s1.elo_before) ELSE (s2.elo_after - s2.elo_before) END loser_elo_change
@@ -239,16 +241,6 @@ select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from scor
     	$game_id = $this->db->insert_id();
 
         //save winner
-        if (isset($winner_details['detail']) && isset($loser_details['detail'])) {
-
-            $detail_id = $this->_find_or_create_detail_id($new_data['competition_id'], $winner_details['detail']);
-            $this->db->insert('game_details', 
-                array(
-                    'game_id' => $game_id,
-                    'competitor_id' => $winner_details['competitor_id'],
-                    'detail_id' => $detail_id));;
-        }
-
     	$this->db->insert('score', 
     		array(
     			'game_id' => $game_id,
@@ -257,7 +249,17 @@ select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from scor
     			'score' => $winner_details['score'],
     			'elo_before' => $winner_details['elo'],
     			'elo_after' => $elo_after['winner_elo']));
+        $winning_score_id = $this->db->insert_id();
 		
+        if (isset($winner_details['detail']) && isset($loser_details['detail'])) {
+
+            $detail_id = $this->_find_or_create_detail_id($new_data['competition_id'], $winner_details['detail']);
+            $this->db->insert('score_details', 
+                array(
+                    'score_id' => $winning_score_id,
+                    'detail_id' => $detail_id));;
+        }
+
 
 		$this->db->where(array(
 				'competitor_id' => $winner_details['competitor_id'],
@@ -269,16 +271,6 @@ select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from scor
 
 
         //save loser
-        if (isset($winner_details['detail']) && isset($loser_details['detail'])) {
-
-            $detail_id = $this->_find_or_create_detail_id($new_data['competition_id'], $loser_details['detail']);
-            $this->db->insert('game_details', 
-                array(
-                    'game_id' => $game_id,
-                    'competitor_id' => $loser_details['competitor_id'],
-                    'detail_id' => $detail_id));
-        }
-
 		$this->db->insert('score', 
     		array(
     			'game_id' => $game_id,
@@ -287,6 +279,16 @@ select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from scor
     			'score' => $loser_details['score'],
     			'elo_before' => $loser_details['elo'],
     			'elo_after' => $elo_after['loser_elo']));
+        $losing_score_id = $this->db->insert_id();
+        
+        if (isset($winner_details['detail']) && isset($loser_details['detail'])) {
+
+            $detail_id = $this->_find_or_create_detail_id($new_data['competition_id'], $loser_details['detail']);
+            $this->db->insert('score_details', 
+                array(
+                    'score_id' => $losing_score_id,
+                    'detail_id' => $detail_id));;
+        }
 
 		$this->db->where(array(
 				'competitor_id' => $loser_details['competitor_id'],
