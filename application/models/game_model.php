@@ -228,7 +228,10 @@ select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from scor
 
 		$elo_after = elo_helper($winner_details['elo'],$loser_details['elo'],$game_number['winner_games'],$game_number['loser_games']);
 
-        $this->db->insert('game', array('competition_id' => $new_data['competition_id']));
+        $this->db->insert('game', array(
+        	'competition_id' => $new_data['competition_id'],
+			'status' => 'pending'));
+			
     	$game_id = $this->db->insert_id();
 
     	$this->db->insert('score', 
@@ -261,6 +264,20 @@ select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from scor
 				'competition_id' => $new_data['competition_id']));
 		$this->db->update('competitor_elo',
 			array('elo' => $elo_after['loser_elo']));
+			
+		foreach($new_data['results'] as $result){
+			
+			$status = "pending";
+			if($result['confirmed']) {
+				$status = 'confirmed';
+			}
+			
+			$this->db->insert('game_verification',
+				array(
+					'game_id' => $game_id,
+					'competitor_id' => $result['competitor_id'],
+					'status' => $status));	
+		}
 			
         return $game_id;
 	}

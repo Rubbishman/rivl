@@ -1,3 +1,5 @@
+use rivl_dev;
+
 CREATE TABLE IF NOT EXISTS `game_verification` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `game_id` BIGINT NOT NULL,
