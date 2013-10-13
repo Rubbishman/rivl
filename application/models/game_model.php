@@ -115,6 +115,7 @@ select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from scor
         $this->db->from('score');
         $this->db->join('game','game.id = score.game_id');
         $this->db->group_by('game_id');
+        $this->db->order_by('date', 'asc');
         $allGames = $this->db->get()->result_array();
 
         foreach($allGames as &$game) {
@@ -195,9 +196,11 @@ select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from scor
 			if($result['rank'] == 1){
 				$winner_details = $res;
 				$winner_details['score'] = $result['score'];
+                $winner_details['detail'] = $result['detail'];
 			} else if($result['rank'] == 2){
 				$loser_details = $res;
 				$loser_details['score'] = $result['score'];
+                $loser_details['detail'] = $result['detail'];
 			}
 		}
 
@@ -209,8 +212,23 @@ select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from scor
 
 		$elo_after = elo_helper($winner_details['elo'],$loser_details['elo'],$game_number['winner_games'],$game_number['loser_games']);
 
-        $this->db->insert('game', array('competition_id' => $new_data['competition_id']));
+        $game_insert_array = array('competition_id' => $new_data['competition_id']);
+        if (isset($new_data['date'])) {
+            $game_insert_array['date'] = $new_data['date'];
+        }
+        $this->db->insert('game', $game_insert_array);
     	$game_id = $this->db->insert_id();
+
+        //save winner
+        if (isset($winner_details['detail']) && isset($loser_details['detail'])) {
+
+            $detail_id = $this->_find_or_create_detail_id($new_data['competition_id'], $winner_details['detail']);
+            $this->db->insert('game_details', 
+                array(
+                    'game_id' => $game_id,
+                    'competitor_id' => $winner_details['competitor_id'],
+                    'detail_id' => $detail_id));;
+        }
 
     	$this->db->insert('score', 
     		array(
@@ -228,6 +246,20 @@ select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from scor
 		$this->db->update('competitor_elo',
 			array('elo' => $elo_after['winner_elo']));
 		
+
+
+
+        //save loser
+        if (isset($winner_details['detail']) && isset($loser_details['detail'])) {
+
+            $detail_id = $this->_find_or_create_detail_id($new_data['competition_id'], $loser_details['detail']);
+            $this->db->insert('game_details', 
+                array(
+                    'game_id' => $game_id,
+                    'competitor_id' => $loser_details['competitor_id'],
+                    'detail_id' => $detail_id));
+        }
+
 		$this->db->insert('score', 
     		array(
     			'game_id' => $game_id,
@@ -246,4 +278,25 @@ select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from scor
         return $game_id;
 	}
 
+    private function _find_or_create_detail_id($competition_id, $detail) {
+
+        $this->db->select('id');
+        $this->db->from('detail');
+        $this->db->where('competition_id', $competition_id);
+        $this->db->where('name', $detail);
+        $results = $this->db->get()->row_array();
+        if (!empty($results)) {
+
+            return $results['id'];
+
+        } else {
+
+            $this->db->insert('game_details', 
+                array(
+                    'competition_id' => $competition_id,
+                    'detail_set_id' => 1,
+                    'name' => $detail));
+            return $this->db->insert_id();
+        }
+    }
 }
