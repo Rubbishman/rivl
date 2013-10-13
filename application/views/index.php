@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+	
     <meta charset="utf-8">
     
     <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
@@ -22,9 +23,6 @@
 </head>
 
 <body>
-
-
-   
 
     <div id="mainContainer" class="container">
 
@@ -49,8 +47,10 @@
               <ul class="nav navbar-nav">
                 <li><a href="#competition/<%=id%>">Home</a></li>
                 <li><a href="#competition/<%=id%>/game">Enter scores</a></li>
-                <li><a href="vs_api/competitor_graph/get_all_graphs?competition_id=<%=id%>">Graph</a></li>
-                <li><a href="#notifications">Notifications <span class="badge">4</span></a></li>
+                <li><a href="#competition_graph/<%=id%>">Graph</a></li>
+                <li id="notifications" hidden><a href="#competitor_home/<%=id%>">Notifications <span class="badge">4</span></a></li>
+                <li id="login" hidden><a>Login</a></li>
+                <li id="logout" hidden><a>Logout</a></li>
               </ul>
               <% } %>
             </div><!--/.nav-collapse -->
@@ -66,6 +66,64 @@
     <script id="competitionRowTemplate" type="text/template">
         <a><%=name%></a>
     </script>
+
+	<script id="competitorGameRowTemplate" type="text/template">
+        <tr>
+            <td><%=date%></td>
+            <td><strong><%=winner_name%></strong> vs <%=loser_name%></td>
+            <td><strong><%=winner_score%></strong> - <%=loser_score%></td>
+            <td><strong>+<%=winner_elo_change%></strong>&nbsp;&nbsp;<%=loser_elo_change%></td>
+        </tr>
+    </script>
+
+	<script id="competitionGraphTemplate" type="text/template">
+		<h1><%=name%> Graph</h1>
+		<canvas id="mainGraph" width="1024" height="728"></canvas>
+	</script>
+		
+	<script id="playerStatRowTemplate" type="text/template">
+        <tr>
+        <td><%=opponent_name%></td>
+        <% var games = Number(win_num) + Number(loss_num); %>
+        <td class="details"><%=games%></td>
+        <td> (<strong>W:<%=win_num%></strong>  L:<%=loss_num%>)</td>
+        <td><strong><%=avg_win_opp_score%></strong>, <%=avg_loss_score%></td>
+        </tr>
+    </script>
+
+	<script id="playerPageTemplate" type="text/template">
+		<h1><%=playerName%>'s stats</h1>
+		<div id="competitors" class="sectionBody">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Games</th>
+                        <th></th>
+                        <th>Avg scores</th>
+                    </tr>
+                </thead>
+                <tbody id="playerStats"></tbody>
+            </table>
+        </div>
+
+		<h1>Graph</h1>
+		<canvas id="playerGraph" width="1024" height="728"></canvas>
+		<h1>Player History</h1>
+        <div id="gameHistory" class="sectionBody">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Players</th>
+                        <th>Score</th>
+                        <th>Elo change</th>
+                    </tr>
+                </thead>
+                <tbody id="playerHistory"></tbody>
+            </table>
+        </div>
+	</script>
 
     <script id="competitionTemplate" type="text/template">
 
@@ -84,7 +142,7 @@
                 <tbody id="competitors"></tbody>
             </table>
         </div>
-        <h1>[n] games played</h1>
+        <h1>Game History</h1>
         <div class="sectionBody">
             <table>
                 <thead>
@@ -229,16 +287,76 @@
         </div>
     </script>
             
+            
+    <script src="https://login.persona.org/include.js"></script>
     <script src=<?=base_url("/js/lib/json2.js")?>></script>
     <script src=<?=base_url("/js/lib/jquery-1.7.1.js")?>></script>
     <script src=<?=base_url("/js/lib/underscore.js")?>></script>
     <script src=<?=base_url("/js/lib/backbone.js")?>></script>
     <script src=<?=base_url("/js/lib/bootstrap.js")?>></script>
+	<script src=<?=base_url("/js/lib/Chart.js")?>></script>
+
+	<script type="text/javascript">
+	    navigator.id.watch({
+	        loggedInUser: <?= $email ? "'$email'" : 'null' ?>,
+	        // A user has logged in! Here you need to:
+		    // 1. Send the assertion to your backend for verification and to create a session.
+		    // 2. Update your UI.
+			onlogin: function(assertion) {
+				
+			    $.ajax({ /* <-- This example uses jQuery, but you can use whatever you'd like */
+				      type: 'POST',
+				      url: "<?=base_url('/auth/login')?>", // This is a URL on your website.
+				      data: {assertion: assertion},
+				      success: function(res, status, xhr) { 
+				      	$('#login').hide();
+				      	$('#logout').show();
+				      	$('#notifications').show();
+				      },
+				      error: function(xhr, status, err) {
+				        navigator.id.logout();
+				        $('#login').show();
+				      	$('#logout').hide();
+				      	$('#notifications').hide();
+				      }
+			    });
+		  	},
+		  onlogout: function() {
+			    // A user has logged out! Here you need to:
+			    // Tear down the user's session by redirecting the user or making a call to your backend.
+			    // Also, make sure loggedInUser will get set to null on the next page load.
+			    // (That's a literal JavaScript null. Not false, 0, or undefined. null.)
+			    $.ajax({
+			      type: 'POST',
+			      url: "<?=base_url('/auth/logout')?>", // This is a URL on your website.
+			      success: function(res, status, xhr) { 
+			      	$('#login').show();
+			      	$('#logout').hide();
+			      	$('#notifications').hide(); 
+		      	},
+			      error: function(xhr, status, err) { alert("Logout failure: " + err); }
+			    });
+		   }
+	    });
+    </script>
+
+	<script type="text/javascript">
+			$(function() {
+	    		$('#mainContainer').on('click','#login',function(){
+	    			navigator.id.request();
+	    		});
+	    		$('#mainContainer').on('click','#logout',function(){
+	    			navigator.id.logout();
+	    		});
+			});
+	</script>
 
     <script src=<?=base_url("/js/vs.js")?>></script>
     <script src=<?=base_url("/js/models/competition.js")?>></script>
     <script src=<?=base_url("/js/models/competitionCollection.js")?>></script>
     <script src=<?=base_url("/js/models/competitor.js")?>></script>
+    <script src=<?=base_url("/js/models/competitionGraph.js")?>></script>
+    <script src=<?=base_url("/js/models/competitorStat.js")?>></script>
     <script src=<?=base_url("/js/models/competitorCollection.js")?>></script>
     <script src=<?=base_url("/js/models/game.js")?>></script>
     <script src=<?=base_url("/js/models/gameSaver.js")?>></script>
@@ -247,6 +365,8 @@
     <script src=<?=base_url("/js/views/competitionRow.js")?>></script>
     <script src=<?=base_url("/js/views/competitorRow.js")?>></script>
     <script src=<?=base_url("/js/views/competitorView.js")?>></script>
+    <script src=<?=base_url("/js/views/competitionGraphView.js")?>></script>
+    <script src=<?=base_url("/js/views/competitorStatView.js")?>></script>
     <script src=<?=base_url("/js/views/newGameView.js")?>></script>
     <script src=<?=base_url("/js/views/newGameView2.js")?>></script>
     <script src=<?=base_url("/js/views/gameHistoryView.js")?>></script>

@@ -70,8 +70,8 @@ class Competitor_Graph extends CI_Controller{
             $graphData['labels'][] = $i;
         }
 
-        //$this->_render($graphData);
-        $this->load->view('competitor_graph',$graphData);
+        $this->_render($graphData);
+        //$this->load->view('competitor_graph',$graphData);
     }
 
 	public function get_all_graphs() {
@@ -114,8 +114,8 @@ class Competitor_Graph extends CI_Controller{
             $graphData['labels'][] = $i;
         }
 
-		//$this->_render($graphData);
-        $this->load->view('competitor_graph',$graphData);
+		$this->_render($graphData);
+        //$this->load->view('competitor_graph',$graphData);
 	}
 
     private function get_graph(){
@@ -163,8 +163,10 @@ class Competitor_Graph extends CI_Controller{
 
 		$graphData['data'] = array($playerGames);
 
-        $this->load->view('competitor_graph',$graphData);
-        //$this->_render($graphData);
+		$graphData['gameHistory'] = $this->game_model->get_competitor_games($this->input->get('competition_id'),$this->input->get('competitor_id'));
+
+        //$this->load->view('competitor_graph',$graphData);
+        $this->_render($graphData);
     }
 
     private function _render($list) {

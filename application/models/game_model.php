@@ -44,6 +44,25 @@ class Game_model extends CI_Model {
 		return $query->result();
 	}
 
+	public function get_competitor_games($competition_id, $competitor_id) {
+		$res =$this->db->query('select game.date, 
+		CASE WHEN s1.rank = 1 THEN c1.name ELSE c2.name END winner_name, 
+    CASE WHEN s1.rank = 2 THEN c1.name ELSE c2.name END loser_name,
+    CASE WHEN s1.rank = 1 THEN s1.score ELSE s2.score END winner_score,
+    CASE WHEN s1.rank = 2 THEN s1.score ELSE s2.score END loser_score,
+    CASE WHEN s1.rank = 1 THEN (s1.elo_after - s1.elo_before) ELSE (s2.elo_after - s2.elo_before) END winner_elo_change,
+    CASE WHEN s1.rank = 2 THEN (s1.elo_after - s1.elo_before) ELSE (s2.elo_after - s2.elo_before) END loser_elo_change
+    from score s1 
+    	join game on s1.game_id = game.id
+        join score s2 on s1.game_id = s2.game_id 
+            and s1.competitor_id != s2.competitor_id
+        join competitor c1 on c1.id = s1.competitor_id
+        join competitor c2 on c2.id = s2.competitor_id
+    where s1.competitor_id = '.$competitor_id.'
+    	and game.competition_id = '.$competition_id);
+		return $res->result_array();
+	}
+
 	public function get_competitor_stats($params) {
 		
 		$res =$this->db->query('select count(CASE WHEN s1.rank = 1 THEN 1 ELSE null END) win_num, 
@@ -212,7 +231,7 @@ select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from scor
 
 		$elo_after = elo_helper($winner_details['elo'],$loser_details['elo'],$game_number['winner_games'],$game_number['loser_games']);
 
-        $game_insert_array = array('competition_id' => $new_data['competition_id']);
+        $game_insert_array = array('competition_id' => $new_data['competition_id'], 'status' => 'pending');
         if (isset($new_data['date'])) {
             $game_insert_array['date'] = $new_data['date'];
         }
@@ -274,6 +293,20 @@ select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from scor
 				'competition_id' => $new_data['competition_id']));
 		$this->db->update('competitor_elo',
 			array('elo' => $elo_after['loser_elo']));
+			
+		foreach($new_data['results'] as $result){
+			
+			$status = "pending";
+			if($result['confirmed']) {
+				$status = 'confirmed';
+			}
+			
+			$this->db->insert('game_verification',
+				array(
+					'game_id' => $game_id,
+					'competitor_id' => $result['competitor_id'],
+					'status' => $status));	
+		}
 			
         return $game_id;
 	}

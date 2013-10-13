@@ -5,7 +5,8 @@ $(function () {
     Vs.Router = Backbone.Router.extend({
 
         routes: {
-
+        	"competition_graph/:id" : "showCompetitionGraph",
+			"competition/:id/competitor_home/:id" : "showCompetitorHome",
             "competition" : "showAllCompetitions",
             "competition/:id" : "showCompetition",
             "competition/:id/game" : "showNewGame",
@@ -15,6 +16,53 @@ $(function () {
         //constructor
         initialize : function () {
 
+        },
+        showCompetitionGraph: function(competition_id) {
+        	Vs.competitionGraph = new Vs.CompetitionGraph();
+        	Vs.competitionGraph.fetch({
+        		data: { competition_id: competition_id},
+                success: function(model, response)  {
+                	
+                	if(Vs.competition == null || Vs.competition.id != competition_id) {
+                		Vs.router._fetchCompetition(competition_id, function(){
+                			Vs.competitionGraphView.competition = Vs.competition;
+                    		Vs.competitionGraphView.model = model;
+                    		Vs.competitionGraphView.render();
+                		});
+                	} else {
+                		Vs.competitionGraphView.competition = Vs.competition;
+                		Vs.competitionGraphView.model = model;
+                		Vs.competitionGraphView.render();
+                	}
+                },
+                error: function(model, response) {
+                    console.log(response);
+                }
+        	});
+        },
+        showCompetitorHome: function(competition_id,competitor_id) {
+        	Vs.competitorStat = new Vs.CompetitorStat();
+        	
+        	Vs.competitorStat.fetch({
+        		data: {competition_id: competition_id, competitor_id: competitor_id},
+        		success: function(model, response)  {
+                	
+                	if(Vs.competition == null || Vs.competition.id != competition_id) {
+                		Vs.router._fetchCompetition(competition_id, function(){
+                			Vs.competitorStatView.competition = Vs.competition;
+                    		Vs.competitorStatView.model = model;
+                    		Vs.competitorStatView.render();
+                		});
+                	} else {
+                		Vs.competitorStatView.competition = Vs.competition;
+                		Vs.competitorStatView.model = model;
+                		Vs.competitorStatView.render();
+                	}
+                },
+                error: function(model, response) {
+                    console.log(response);
+                }
+        	});
         },
 		refreshCompetition: function() {
 			Vs.competitionView = new Vs.CompetitionView({model: Vs.competition});
@@ -131,7 +179,8 @@ $(function () {
     
 	Vs.allCompetitionsView = new Vs.AllCompetitionsView();
     Vs.newGameView2 = new Vs.NewGameView2();
-
+	Vs.competitionGraphView = new Vs.CompetitionGraphView();
+	Vs.competitorStatView = new Vs.CompetitorStatView();
     // Initiate the router
     Vs.router = new Vs.Router();
 
