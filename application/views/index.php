@@ -92,7 +92,7 @@
     </script>
 
 	<script id="playerPageTemplate" type="text/template">
-		<h1><%=playerName%>'s stats</h1>
+		<h1><%=playerName%>&quot;s stats</h1>
 		<div id="competitors" class="sectionBody">
             <table>
                 <thead>
@@ -181,47 +181,6 @@
         </tr>
     </script>
 
-
-    
-    <script id="newGameTemplate" type="text/template">
-        <div style="margin-left: 50px;">
-            
-        <table style="width: 50%">
-            <tr>
-                <td><strong>Winner:</strong></td> <td><select id="winner"></select></td>
-            </tr>
-            <tr>
-                <td><strong>Score:</strong></td>
-                <td>
-                    <strong id="winner_score">11</strong>
-                </td>
-            </tr>
-            <tr>
-                <td><strong>Loser:</strong></td> <td><select id="loser"></select></td>
-            </tr>
-            <tr>
-                <td><strong>Score:</strong></td>
-                <td>
-                    <select id="loser_score">
-                        <?php
-                            for($i = 0; $i < 11; $i++) {
-                        ?>
-                                <option value='<?=$i?>'><?=$i?></option>
-                        <?php       
-                            }
-                        ?>
-                    </select>
-                </td>
-                <td></td>
-            </tr>
-        </table>
-
-        <br />(in case of deuce put 10pts for the loser)<br />
-
-        <span id="makeGame" class="button">Save game</span>
-        </div>
-    </script>
-    
     <script id="newGame2Template" type="text/template">
             
         <div class="newGameContainer">
@@ -259,17 +218,17 @@
             <div class="col-xs-6 text-center">
                 <select class="scoreP1">
                     <option value=''></option>
-                    <?php for($i = 11; $i >= 0; $i--) { ?>
-                        <option value='<?=$i?>'><?=$i?></option>
-                    <?php } ?>
+                    <% for (var i = points; i > 0; i--) { %>
+                        <option value='<%= i %>'><%= i %></option>
+                    <% } %>
                 </select>
             </div>
             <div class="col-xs-6 text-center">
                 <select class="scoreP2">
                     <option value=''></option>
-                    <?php for($i = 11; $i >= 0; $i--) { ?>
-                        <option value='<?=$i?>'><?=$i?></option>
-                    <?php } ?>
+                    <% for (var i = points; i > 0; i--) { %>
+                        <option value='<%= i %>'><%= i %></option>
+                    <% } %>
                 </select>
             </div>
         </div>
@@ -277,12 +236,33 @@
 
     <script id="newResultsTemplate" type="text/template">
 
+
         <div class="resultsRow span12">
             <div class="col-xs-6 text-center">
-                <span class="resultsP1 <% if (p1eloDelta > 0) { %>rankUp<% } else { %>rankDown<% } %>"><%= p1eloDelta %></span>
+                <% if (p1eloDelta > 0) { %>
+                    <span class="resultsP1 rankUp"><%= p1eloDelta %></span>
+                <% } else if (p1eloDelta < 0) { %>
+                    <span class="resultsP1 rankDown"><%= p1eloDelta %></span>
+                <% } %>
             </div>
             <div class="col-xs-6 text-center">
-                <span class="resultsP2 <% if (p2eloDelta > 0) { %>rankUp<% } else { %>rankDown<% } %>"><%= p2eloDelta %></span>
+                <% if (p2eloDelta > 0) { %>
+                    <span class="resultsP2 rankUp"><%= p2eloDelta %></span>
+                <% } else if (p2eloDelta < 0) { %>
+                    <span class="resultsP2 rankDown"><%= p2eloDelta %></span>
+                <% } %>
+            </div>
+        </div>
+        <div class="resultsRow span12">
+            <div class="col-xs-6 text-center">
+                <span class="resultsP1">
+                    <% if (p1rankDelta > 0) { %>Rank up: +<%= p1rankDelta %><% } else if (p1rankDelta < 0) { %>Rank down: <%= p1rankDelta %><% } %>
+                </span>
+            </div>
+            <div class="col-xs-6 text-center">
+                <span class="resultsP2">
+                    <% if (p2rankDelta > 0) { %>Rank up: +<%= p2rankDelta %><% } else if (p2rankDelta < 0) { %>Rank down: <%= p2rankDelta %><% } %>
+                </span>
             </div>
         </div>
     </script>
@@ -367,7 +347,6 @@
     <script src=<?=base_url("/js/views/competitorView.js")?>></script>
     <script src=<?=base_url("/js/views/competitionGraphView.js")?>></script>
     <script src=<?=base_url("/js/views/competitorStatView.js")?>></script>
-    <script src=<?=base_url("/js/views/newGameView.js")?>></script>
     <script src=<?=base_url("/js/views/newGameView2.js")?>></script>
     <script src=<?=base_url("/js/views/gameHistoryView.js")?>></script>
     <script src=<?=base_url("/js/views/competitorSelectionRow.js")?>></script>

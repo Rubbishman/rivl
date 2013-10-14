@@ -50,7 +50,7 @@ plus needs separate font to support bold etc styles */
 	font-size: 30px;
 	padding-left: 55px;
 }
-span.rankDown, span.rankUp {
+span.rankDown, span.rankUp, span.rankNeutral {
 	background-repeat:no-repeat;
 	background-position:left;
 	display: inline-block;
@@ -60,6 +60,9 @@ span.rankDown {
 }
 span.rankUp {
 	background-image: url("../img/up_arrow_48.png");
+}
+span.rankNeutral {
+	background-image: url("../img/neutral_arrow_48.png");
 }
 #competitors td, #gameHistory td {
 	padding: 1px 40px 1px 2px;
