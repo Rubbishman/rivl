@@ -44,12 +44,12 @@ Vs.NewGameView2 = Backbone.View.extend({
             $p1Score = $(scoreRow).find('select').first();
             $p2Score = $(scoreRow).find('select').last();
 
-            if ($p1Score.val() === this.model.get('points') && $p2Score.val() !== '') {
+            if ($p1Score.val() === self.model.get('points') && $p2Score.val() !== '') {
                 winningScore = $p1Score.val();
                 winningId = $p1Name.val();
                 losingScore = $p2Score.val();
                 losingId = $p2Name.val();
-            } else if ($p2Score.val() === this.model.get('points') && $p1Score.val() !== '') {
+            } else if ($p2Score.val() === self.model.get('points') && $p1Score.val() !== '') {
                 winningScore = $p2Score.val();
                 winningId = $p2Name.val();
                 losingScore = $p1Score.val();
