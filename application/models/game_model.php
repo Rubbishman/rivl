@@ -50,7 +50,7 @@ class Game_model extends CI_Model {
 		$res =$this->db->query('select game.date, 
 		CASE WHEN s1.rank = 1 THEN c1.name ELSE c2.name END winner_name, 
     CASE WHEN s1.rank = 2 THEN c1.name ELSE c2.name END loser_name,
-    CASE WHEN s1.rank = 1 THEN s1.score ELSE s2.scandir(directory)ore END winner_score,
+    CASE WHEN s1.rank = 1 THEN s1.score ELSE s2.score END winner_score,
     CASE WHEN s1.rank = 2 THEN s1.score ELSE s2.score END loser_score,
     CASE WHEN s1.rank = 1 THEN (s1.elo_after - s1.elo_before) ELSE (s2.elo_after - s2.elo_before) END winner_elo_change,
     CASE WHEN s1.rank = 2 THEN (s1.elo_after - s1.elo_before) ELSE (s2.elo_after - s2.elo_before) END loser_elo_change

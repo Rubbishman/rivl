@@ -22,7 +22,6 @@ class Competitor_model extends CI_Model {
 		$this->db->join('score s2', 's1.game_id = s2.game_id and s1.competitor_id != s2.competitor_id','left');
 		$this->db->join('game', 's1.game_id = game.id and game.competition_id = '.$competition_id,'left	');
 		$this->db->where('competitor_elo.competition_id', $competition_id);
-		$this->db->where('game.competition_id', $competition_id);
         $this->db->group_by('competitor.id');
 		$this->db->order_by('competitor_elo.elo desc, competitor.name asc');
 		
