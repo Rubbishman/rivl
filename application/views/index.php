@@ -93,8 +93,8 @@
     </script>
 
 	<script id="playerPageTemplate" type="text/template">
-		<h1><%=playerName%><small> ("<span id="playerTitle">The bully</span>")</small></h1>
-		<div class="sectionBody ">
+		<h1><%=playerName%></h1>
+		<div class="sectionBody">
            
             <div class="row">
                 <div class="col-xs-4">
@@ -112,10 +112,26 @@
                 </div>
 
             </div>
+            <h2>Arch rivls</h2>
+            <div class="row">
+                <div class="col-xs-7">
+                    <h4 class="bigVal">Dean</h4>
+                    <p>Always a close game</p>
+                </div>
+                <div class="col-xs-5">
+                    <button class="btn btn-block btn-default spacer-5" onclick="console.log('compareRivls(Liam, Dean)');">Compare rivls</button>
+                </div>
+                <div class="col-xs-7">
+                    <h4 class="bigVal">Gerard</h4>
+                    Similar elo rating
+                </div>
+                <div class="col-xs-5">
+                    <button class="btn btn-block btn-default spacer-5" onclick="console.log('compareRivls(Liam, Dean)');">Compare rivls</button>
+                </div>
+            </div>
             
-            <button class="btn btn-block btn-primary spacer" onclick="console.log('compareRivls(Liam, Dean)');">Compare with arch rivl - <strong>Dean</strong></button>
                
-           <!-- <table class="dataTable spacer">
+           <!-- <table class="dataTable spacer-20">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -127,6 +143,18 @@
                 <tbody id="playerStats"></tbody>
             </table> -->
         </div>
+
+        <h2>Current titles</h2>
+            <div class="row">
+                <div class="col-xs-12">
+                    <h4 class="bigVal"><span class="glyphicon glyphicon-fire"></span> The bully</h4>
+                    <p>Hey, pick on someone your own size!</p>
+                </div>
+                <div class="col-xs-12">
+                    <h4 class="bigVal"><span class="glyphicon glyphicon-cutlery"></span> Game hungry</h4>
+                    <p>You can't keep <%=playerName%> away from the action</p>
+                </div>
+            </div>
 
 		<h2>Elo over time</h2>
 		<canvas id="playerGraph" width="1024" height="728"></canvas>

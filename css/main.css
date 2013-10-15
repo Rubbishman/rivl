@@ -4,11 +4,14 @@ body {
 h1 small, .row small {
 	color: #333;
 }
-h3.bigVal {
+h3.bigVal, h4.bigVal {
 	margin: 2px 0;
 }
-.spacer {
+.spacer-20 {
     margin-top: 20px;
+}
+.spacer-5 {
+	margin-top: 5px;
 }
 .sectionBody {
 	max-width: 500px;
