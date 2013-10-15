@@ -17,6 +17,11 @@ Vs.NewGameView2 = Backbone.View.extend({
     
     saveGames: function() {
 
+        if ($("#submitScore").hasClass('btn-disabled')) {
+            return;
+        }       
+        console.log('continuing...');
+
         var self = this,
             gameModels = [],
             winningScore,
@@ -34,6 +39,8 @@ Vs.NewGameView2 = Backbone.View.extend({
             alert('need to enter both playerz yo');
             return;
         }
+
+        $('#submitScore').addClass('btn-disabled').removeClass('btn-success');
 
         _.each($scoreRows, function(scoreRow) {
 
@@ -101,6 +108,8 @@ Vs.NewGameView2 = Backbone.View.extend({
                         p2rank: p2NewModel.get('rank')
                     });
                 });
+
+
             },
             error: function(collection, response) {
                 console.log(response);
@@ -138,6 +147,7 @@ Vs.NewGameView2 = Backbone.View.extend({
     },
     _renderNewScoreRow: function() {
         $('#resultsSection').html('');
+        $('#submitScore').removeClass('btn-disabled').addClass('btn-success');
         $('#scoresSection').append(this.scoreTemplate({points: this.model.get('points')}));
     },
 
