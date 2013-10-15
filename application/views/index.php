@@ -47,6 +47,7 @@
               <ul class="nav navbar-nav">
                 <li><a href="#competition/<%=id%>">Home</a></li>
                 <li><a href="#competition/<%=id%>/game">Enter scores</a></li>
+                <li><a href="#">Compare rivls</a></li>
                 <li><a href="#competition_graph/<%=id%>">Graph</a></li>
                 <li id="notifications" class="hide"><a href="#competitor_home/<%=id%>">Notifications <span class="badge">4</span></a></li>
                 <li id="login" class="hide"><a>Login</a></li>
@@ -92,9 +93,29 @@
     </script>
 
 	<script id="playerPageTemplate" type="text/template">
-		<h1><%=playerName%>&apos;s stats</h1>
-		<div id="competitors" class="sectionBody">
-            <table>
+		<h1><%=playerName%><small> ("<span id="playerTitle">The bully</span>")</small></h1>
+		<div class="sectionBody ">
+           
+            <div class="row">
+                <div class="col-xs-4">
+                    <h3 class="bigVal">1687</h3>
+                    <p>elo score</p>
+                </div>
+                <div class="col-xs-4">
+                    <h3 class="bigVal"><span id="playerGamesWon">67</span><small>/<span id="playerGamesPlayed">100</span></small></h3>
+                    <p>games won (<span id="playerWinPercent">67</span>%)</p>
+                </div>
+
+                <div class="col-xs-4">
+                    <h3 class="bigVal"><span id="playerRank">5th</span></h3>
+                    <p>of <span id="playersTotal">18</span> players</p>
+                </div>
+
+            </div>
+            
+            <button class="btn btn-block btn-primary spacer" onclick="console.log('compareRivls(Liam, Dean)');">Compare with arch rivl - <strong>Dean</strong></button>
+               
+           <!-- <table class="dataTable spacer">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -104,14 +125,15 @@
                     </tr>
                 </thead>
                 <tbody id="playerStats"></tbody>
-            </table>
+            </table> -->
         </div>
 
-		<h1>Graph</h1>
+		<h2>Elo over time</h2>
 		<canvas id="playerGraph" width="1024" height="728"></canvas>
-		<h1>Player History</h1>
+		
+        <!--<h2>Recent games</h2>
         <div id="gameHistory" class="sectionBody">
-            <table>
+            <table class="dataTable">
                 <thead>
                     <tr>
                         <th>Date</th>
@@ -122,14 +144,14 @@
                 </thead>
                 <tbody id="playerHistory"></tbody>
             </table>
-        </div>
+        </div>-->
 	</script>
 
     <script id="competitionTemplate" type="text/template">
 
         <h1><%=name%> Leaderboard</h1>
         <div class="sectionBody">
-            <table>
+            <table class="dataTable rowLinks">
                 <thead>
                     <tr>
                         <th>Rank</th>
@@ -142,12 +164,12 @@
                 <tbody id="competitors"></tbody>
             </table>
         </div>
-        <h1>Game History</h1>
+        <h2>Game History</h2>
         <div class="sectionBody">
-            <table>
+            <table class="dataTable">
                 <thead>
                     <tr>
-                        <th>Date</th>
+                        <!--<th>Date</th>-->
                         <th>Players</th>
                         <th>Score</th>
                         <th>Elo change</th>
@@ -174,7 +196,7 @@
 
     <script id="gameRowTemplate" type="text/template">
         <tr>
-            <td><%=game1.date%></td>
+         <!--   <td><%=game1.date%></td> -->
             <td><strong><%=game1.name%></strong> vs <%=game2.name%></td>
             <td><strong><%=game1.score%></strong> - <%=game2.score%></td>
             <td><strong>+<%=game1.elo_change%></strong>&nbsp;&nbsp;<%=game2.elo_change%></td>
@@ -183,7 +205,7 @@
 
     <script id="newGame2Template" type="text/template">
             
-        <div class="newGameContainer">
+        <div class="newGameContainer sectionBody">
             <div id="playerSection" class="row text-left">
                 <div class="col-xs-5">
                     <select id="player1">
@@ -238,14 +260,15 @@
 
 
         <div class="resultsRow span12">
-            <div class="col-xs-6 text-center">
+            <div class="col-xs-5 text-center">
                 <% if (p1eloDelta > 0) { %>
                     <span class="resultsP1 rankUp"><%= p1eloDelta %></span>
                 <% } else if (p1eloDelta < 0) { %>
                     <span class="resultsP1 rankDown"><%= p1eloDelta %></span>
                 <% } %>
             </div>
-            <div class="col-xs-6 text-center">
+            <div class="col-xs-2"></div>
+            <div class="col-xs-5 text-center">
                 <% if (p2eloDelta > 0) { %>
                     <span class="resultsP2 rankUp"><%= p2eloDelta %></span>
                 <% } else if (p2eloDelta < 0) { %>
@@ -254,12 +277,13 @@
             </div>
         </div>
         <div class="resultsRow span12">
-            <div class="col-xs-6 text-center">
+            <div class="col-xs-5 text-center">
                 <span class="resultsP1">
                     <% if (p1rankDelta > 0) { %>Rank up: +<%= p1rankDelta %><% } else if (p1rankDelta < 0) { %>Rank down: <%= p1rankDelta %><% } %>
                 </span>
             </div>
-            <div class="col-xs-6 text-center">
+            <div class="col-xs-2"></div>
+            <div class="col-xs-5 text-center">
                 <span class="resultsP2">
                     <% if (p2rankDelta > 0) { %>Rank up: +<%= p2rankDelta %><% } else if (p2rankDelta < 0) { %>Rank down: <%= p2rankDelta %><% } %>
                 </span>

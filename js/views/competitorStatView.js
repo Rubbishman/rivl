@@ -29,7 +29,7 @@ Vs.CompetitorStatView = Backbone.View.extend({
     	$("#playerStats").append(Vs.competitorStatView.statRowTemplate(this));
     },
     renderGameHistory: function() {
-    	$("#gameHistory").append(Vs.competitorStatView.competitorGameRowTemplate(this));
+    	$("#playerHistory").append(Vs.competitorStatView.competitorGameRowTemplate(this));
     }
 });
 
