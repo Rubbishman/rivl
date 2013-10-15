@@ -9,6 +9,7 @@ class Import extends CI_Controller {
     }
 
     public function index() {
+        return false;
         echo '<pre>';
         $format = 'd/m/Y';
         $import_data = $this->csv_to_array(APPPATH . 'import/scoresheet.csv');

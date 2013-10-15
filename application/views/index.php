@@ -92,7 +92,7 @@
     </script>
 
 	<script id="playerPageTemplate" type="text/template">
-		<h1><%=playerName%>&quot;s stats</h1>
+		<h1><%=playerName%>&apos;s stats</h1>
 		<div id="competitors" class="sectionBody">
             <table>
                 <thead>
