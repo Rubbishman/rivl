@@ -85,7 +85,7 @@ class Competitor_Graph extends CI_Controller{
 		$maxGames = 0;
 		
 		$graphData = array('playerName' => 'All Competitors','data' => array(), 'labels' => array());
-		
+
 		foreach($allCompetitors as $competitor){
 			$res = $this->game_model->get_elo_graph(array(
             'competitor_id' => $competitor->competitor_id,
@@ -112,7 +112,9 @@ class Competitor_Graph extends CI_Controller{
 	            //$graphData['data'][] = $elo_change['elo_change'];
 	            $playerGames->data[] = $elo_change['elo_after'];
         	}
-			$graphData['data'][] = $playerGames;
+            if($competitor->name != 'Andrew') {
+                $graphData['data'][] = $playerGames;
+            }
 		}
 
         for($i = 0; $i <= $maxGames; $i++){
@@ -150,7 +152,7 @@ class Competitor_Graph extends CI_Controller{
 		$playerGames = (Object)array(
 			'player' => $competitor->name,
 			'playerId' => $competitor->competitor_id,
-			'fillColor' => "rgba(".$red.",".$green.",".$blue.",0.5)",
+			'fillColor' => "rgba(0,0,0,0)",
 			'strokeColor' => "rgba(".$red.",".$green.",".$blue.",1)",
 			'pointColor' => "rgba(".$red.",".$green.",".$blue.",1)",
 			'pointStrokeColor' => "#fff",
