@@ -7,6 +7,10 @@ Vs.CompetitorRow = Backbone.View.extend({
     },
 
     events : {
+    	'click': 'clickedCompetitor'
+    },
+    clickedCompetitor: function() {
+    	Vs.router.navigate('competition/' + Vs.competition.get('id') + "/competitor_home/" + this.model.get('competitor_id'), true);
     },
     render: function() {
 

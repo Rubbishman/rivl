@@ -14,7 +14,7 @@ plus needs separate font to support bold etc styles */
 .newGameContainer div {
 	padding: 0;
 }
-#playerSection {
+#vsLabel {
 	background-image: url("../img/graphic_sm.png");
 	background-repeat:no-repeat;
 	background-position:center; 
@@ -50,18 +50,28 @@ plus needs separate font to support bold etc styles */
 	font-size: 30px;
 	padding-left: 55px;
 }
-#resultsSection span.rankUp {
-	background-image: url("../img/up_arrow_48.png");
+span.rankDown, span.rankUp, span.rankNeutral {
 	background-repeat:no-repeat;
 	background-position:left;
+	display: inline-block;
 }
-#resultsSection span.rankDown {
+span.rankDown {
 	background-image: url("../img/down_arrow_48.png");
-	background-repeat:no-repeat;
-	background-position:left;
+}
+span.rankUp {
+	background-image: url("../img/up_arrow_48.png");
+}
+span.rankNeutral {
+	background-image: url("../img/neutral_arrow_48.png");
 }
 #competitors td, #gameHistory td {
-	padding: 1px 40px 1px 2px;
+	padding: 2px 40px 2px 1px;
+}
+#competitors tr {
+	cursor: pointer;
+}
+#competitors tr:hover {
+	background: #f5f5f5;
 }
 #submitScore {
 	margin: 15px 0;
