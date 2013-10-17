@@ -181,10 +181,14 @@ Vs.NewGameView2 = Backbone.View.extend({
                 $('#selectPlayer2 span').html(player2.get('name'));
 
                 //randomise pictures
-                $('#selectPlayer1 img').attr('src', "img/win_left_" + ((player1.get('name').length % 2)+1) + ".png");
-                $('#selectPlayer2 img').attr('src', "img/win_right_" + ((player2.get('name').length % 2)+1) + ".png");
+                $('#selectPlayer1 img').attr('src', "img/avatars/" + this._getImage(player1.get('name'), 'left', 'win'));
+                $('#selectPlayer2 img').attr('src', "img/avatars/" + this._getImage(player2.get('name'), 'right', 'win'));
             }
         }
+    },
+    _getImage: function(name, direction, result) {
+        var code = name.charCodeAt(0);
+        return result + "_" + direction + "_" + ((code % 5)+1) + ".png";
     },
     
     render: function() {
@@ -220,9 +224,9 @@ Vs.NewGameView2 = Backbone.View.extend({
 
         //update images
         if (results.p1eloDelta < 0) {
-            $('#selectPlayer1 img').attr('src', "img/lose_left_" + ((results.p1name.length % 2)+1) + ".png");
+            $('#selectPlayer1 img').attr('src', "img/avatars/" + this._getImage(results.p1name, 'left', 'lose'));
         } else {
-            $('#selectPlayer2 img').attr('src', "img/lose_right_" + ((results.p2name.length % 2)+1) + ".png");
+            $('#selectPlayer2 img').attr('src', "img/avatars/" + this._getImage(results.p2name, 'right', 'lose'));
         }
     },
 

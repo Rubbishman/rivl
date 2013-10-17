@@ -212,14 +212,14 @@
         <div class="newGameContainer sectionBody">
             <div id="playerSection" class="row text-center">
                 <div id="selectPlayer1" class="col-xs-5">
-                    <img src="img/anonymous.png" />
+                    <img src="img/avatars/anonymous.png" />
                     <br />
                     <span></span>
                 </div>
                 <div id="vsLabel" class="col-xs-2">
                 </div>
                 <div id="selectPlayer2" class="col-xs-5 text-center">
-                    <img src="img/anonymous.png" />
+                    <img src="img/avatars/anonymous.png" />
                     <br />
                     <span></span>
                 </div>
