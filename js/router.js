@@ -176,6 +176,13 @@ $(function () {
         }
 
     });
+
+    FastClick.attach(document.body);
+
+    //some badly placed code to prevent bootstrap modal blockers from remaining after a page naviagtion
+    window.onpopstate = function() {
+        $('.modal-backdrop').remove();
+    };
     
     Vs.allCompetitionsView = new Vs.AllCompetitionsView();
     Vs.newGameView2 = new Vs.NewGameView2();

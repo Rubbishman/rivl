@@ -5,7 +5,7 @@
 	
     <meta charset="utf-8">
     
-    <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
+    <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0, user-scalable = 0" />
     <title>rivl</title>
 
     <link rel="shortcut icon" href="<?=base_url("/favicon.ico" )?>"/>
@@ -85,10 +85,6 @@
 	<script id="playerStatRowTemplate" type="text/template">
         <tr>
         <td><%=opponent_name%></td>
-        <% var games = Number(win_num) + Number(loss_num); %>
-        <td class="details"><%=games%></td>
-        <td> (<strong>W:<%=win_num%></strong>  L:<%=loss_num%>)</td>
-        <td><strong><%=avg_win_opp_score%></strong>, <%=avg_loss_score%></td>
         </tr>
     </script>
 
@@ -152,7 +148,7 @@
                 </div>
                 <div class="col-xs-12">
                     <h4 class="bigVal"><span class="glyphicon glyphicon-cutlery"></span> Game hungry</h4>
-                    <p>You can't keep <%=playerName%> away from the action</p>
+                    <p>You can&apos;t keep <%=playerName%> away from the action</p>
                 </div>
             </div>
 
@@ -185,7 +181,6 @@
                         <th>Rank</th>
                         <th>Name</th>
                         <th>Elo</th>
-                        <th>Games</th>
                         <th></th>
                     </th>
                 </thead>
@@ -208,18 +203,12 @@
         </div>
     </script>
     
-    <script id="competitorSelectionRowTemplate" type="text/template">
-    	<option value="<%=competitor_id%>"><%=name%></option>
-    </script>
-    
     <script id="competitorRowTemplate" type="text/template">
         <% var elo = Math.round(elo); %>
         <td><%=document.getElementById('competitors').getElementsByTagName("tr").length + 1 %></td>
         <td><%=name%></td>
     	<td><%=elo%></td>
-        <% var games = Number(wins) + Number(loses); %>
-        <td class="details"><%=games%></td>
-        <td> (W:<%=wins%>  L:<%=loses%>)</td>
+        
     </script>
 
     <script id="gameRowTemplate" type="text/template">
@@ -234,18 +223,18 @@
     <script id="newGame2Template" type="text/template">
             
         <div class="newGameContainer sectionBody">
-            <div id="playerSection" class="row text-left">
-                <div class="col-xs-5">
-                    <select id="player1">
-                        <option value=''></option>
-                    </select>
+            <div id="playerSection" class="row text-center">
+                <div id="selectPlayer1" class="col-xs-5">
+                    <img src="img/anonymous.png" />
+                    <br />
+                    <span></span>
                 </div>
                 <div id="vsLabel" class="col-xs-2">
                 </div>
-                <div class="col-xs-5 text-right">
-                    <select id="player2">
-                        <option value=''></option>
-                    </select>
+                <div id="selectPlayer2" class="col-xs-5 text-center">
+                    <img src="img/anonymous.png" />
+                    <br />
+                    <span></span>
                 </div>
             </div>
             <div id="scoresSection" class="row"></div>
@@ -260,6 +249,25 @@
             </div>
         </div>
 
+
+            <div id="playerSelectModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Select players</h4>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="list-group"></ul>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+    </script>
+
+    <script id="newPlayerSelectRowTemplate" type="text/template">
+        <li class="list-group-item playerSelection" data-competitorId="<%=competitor_id%>">
+            <%=name%>
+        </li>
     </script>
 
     <script id="newScoreTemplate" type="text/template">
@@ -327,6 +335,7 @@
     <script src=<?=base_url("/js/lib/backbone.js")?>></script>
     <script src=<?=base_url("/js/lib/bootstrap.js")?>></script>
 	<script src=<?=base_url("/js/lib/Chart.js")?>></script>
+    <script src=<?=base_url("/js/lib/fastclick.js")?>></script>
 
 	<script type="text/javascript">
 	    navigator.id.watch({
@@ -401,7 +410,6 @@
     <script src=<?=base_url("/js/views/competitorStatView.js")?>></script>
     <script src=<?=base_url("/js/views/newGameView2.js")?>></script>
     <script src=<?=base_url("/js/views/gameHistoryView.js")?>></script>
-    <script src=<?=base_url("/js/views/competitorSelectionRow.js")?>></script>
     <script src=<?=base_url("/js/views/gameRow.js")?>></script>
     <script src=<?=base_url("/js/views/allCompetitionsView.js")?>></script>
     <script src=<?=base_url("/js/views/competitionView.js")?>></script>

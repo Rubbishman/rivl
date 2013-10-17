@@ -4,6 +4,7 @@ Vs.NewGameView2 = Backbone.View.extend({
     gameTemplate : _.template($('#newGame2Template').html()),
     scoreTemplate : _.template($('#newScoreTemplate').html()),
     resultsTemplate : _.template($('#newResultsTemplate').html()),
+    playerSelectRowTemplate : _.template($('#newPlayerSelectRowTemplate').html()),
     el: $('#mainContainer'),
     
     initialize: function () {},
@@ -12,6 +13,8 @@ Vs.NewGameView2 = Backbone.View.extend({
         "click #addScore": "_renderNewScoreRow",
         "click #removeScore": "_deleteScoreRow",
         "click #submitScore": "saveGames",
+        "click #selectPlayer1 img, #selectPlayer2 img": "showPlayerSelectModal",
+        "click .playerSelection": "handlePlayerSelect",
         "change .scoreRow select": "_renderScoreUpdate"
     },
     
@@ -19,7 +22,7 @@ Vs.NewGameView2 = Backbone.View.extend({
 
         if ($("#submitScore").hasClass('btn-disabled')) {
             return;
-        }       
+        }
         console.log('continuing...');
 
         var self = this,
@@ -32,10 +35,10 @@ Vs.NewGameView2 = Backbone.View.extend({
             $scoreRows = $('.scoreRow'),
             $p1Score = $('.scoreRow'),
             $p2Score = $('.scoreRow'),
-            $p1Name = $('#player1'),
-            $p2Name = $('#player2');
+            p1Id =  $('#selectPlayer1').attr('data-competitor_id'),
+            p2Id =  $('#selectPlayer2').attr('data-competitor_id');
 
-        if ($p1Name.val() === '' || $p2Name.val() === '') {
+        if (p1Id === '' || p2Id === '') {
             alert('need to enter both playerz yo');
             return;
         }
@@ -53,14 +56,14 @@ Vs.NewGameView2 = Backbone.View.extend({
 
             if ($p1Score.val() === self.model.get('points') && $p2Score.val() !== '') {
                 winningScore = $p1Score.val();
-                winningId = $p1Name.val();
+                winningId = p1Id;
                 losingScore = $p2Score.val();
-                losingId = $p2Name.val();
+                losingId = p2Id;
             } else if ($p2Score.val() === self.model.get('points') && $p1Score.val() !== '') {
                 winningScore = $p2Score.val();
-                winningId = $p2Name.val();
+                winningId = p2Id;
                 losingScore = $p1Score.val();
-                losingId = $p1Name.val();
+                losingId = p1Id;
             } else {
                 scoresOk = false;
             }
@@ -92,13 +95,12 @@ Vs.NewGameView2 = Backbone.View.extend({
 
                     self.collection = Vs.competitors;
 
-                    var p1Id = $p1Name.val(),
-                        p2Id = $p2Name.val(),
-                        p1OldModel = self.oldCollection.where({'competitor_id': p1Id})[0],
+                    var p1OldModel = self.oldCollection.where({'competitor_id': p1Id})[0],
                         p1NewModel = self.collection.where({'competitor_id': p1Id})[0],
                         p2OldModel = self.oldCollection.where({'competitor_id': p2Id})[0],
                         p2NewModel = self.collection.where({'competitor_id': p2Id})[0];
 
+                    self.oldCollection = self.collection;
                     self._renderResults({
                         p1eloDelta: self._getDelta('elo', p1OldModel, p1NewModel),
                         p2eloDelta: self._getDelta('elo', p2OldModel, p2NewModel),
@@ -121,6 +123,38 @@ Vs.NewGameView2 = Backbone.View.extend({
         var diff = model2.get(index) - model1.get(index);
         return Math.round(diff * 10) / 10;
     },
+
+    showPlayerSelectModal: function() {
+        $('#playerSelectModal').modal('show');
+    },
+    handlePlayerSelect: function(e) {
+        var $selectedPlayer = $(e.target),
+            player1,
+            player2;
+
+        if ($selectedPlayer.hasClass('active')) {
+            $selectedPlayer.removeClass('active');
+
+        } else {
+            $selectedPlayer.addClass('active');
+
+            //if we are entering the second player then close modal and update players
+            if ($selectedPlayer.siblings('.active').length == 1) {
+                $('#playerSelectModal').modal('hide');
+
+                player1 = this.collection.where({competitor_id: $selectedPlayer.attr('data-competitorId')})[0];
+                player2 = this.collection.where({competitor_id: $selectedPlayer.siblings('.active').attr('data-competitorId')})[0];
+                $('#selectPlayer1').attr('data-competitor_id', player1.get('competitor_id'));
+                $('#selectPlayer2').attr('data-competitor_id', player2.get('competitor_id'));
+                $('#selectPlayer1 span').html(player1.get('name'));
+                $('#selectPlayer2 span').html(player2.get('name'));
+
+                //randomise pictures
+                $('#selectPlayer1 img').attr('src', "img/win_left_" + (Math.floor(Math.random() * 2) + 1) + ".png");
+                $('#selectPlayer2 img').attr('src', "img/win_right_" + (Math.floor(Math.random() * 2) + 1) + ".png");
+            }
+        }
+    },
     
     render: function() {
 
@@ -131,15 +165,13 @@ Vs.NewGameView2 = Backbone.View.extend({
         this._renderNewScoreRow();
 
         array.sort(function(a,b){return a.attributes.name < b.attributes.name ? -1 : a.attributes.name > b.attributes.name ? 1 : 0;});
-        this._renderCompetitorRows();
+        this._renderPlayerSelect();
     },
 
-    _renderCompetitorRows: function() {
-
-        this.collection.each(function(game) {
-            var cr = new Vs.CompetitorSelectionRow({model: game});
-            $('#player1').append(cr.render().el);
-            $('#player2').append(cr.render().el);
+    _renderPlayerSelect: function() {
+        var self = this;
+        _.each(this.collection.models, function(competitor) {
+            $('#playerSelectModal ul').append(self.playerSelectRowTemplate(competitor.attributes));
         });
     },
     _deleteScoreRow: function() {

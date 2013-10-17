@@ -28,12 +28,21 @@ h3.bigVal, h4.bigVal {
 	background-image: url("../img/graphic_sm.png");
 	background-repeat:no-repeat;
 	background-position:center; 
-	padding: 15px 0;
+	padding: 60px 0;
+}
+#selectPlayer1 img, #selectPlayer2 img {
+	cursor: pointer;
+
+	width:110px;
+	height: auto;
 }
 #scoresSection {
 	border-top: solid 1px #CCC;	
 	margin-top: 20px;
 	margin-bottom: 20px;
+}
+#playerSelectModal .modal-body {
+	padding: 0px;
 }
 .scoreRow select {
 	font-size: 30px;
@@ -85,4 +94,9 @@ span.rankNeutral {
 }
 #submitScore {
 	margin: 15px 0;
+}
+
+/*bootstrap modal fix*/
+.modal-open, .modal-open .navbar-fixed-top {
+	margin-right: auto !important;
 }
