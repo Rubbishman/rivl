@@ -182,7 +182,11 @@ Vs.NewGameView2 = Backbone.View.extend({
     },
     _getImage: function(name, direction, result) {
         var code = name.charCodeAt(0);
-        return result + "_" + direction + "_" + ((code % 5)+1) + ".png";
+        if (name === 'Geraldine' || name === 'Gerard') {
+            return result + "_" + direction + "_girl.png";
+        } else {
+            return result + "_" + direction + "_" + ((code % 5)+1) + ".png";
+        }
     },
     _setPlayer: function(playerNumber, playerModel) {
 
