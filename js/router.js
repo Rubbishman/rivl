@@ -10,6 +10,7 @@ $(function () {
             "competition" : "showAllCompetitions",
             "competition/:id" : "showCompetition",
             "competition/:id/game" : "showNewGame",
+            "competition/:id/game/:competitorId" : "showNewGame",
             "*other"    : "showAllCompetitions"
         },
 
@@ -102,13 +103,13 @@ $(function () {
             });
         },
 
-        showNewGame: function(id) {
+        showNewGame: function(id, competitorId) {
 
             var renderGameView = function () {
                 if (Vs.competition.loaded && Vs.competitors.loaded) {
                     Vs.newGameView2.model = Vs.competition;
                     Vs.newGameView2.collection = Vs.competitors;
-                    Vs.newGameView2.render();
+                    Vs.newGameView2.render(competitorId);
                 }
             };
 

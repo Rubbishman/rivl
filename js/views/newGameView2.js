@@ -175,14 +175,8 @@ Vs.NewGameView2 = Backbone.View.extend({
                     player2 = playerB;
                 }
 
-                $('#selectPlayer1').attr('data-competitor_id', player1.get('competitor_id'));
-                $('#selectPlayer2').attr('data-competitor_id', player2.get('competitor_id'));
-                $('#selectPlayer1 span').html(player1.get('name'));
-                $('#selectPlayer2 span').html(player2.get('name'));
-
-                //randomise pictures
-                $('#selectPlayer1 img').attr('src', "img/avatars/" + this._getImage(player1.get('name'), 'left', 'win'));
-                $('#selectPlayer2 img').attr('src', "img/avatars/" + this._getImage(player2.get('name'), 'right', 'win'));
+                this._setPlayer('1', player1);
+                this._setPlayer('2', player2);
             }
         }
     },
@@ -190,8 +184,21 @@ Vs.NewGameView2 = Backbone.View.extend({
         var code = name.charCodeAt(0);
         return result + "_" + direction + "_" + ((code % 5)+1) + ".png";
     },
+    _setPlayer: function(playerNumber, playerModel) {
+
+        if (playerNumber === '1') {
+            $('#selectPlayer1').attr('data-competitor_id', playerModel.get('competitor_id'));
+            $('#selectPlayer1 span').html(playerModel.get('name'));
+            $('#selectPlayer1 img').attr('src', "img/avatars/" + this._getImage(playerModel.get('name'), 'left', 'win'));
+
+        } else {
+            $('#selectPlayer2').attr('data-competitor_id', playerModel.get('competitor_id'));
+            $('#selectPlayer2 span').html(playerModel.get('name'));
+            $('#selectPlayer2 img').attr('src', "img/avatars/" + this._getImage(playerModel.get('name'), 'right', 'win'));
+        }
+    },
     
-    render: function() {
+    render: function(competitorId) {
 
         var array = this.collection.models;
 
@@ -201,6 +208,12 @@ Vs.NewGameView2 = Backbone.View.extend({
 
         array.sort(function(a,b){return a.attributes.name < b.attributes.name ? -1 : a.attributes.name > b.attributes.name ? 1 : 0;});
         this._renderPlayerSelect();
+
+        if (competitorId) {
+            $('.playerSelection[data-competitor_id="'+competitorId + '"]').addClass('active');
+            player1 = this.collection.where({competitor_id:competitorId})[0];
+            this._setPlayer('1', player1);
+        }
     },
 
     _renderPlayerSelect: function() {
