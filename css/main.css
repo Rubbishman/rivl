@@ -41,6 +41,9 @@ h3.bigVal, h4.bigVal {
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
+#playerSelectModal {
+	-webkit-overflow-scrolling: touch;
+}
 #playerSelectModal .modal-body {
 	padding: 0px;
 }

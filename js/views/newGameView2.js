@@ -106,6 +106,8 @@ Vs.NewGameView2 = Backbone.View.extend({
                         p2eloDelta: self._getDelta('elo', p2OldModel, p2NewModel),
                         p1rankDelta: self._getDelta('rank', p1NewModel, p1OldModel),
                         p2rankDelta: self._getDelta('rank', p2NewModel, p2OldModel),
+                        p1name: p1NewModel.get('name'),
+                        p2name: p2NewModel.get('name'),
                         p1rank: p1NewModel.get('rank'),
                         p2rank: p2NewModel.get('rank')
                     });
@@ -124,13 +126,24 @@ Vs.NewGameView2 = Backbone.View.extend({
         return Math.round(diff * 10) / 10;
     },
 
-    showPlayerSelectModal: function() {
+    showPlayerSelectModal: function(e) {
+        var competitorId = $(e.target).parent().attr('data-competitor_id');
         $('#playerSelectModal').modal('show');
+
+        //unset clicked on player (if exists)
+        if (competitorId) {
+            $('.playerSelection[data-competitor_id="'+competitorId + '"]').removeClass('active');
+        }
+
     },
     handlePlayerSelect: function(e) {
         var $selectedPlayer = $(e.target),
             player1,
-            player2;
+            player2,
+            playerA,
+            playerB,
+            foundA = false,
+            foundB = false;
 
         if ($selectedPlayer.hasClass('active')) {
             $selectedPlayer.removeClass('active');
@@ -142,16 +155,34 @@ Vs.NewGameView2 = Backbone.View.extend({
             if ($selectedPlayer.siblings('.active').length == 1) {
                 $('#playerSelectModal').modal('hide');
 
-                player1 = this.collection.where({competitor_id: $selectedPlayer.attr('data-competitorId')})[0];
-                player2 = this.collection.where({competitor_id: $selectedPlayer.siblings('.active').attr('data-competitorId')})[0];
+                playerA = this.collection.where({competitor_id: $selectedPlayer.attr('data-competitor_id')})[0];
+                playerB = this.collection.where({competitor_id: $selectedPlayer.siblings('.active').attr('data-competitor_id')})[0];
+
+                //try to match up newly selected players with currently selected players
+                if (playerA.get('competitor_id') ===  $('#selectPlayer1').attr('data-competitor_id') ||
+                        playerB.get('competitor_id') ===  $('#selectPlayer2').attr('data-competitor_id')) {
+                    player1 = playerA;
+                    player2 = playerB;
+                } else if (playerB.get('competitor_id') ===  $('#selectPlayer1').attr('data-competitor_id') ||
+                        playerA.get('competitor_id') ===  $('#selectPlayer2').attr('data-competitor_id')) {
+                    player1 = playerB;
+                    player2 = playerA;
+                }
+
+                //if we can't match any players then just randomly choose
+                if (!player1) {
+                    player1 = playerA;
+                    player2 = playerB;
+                }
+
                 $('#selectPlayer1').attr('data-competitor_id', player1.get('competitor_id'));
                 $('#selectPlayer2').attr('data-competitor_id', player2.get('competitor_id'));
                 $('#selectPlayer1 span').html(player1.get('name'));
                 $('#selectPlayer2 span').html(player2.get('name'));
 
                 //randomise pictures
-                $('#selectPlayer1 img').attr('src', "img/win_left_" + (Math.floor(Math.random() * 2) + 1) + ".png");
-                $('#selectPlayer2 img').attr('src', "img/win_right_" + (Math.floor(Math.random() * 2) + 1) + ".png");
+                $('#selectPlayer1 img').attr('src', "img/win_left_" + ((player1.get('name').length % 2)+1) + ".png");
+                $('#selectPlayer2 img').attr('src', "img/win_right_" + ((player2.get('name').length % 2)+1) + ".png");
             }
         }
     },
@@ -186,6 +217,13 @@ Vs.NewGameView2 = Backbone.View.extend({
     _renderResults: function(results) {
         $('#scoresSection').html('');
         $('#resultsSection').html(this.resultsTemplate(results));
+
+        //update images
+        if (results.p1eloDelta < 0) {
+            $('#selectPlayer1 img').attr('src', "img/lose_left_" + ((results.p1name.length % 2)+1) + ".png");
+        } else {
+            $('#selectPlayer2 img').attr('src', "img/lose_right_" + ((results.p2name.length % 2)+1) + ".png");
+        }
     },
 
     _renderScoreUpdate: function(e) {
