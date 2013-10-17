@@ -83,9 +83,19 @@
 	</script>
 		
 	<script id="playerStatRowTemplate" type="text/template">
-        <tr>
-        <td><%=opponent_name%></td>
-        </tr>
+        <% var games = Number(win_num) + Number(loss_num); %>
+        <% var winPercent = Math.round(Number(win_num) / Number(games) * 100); %>
+        <div class="row">
+            <div class="col-xs-4">
+                <%=opponent_name%>
+            </div>
+            <div class="col-xs-4">
+                Won <strong><%=win_num%></strong>/<%=games%> (<%=winPercent%>%)
+            </div>
+            <div class="col-xs-4">
+                <button class="btn btn-block btn-sm btn-default" onclick="console.log('compareRivls(Liam, Dean)');">Compare rivls</button>
+            </div>
+        </div>
     </script>
 
 	<script id="playerPageTemplate" type="text/template">
@@ -108,54 +118,30 @@
                 </div>
 
             </div>
-            <h2>Arch rivls</h2>
-            <div class="row">
-                <div class="col-xs-7">
-                    <h4 class="bigVal">Dean</h4>
-                    <p>Always a close game</p>
-                </div>
-                <div class="col-xs-5">
-                    <button class="btn btn-block btn-default spacer-5" onclick="console.log('compareRivls(Liam, Dean)');">Compare rivls</button>
-                </div>
-                <div class="col-xs-7">
-                    <h4 class="bigVal">Gerard</h4>
-                    Similar elo rating
-                </div>
-                <div class="col-xs-5">
-                    <button class="btn btn-block btn-default spacer-5" onclick="console.log('compareRivls(Liam, Dean)');">Compare rivls</button>
-                </div>
-            </div>
             
-               
-           <!-- <table class="dataTable spacer-20">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Games</th>
-                        <th></th>
-                        <th>Avg scores</th>
-                    </tr>
-                </thead>
-                <tbody id="playerStats"></tbody>
-            </table> -->
+            <h2>Top rivls</h2>
+            <div id="playerStats">
+            </div>
+            <a href="#" id="topRivlsShowMore">Show more</a>
+
         </div>
 
-        <h2>Current titles</h2>
-            <div class="row">
-                <div class="col-xs-12">
-                    <h4 class="bigVal"><span class="glyphicon glyphicon-fire"></span> The bully</h4>
-                    <p>Hey, pick on someone your own size!</p>
-                </div>
-                <div class="col-xs-12">
-                    <h4 class="bigVal"><span class="glyphicon glyphicon-cutlery"></span> Game hungry</h4>
-                    <p>You can&apos;t keep <%=playerName%> away from the action</p>
-                </div>
+        <!--<h2>Current titles</h2>
+        <div class="row">
+            <div class="col-xs-12">
+                <h4 class="bigVal"><span class="glyphicon glyphicon-fire"></span> The bully</h4>
+                <p>Hey, pick on someone your own size!</p>
             </div>
+            <div class="col-xs-12">
+                <h4 class="bigVal"><span class="glyphicon glyphicon-cutlery"></span> Game hungry</h4>
+                <p>You can&apos;t keep <%=playerName%> away from the action</p>
+            </div>
+        </div>-->
 
 		<h2>Elo over time</h2>
 		<canvas id="playerGraph" width="1024" height="728"></canvas>
 		
-        <!--<h2>Recent games</h2>
+        <h2>Recent games</h2>
         <div id="gameHistory" class="sectionBody">
             <table class="dataTable">
                 <thead>
@@ -168,7 +154,7 @@
                 </thead>
                 <tbody id="playerHistory"></tbody>
             </table>
-        </div>-->
+        </div>
 	</script>
 
     <script id="competitionTemplate" type="text/template">
@@ -212,11 +198,12 @@
     </script>
 
     <script id="gameRowTemplate" type="text/template">
+        <% var game1_elo_change = Math.round(game1.elo_change * 10 ) / 10; %>
+        <% var game2_elo_change = Math.round(game2.elo_change * 10 ) / 10; %>
         <tr>
-         <!--   <td><%=game1.date%></td> -->
             <td><strong><%=game1.name%></strong> vs <%=game2.name%></td>
             <td><strong><%=game1.score%></strong> - <%=game2.score%></td>
-            <td><strong>+<%=game1.elo_change%></strong>&nbsp;&nbsp;<%=game2.elo_change%></td>
+            <td><strong>+<%=game1_elo_change%></strong>&nbsp;&nbsp;<%=game2_elo_change%></td>
         </tr>
     </script>
 
