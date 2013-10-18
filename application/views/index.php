@@ -2,7 +2,9 @@
 <html lang="en">
 
 <head>
-	
+
+    <?php $randomlol = rand(0,100000); ?>
+
     <meta charset="utf-8">
     
     <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0, user-scalable = 0" />
@@ -18,7 +20,7 @@
         }
     </style>
 
-    <link rel="stylesheet" href="<?=base_url("/css/main.css")?>"  media="screen"/>
+    <link rel="stylesheet" href="<?=base_url("/css/main.css?moo=")?><?=$randomlol?>"  media="screen"/>
 
 </head>
 
@@ -380,28 +382,28 @@
 			});
 	</script>
 
-    <script src=<?=base_url("/js/vs.js")?>></script>
-    <script src=<?=base_url("/js/models/competition.js")?>></script>
-    <script src=<?=base_url("/js/models/competitionCollection.js")?>></script>
-    <script src=<?=base_url("/js/models/competitor.js")?>></script>
-    <script src=<?=base_url("/js/models/competitionGraph.js")?>></script>
-    <script src=<?=base_url("/js/models/competitorStat.js")?>></script>
-    <script src=<?=base_url("/js/models/competitorCollection.js")?>></script>
-    <script src=<?=base_url("/js/models/game.js")?>></script>
-    <script src=<?=base_url("/js/models/gameSaver.js")?>></script>
-    <script src=<?=base_url("/js/models/gameCollection.js")?>></script>
+    <script src=<?=base_url("/js/vs.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competition.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competitionCollection.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competitor.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competitionGraph.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competitorStat.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competitorCollection.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/game.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/gameSaver.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/gameCollection.js?moo=")?><?=$randomlol?>></script>
 
-    <script src=<?=base_url("/js/views/competitionRow.js")?>></script>
-    <script src=<?=base_url("/js/views/competitorRow.js")?>></script>
-    <script src=<?=base_url("/js/views/competitorView.js")?>></script>
-    <script src=<?=base_url("/js/views/competitionGraphView.js")?>></script>
-    <script src=<?=base_url("/js/views/competitorStatView.js")?>></script>
-    <script src=<?=base_url("/js/views/newGameView2.js")?>></script>
-    <script src=<?=base_url("/js/views/gameHistoryView.js")?>></script>
-    <script src=<?=base_url("/js/views/gameRow.js")?>></script>
-    <script src=<?=base_url("/js/views/allCompetitionsView.js")?>></script>
-    <script src=<?=base_url("/js/views/competitionView.js")?>></script>
-    <script src=<?=base_url("/js/router.js")?>></script>
+    <script src=<?=base_url("/js/views/competitionRow.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/competitorRow.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/competitorView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/competitionGraphView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/competitorStatView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/newGameView2.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/gameHistoryView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/gameRow.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/allCompetitionsView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/competitionView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/router.js?moo=")?><?=$randomlol?>></script>
 
 
 </body>
