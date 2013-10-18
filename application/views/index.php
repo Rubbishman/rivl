@@ -47,6 +47,7 @@
               <ul class="nav navbar-nav">
                 <li><a href="#competition/<%=id%>">Home</a></li>
                 <li><a href="#competition/<%=id%>/game">Enter scores</a></li>
+                <li><a href="#">Compare rivls</a></li>
                 <li><a href="#competition_graph/<%=id%>">Graph</a></li>
                 <li id="notifications" class="hide"><a href="#competitor_home/<%=id%>">Notifications <span class="badge">4</span></a></li>
                 <li id="login" class="hide"><a>Login</a></li>
@@ -69,10 +70,10 @@
 
 	<script id="competitorGameRowTemplate" type="text/template">
         <tr>
-            <td><%=date%></td>
-            <td><strong><%=winner_name%></strong> vs <%=loser_name%></td>
-            <td><strong><%=winner_score%></strong> - <%=loser_score%></td>
-            <td><strong>+<%=winner_elo_change%></strong>&nbsp;&nbsp;<%=loser_elo_change%></td>
+            <!--<td><%=date%></td>-->
+            <td><% if (playerScore === '11') { %><strong><% } %><%=vsPlayer%></td><% if (playerScore === '11') { %></strong><% } %></td>
+            <td><% if (playerScore === '11') { %><strong><% } %><%=playerScore%>&nbsp;-&nbsp;<%=vsScore%><% if (playerScore === '11') { %></strong><% } %></td>
+            <td><% if (playerScore === '11') { %><strong>+<% } %><%= Math.round(playerElo*10) / 10 %></td><% if (playerScore === '11') { %></strong><% } %></td>
         </tr>
     </script>
 
@@ -82,13 +83,19 @@
 	</script>
 		
 	<script id="playerStatRowTemplate" type="text/template">
-        <tr>
-        <td><%=opponent_name%></td>
         <% var games = Number(win_num) + Number(loss_num); %>
-        <td class="details"><%=games%></td>
-        <td> <strong>W:<%=win_num%></strong>  L:<%=loss_num%></td><td><%=win_percent%>% win ratio</td>
-        <td><strong><%=avg_score%></strong>, <%=avg_opp_score%></td>
-        </tr>
+        <% var winPercent = Math.round(Number(win_num) / Number(games) * 100); %>
+        <div class="row">
+            <div class="col-xs-4">
+                <%=opponent_name%>
+            </div>
+            <div class="col-xs-4">
+                Won <strong><%=win_num%></strong>/<%=games%> (<%=winPercent%>%)
+            </div>
+            <div class="col-xs-4">
+                <button class="btn btn-block btn-sm btn-default" onclick="console.log('compareRivls(Liam, Dean)');">Compare rivls</button>
+            </div>
+        </div>
     </script>
 
 	<script id="playerPageTemplate" type="text/template">
@@ -100,7 +107,6 @@
                         <th>Name</th>
                         <th>Games</th>
                         <th></th>
-                        <th></th>
                         <th>Avg scores</th>
                     </tr>
                 </thead>
@@ -108,15 +114,28 @@
             </table>
         </div>
 
-		<h1>Graph</h1>
+        <!--<h2>Current titles</h2>
+        <div class="row">
+            <div class="col-xs-12">
+                <h4 class="bigVal"><span class="glyphicon glyphicon-fire"></span> The bully</h4>
+                <p>Hey, pick on someone your own size!</p>
+            </div>
+            <div class="col-xs-12">
+                <h4 class="bigVal"><span class="glyphicon glyphicon-cutlery"></span> Game hungry</h4>
+                <p>You can&apos;t keep <%=playerName%> away from the action</p>
+            </div>
+        </div>-->
+
+		<h2>Elo over time</h2>
 		<canvas id="playerGraph" width="1024" height="728"></canvas>
-		<h1>Player History</h1>
+		
+        <h2>Recent games</h2>
         <div id="gameHistory" class="sectionBody">
-            <table>
+            <table class="dataTable">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Players</th>
+                        <!--<th>Date</th>-->
+                        <th>Opponent</th>
                         <th>Score</th>
                         <th>Elo change</th>
                     </tr>
@@ -130,23 +149,24 @@
 
         <h1><%=name%> Leaderboard</h1>
         <div class="sectionBody">
-            <table>
+            <table class="dataTable rowLinks">
                 <thead>
                     <tr>
                         <th>Rank</th>
                         <th>Name</th>
                         <th>Elo</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody id="competitors"></tbody>
             </table>
         </div>
-        <h1>Game History</h1>
+        <h2>Game History</h2>
         <div class="sectionBody">
-            <table>
+            <table class="dataTable">
                 <thead>
                     <tr>
-                        <th>Date</th>
+                        <!--<th>Date</th>-->
                         <th>Players</th>
                         <th>Score</th>
                         <th>Elo change</th>
@@ -157,41 +177,39 @@
         </div>
     </script>
     
-    <script id="competitorSelectionRowTemplate" type="text/template">
-    	<option value="<%=competitor_id%>"><%=name%></option>
-    </script>
-    
     <script id="competitorRowTemplate" type="text/template">
         <% var elo = Math.round(elo); %>
         <td><%=document.getElementById('competitors').getElementsByTagName("tr").length + 1 %></td>
         <td><%=name%></td>
     	<td><%=elo%></td>
+        
     </script>
 
     <script id="gameRowTemplate" type="text/template">
+        <% var game1_elo_change = Math.round(game1.elo_change * 10 ) / 10; %>
+        <% var game2_elo_change = Math.round(game2.elo_change * 10 ) / 10; %>
         <tr>
-            <td><%=game1.date%></td>
             <td><strong><%=game1.name%></strong> vs <%=game2.name%></td>
             <td><strong><%=game1.score%></strong> - <%=game2.score%></td>
-            <td><strong>+<%=game1.elo_change%></strong>&nbsp;&nbsp;<%=game2.elo_change%></td>
+            <td><strong>+<%=game1_elo_change%></strong>&nbsp;&nbsp;<%=game2_elo_change%></td>
         </tr>
     </script>
 
     <script id="newGame2Template" type="text/template">
             
-        <div class="newGameContainer">
-            <div id="playerSection" class="row text-left">
-                <div class="col-xs-5">
-                    <select id="player1">
-                        <option value=''></option>
-                    </select>
+        <div class="newGameContainer sectionBody">
+            <div id="playerSection" class="row text-center">
+                <div id="selectPlayer1" class="col-xs-5">
+                    <img src="img/avatars/anonymous.png" />
+                    <br />
+                    <span></span>
                 </div>
                 <div id="vsLabel" class="col-xs-2">
                 </div>
-                <div class="col-xs-5 text-right">
-                    <select id="player2">
-                        <option value=''></option>
-                    </select>
+                <div id="selectPlayer2" class="col-xs-5 text-center">
+                    <img src="img/avatars/anonymous.png" />
+                    <br />
+                    <span></span>
                 </div>
             </div>
             <div id="scoresSection" class="row"></div>
@@ -206,6 +224,25 @@
             </div>
         </div>
 
+
+            <div id="playerSelectModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Select players</h4>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="list-group"></ul>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+    </script>
+
+    <script id="newPlayerSelectRowTemplate" type="text/template">
+        <li class="list-group-item playerSelection" data-competitor_id="<%=competitor_id%>">
+            <%=name%>
+        </li>
     </script>
 
     <script id="newScoreTemplate" type="text/template">
@@ -214,7 +251,7 @@
             <div class="col-xs-6 text-center">
                 <select class="scoreP1">
                     <option value=''></option>
-                    <% for (var i = points; i >= 0; i--) { %>
+                    <% for (var i = points; i > 0; i--) { %>
                         <option value='<%= i %>'><%= i %></option>
                     <% } %>
                 </select>
@@ -222,7 +259,7 @@
             <div class="col-xs-6 text-center">
                 <select class="scoreP2">
                     <option value=''></option>
-                    <% for (var i = points; i >= 0; i--) { %>
+                    <% for (var i = points; i > 0; i--) { %>
                         <option value='<%= i %>'><%= i %></option>
                     <% } %>
                 </select>
@@ -234,14 +271,15 @@
 
 
         <div class="resultsRow span12">
-            <div class="col-xs-6 text-center">
+            <div class="col-xs-5 text-center">
                 <% if (p1eloDelta > 0) { %>
                     <span class="resultsP1 rankUp"><%= p1eloDelta %></span>
                 <% } else if (p1eloDelta < 0) { %>
                     <span class="resultsP1 rankDown"><%= p1eloDelta %></span>
                 <% } %>
             </div>
-            <div class="col-xs-6 text-center">
+            <div class="col-xs-2"></div>
+            <div class="col-xs-5 text-center">
                 <% if (p2eloDelta > 0) { %>
                     <span class="resultsP2 rankUp"><%= p2eloDelta %></span>
                 <% } else if (p2eloDelta < 0) { %>
@@ -250,12 +288,13 @@
             </div>
         </div>
         <div class="resultsRow span12">
-            <div class="col-xs-6 text-center">
+            <div class="col-xs-5 text-center">
                 <span class="resultsP1">
                     <% if (p1rankDelta > 0) { %>Rank up: +<%= p1rankDelta %><% } else if (p1rankDelta < 0) { %>Rank down: <%= p1rankDelta %><% } %>
                 </span>
             </div>
-            <div class="col-xs-6 text-center">
+            <div class="col-xs-2"></div>
+            <div class="col-xs-5 text-center">
                 <span class="resultsP2">
                     <% if (p2rankDelta > 0) { %>Rank up: +<%= p2rankDelta %><% } else if (p2rankDelta < 0) { %>Rank down: <%= p2rankDelta %><% } %>
                 </span>
@@ -271,6 +310,7 @@
     <script src=<?=base_url("/js/lib/backbone.js")?>></script>
     <script src=<?=base_url("/js/lib/bootstrap.js")?>></script>
 	<script src=<?=base_url("/js/lib/Chart.js")?>></script>
+    <script src=<?=base_url("/js/lib/fastclick.js")?>></script>
 
 	<script type="text/javascript">
 	    navigator.id.watch({
@@ -327,29 +367,28 @@
 			});
 	</script>
 
-    <script src=<?=base_url("/js/vs.js")?>></script>
-    <script src=<?=base_url("/js/models/competition.js")?>></script>
-    <script src=<?=base_url("/js/models/competitionCollection.js")?>></script>
-    <script src=<?=base_url("/js/models/competitor.js")?>></script>
-    <script src=<?=base_url("/js/models/competitionGraph.js")?>></script>
-    <script src=<?=base_url("/js/models/competitorStat.js")?>></script>
-    <script src=<?=base_url("/js/models/competitorCollection.js")?>></script>
-    <script src=<?=base_url("/js/models/game.js")?>></script>
-    <script src=<?=base_url("/js/models/gameSaver.js")?>></script>
-    <script src=<?=base_url("/js/models/gameCollection.js")?>></script>
+    <script src=<?=base_url("/js/vs.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competition.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competitionCollection.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competitor.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competitionGraph.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competitorStat.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competitorCollection.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/game.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/gameSaver.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/gameCollection.js?moo=")?><?=$randomlol?>></script>
 
-    <script src=<?=base_url("/js/views/competitionRow.js")?>></script>
-    <script src=<?=base_url("/js/views/competitorRow.js")?>></script>
-    <script src=<?=base_url("/js/views/competitorView.js")?>></script>
-    <script src=<?=base_url("/js/views/competitionGraphView.js")?>></script>
-    <script src=<?=base_url("/js/views/competitorStatView.js")?>></script>
-    <script src=<?=base_url("/js/views/newGameView2.js?cats=cute")?>></script>
-    <script src=<?=base_url("/js/views/gameHistoryView.js")?>></script>
-    <script src=<?=base_url("/js/views/competitorSelectionRow.js")?>></script>
-    <script src=<?=base_url("/js/views/gameRow.js")?>></script>
-    <script src=<?=base_url("/js/views/allCompetitionsView.js")?>></script>
-    <script src=<?=base_url("/js/views/competitionView.js")?>></script>
-    <script src=<?=base_url("/js/router.js")?>></script>
+    <script src=<?=base_url("/js/views/competitionRow.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/competitorRow.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/competitorView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/competitionGraphView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/competitorStatView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/newGameView2.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/gameHistoryView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/gameRow.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/allCompetitionsView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/competitionView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/router.js?moo=")?><?=$randomlol?>></script>
 
 
 </body>

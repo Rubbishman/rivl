@@ -10,11 +10,14 @@ Vs.CompetitorStatView = Backbone.View.extend({
     },
 
     render: function() {
+        var self = this;
+        console.dir(this.model.toJSON());
         $("#mainContainer").html(this.navbarTemplate(this.competition.toJSON()));
         $("#mainContainer").append(this.template(this.model.toJSON()));
         $.each(this.model.attributes.stat_details.stat_array,this.renderPlayerStatRow);
-        $.each(this.model.attributes.gameHistory,this.renderGameHistory);
-        
+        $.each(this.model.attributes.gameHistory, function(index, curGame) {
+            self.renderGameHistory(self.model.attributes, curGame);
+        });        
         mainGraph = $("#playerGraph").get(0).getContext("2d");
 		data = {
 			labels : this.model.attributes.labels,
@@ -28,8 +31,13 @@ Vs.CompetitorStatView = Backbone.View.extend({
     renderPlayerStatRow: function() {
     	$("#playerStats").append(Vs.competitorStatView.statRowTemplate(this));
     },
-    renderGameHistory: function() {
-    	$("#gameHistory").append(Vs.competitorStatView.competitorGameRowTemplate(this));
+    renderGameHistory: function(model, game) {
+        game.vsPlayer = game.loser_name !== model.playerName ? game.loser_name : game.winner_name;
+        game.vsScore = game.loser_name !== model.playerName ? game.loser_score : game.winner_score;
+        game.playerScore = game.loser_name !== model.playerName ? game.winner_score : game.loser_score;
+        game.playerElo = game.loser_name !== model.playerName ? game.winner_elo_change : game.loser_elo_change;
+        //console.dir(model);
+    	$("#playerHistory").append(Vs.competitorStatView.competitorGameRowTemplate(game));
     }
 });
 
