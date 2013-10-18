@@ -61,7 +61,8 @@ class Game_model extends CI_Model {
         join competitor c1 on c1.id = s1.competitor_id
         join competitor c2 on c2.id = s2.competitor_id
     where s1.competitor_id = '.$competitor_id.'
-    	and game.competition_id = '.$competition_id);
+    	and game.competition_id = '.$competition_id.'
+    	order by game.date desc');
 		return $res->result_array();
 	}
 
@@ -69,8 +70,9 @@ class Game_model extends CI_Model {
 		
 		$res =$this->db->query('select count(CASE WHEN s1.rank = 1 THEN 1 ELSE null END) win_num, 
     count(CASE WHEN s1.rank = 2 THEN 1 ELSE null END) loss_num,
-    AVG(CASE WHEN s1.rank = 2 THEN s1.score ELSE null END) avg_loss_score,
-    AVG(CASE WHEN s2.rank = 2 THEN s2.score ELSE null END) avg_win_opp_score,
+    CAST((count(CASE WHEN s1.rank = 1 THEN 1 ELSE null END)/(count(CASE WHEN s1.rank = 1 THEN 1 ELSE null END) + count(CASE WHEN s1.rank = 2 THEN 1 ELSE null END)))*100 as DECIMAL(4,1)) win_percent,
+    AVG(s1.score) avg_score,
+    AVG(s2.score) avg_opp_score,
     c1.name player, c2.name opponent_name
     from score s1 
     	join game on s1.game_id = game.id
@@ -80,7 +82,8 @@ class Game_model extends CI_Model {
         join competitor c2 on c2.id = s2.competitor_id
     where s1.competitor_id = '.$params['competitor_id'].'
     	and game.competition_id = '.$params['competition_id'].'
-    group by s1.competitor_id, s2.competitor_id;');
+    group by s1.competitor_id, s2.competitor_id
+    order by count(1) desc;');
 		return $res->result_array();
 		/*
 		 select count(CASE WHEN s1.rank = 1 THEN 1 ELSE null END) win_num, 

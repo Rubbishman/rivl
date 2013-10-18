@@ -21,6 +21,10 @@ class Game_Saver extends CI_Controller{
 
     public function delete_game() {
         try {
+            if($_SERVER['REMOTE_ADDR'] != 'localhost') {
+                return;
+            }
+
             $game_id = $this->input->get('game_id');
 
             if(!$game_id) {

@@ -86,8 +86,8 @@
         <td><%=opponent_name%></td>
         <% var games = Number(win_num) + Number(loss_num); %>
         <td class="details"><%=games%></td>
-        <td> (<strong>W:<%=win_num%></strong>  L:<%=loss_num%>)</td>
-        <td><strong><%=avg_win_opp_score%></strong>, <%=avg_loss_score%></td>
+        <td> <strong>W:<%=win_num%></strong>  L:<%=loss_num%></td><td><%=win_percent%>% win ratio</td>
+        <td><strong><%=avg_score%></strong>, <%=avg_opp_score%></td>
         </tr>
     </script>
 
@@ -99,6 +99,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Games</th>
+                        <th></th>
                         <th></th>
                         <th>Avg scores</th>
                     </tr>
@@ -135,9 +136,7 @@
                         <th>Rank</th>
                         <th>Name</th>
                         <th>Elo</th>
-                        <th>Games</th>
-                        <th></th>
-                    </th>
+                    </tr>
                 </thead>
                 <tbody id="competitors"></tbody>
             </table>
@@ -167,9 +166,6 @@
         <td><%=document.getElementById('competitors').getElementsByTagName("tr").length + 1 %></td>
         <td><%=name%></td>
     	<td><%=elo%></td>
-        <% var games = Number(wins) + Number(loses); %>
-        <td class="details"><%=games%></td>
-        <td> (W:<%=wins%>  L:<%=loses%>)</td>
     </script>
 
     <script id="gameRowTemplate" type="text/template">
@@ -218,7 +214,7 @@
             <div class="col-xs-6 text-center">
                 <select class="scoreP1">
                     <option value=''></option>
-                    <% for (var i = points; i > 0; i--) { %>
+                    <% for (var i = points; i >= 0; i--) { %>
                         <option value='<%= i %>'><%= i %></option>
                     <% } %>
                 </select>
@@ -226,7 +222,7 @@
             <div class="col-xs-6 text-center">
                 <select class="scoreP2">
                     <option value=''></option>
-                    <% for (var i = points; i > 0; i--) { %>
+                    <% for (var i = points; i >= 0; i--) { %>
                         <option value='<%= i %>'><%= i %></option>
                     <% } %>
                 </select>
@@ -347,7 +343,7 @@
     <script src=<?=base_url("/js/views/competitorView.js")?>></script>
     <script src=<?=base_url("/js/views/competitionGraphView.js")?>></script>
     <script src=<?=base_url("/js/views/competitorStatView.js")?>></script>
-    <script src=<?=base_url("/js/views/newGameView2.js")?>></script>
+    <script src=<?=base_url("/js/views/newGameView2.js?cats=cute")?>></script>
     <script src=<?=base_url("/js/views/gameHistoryView.js")?>></script>
     <script src=<?=base_url("/js/views/competitorSelectionRow.js")?>></script>
     <script src=<?=base_url("/js/views/gameRow.js")?>></script>
