@@ -10,6 +10,7 @@ Vs.CompetitorStatView = Backbone.View.extend({
     },
 
     render: function() {
+        console.dir(this.model.toJSON());
         $("#mainContainer").html(this.navbarTemplate(this.competition.toJSON()));
         $("#mainContainer").append(this.template(this.model.toJSON()));
         $.each(this.model.attributes.stat_details.stat_array,this.renderPlayerStatRow);

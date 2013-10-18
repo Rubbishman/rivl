@@ -101,7 +101,7 @@
 	<script id="playerPageTemplate" type="text/template">
 		<h1><%=playerName%></h1>
 		<div class="sectionBody">
-           
+            <!--
             <div class="row">
                 <div class="col-xs-4">
                     <h3 class="bigVal">1687</h3>
@@ -118,6 +118,7 @@
                 </div>
 
             </div>
+            -->
             
             <h2>Top rivls</h2>
             <div id="playerStats">
