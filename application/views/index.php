@@ -70,10 +70,10 @@
 
 	<script id="competitorGameRowTemplate" type="text/template">
         <tr>
-            <td><%=date%></td>
-            <td><strong><%=winner_name%></strong> vs <%=loser_name%></td>
-            <td><strong><%=winner_score%></strong> - <%=loser_score%></td>
-            <td><strong>+<%=winner_elo_change%></strong>&nbsp;&nbsp;<%=loser_elo_change%></td>
+            <!--<td><%=date%></td>-->
+            <td><% if (playerScore === '11') { %><strong><% } %><%=vsPlayer%></td><% if (playerScore === '11') { %></strong><% } %></td>
+            <td><% if (playerScore === '11') { %><strong><% } %><%=playerScore%>&nbsp;-&nbsp;<%=vsScore%><% if (playerScore === '11') { %></strong><% } %></td>
+            <td><% if (playerScore === '11') { %><strong>+<% } %><%= Math.round(playerElo*10) / 10 %></td><% if (playerScore === '11') { %></strong><% } %></td>
         </tr>
     </script>
 
@@ -147,8 +147,8 @@
             <table class="dataTable">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Players</th>
+                        <!--<th>Date</th>-->
+                        <th>Opponent</th>
                         <th>Score</th>
                         <th>Elo change</th>
                     </tr>
