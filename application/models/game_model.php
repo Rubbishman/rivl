@@ -296,19 +296,19 @@ select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from scor
 		$this->db->update('competitor_elo',
 			array('elo' => $elo_after['loser_elo']));
 			
-		foreach($new_data['results'] as $result){
-			
-			$status = "pending";
-			if($result['confirmed']) {
-				$status = 'confirmed';
-			}
-			
-			$this->db->insert('game_verification',
-				array(
-					'game_id' => $game_id,
-					'competitor_id' => $result['competitor_id'],
-					'status' => $status));	
-		}
+//		foreach($new_data['results'] as $result){
+//
+//			$status = "pending";
+//			if($result['confirmed']) {
+//				$status = 'confirmed';
+//			}
+//
+//			$this->db->insert('game_verification',
+//				array(
+//					'game_id' => $game_id,
+//					'competitor_id' => $result['competitor_id'],
+//					'status' => $status));
+//		}
 			
         return $game_id;
 	}
