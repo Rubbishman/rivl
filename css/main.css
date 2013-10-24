@@ -141,3 +141,9 @@ span.rankNeutral {
 	line-height: 1.6em;
 	margin-top: 0.2em;
 }
+.bad {
+	color: red;
+}
+.good {
+	color: green;
+}

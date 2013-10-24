@@ -49,7 +49,7 @@
               <ul class="nav navbar-nav">
                 <li><a href="#competition/<%=id%>">Home</a></li>
                 <li><a href="#competition/<%=id%>/game">Enter scores</a></li>
-                <li><a href="#">Compare rivls</a></li>
+                <!--<li><a href="#">Compare rivls</a></li>-->
                 <li><a href="#competition_graph/<%=id%>">Graph</a></li>
                 <li id="notifications" class="hide"><a href="#competitor_home/<%=id%>">Notifications <span class="badge">4</span></a></li>
                 <li id="login" class="hide"><a>Login</a></li>
@@ -73,9 +73,15 @@
 	<script id="competitorGameRowTemplate" type="text/template">
         <tr>
             <!--<td><%=date%></td>-->
-            <td><% if (playerScore === '11') { %><strong><% } %><%=vsPlayer%></td><% if (playerScore === '11') { %></strong><% } %></td>
-            <td><% if (playerScore === '11') { %><strong><% } %><%=playerScore%>&nbsp;-&nbsp;<%=vsScore%><% if (playerScore === '11') { %></strong><% } %></td>
-            <td><% if (playerScore === '11') { %><strong>+<% } %><%= Math.round(playerElo*10) / 10 %></td><% if (playerScore === '11') { %></strong><% } %></td>
+            <td><%=vsPlayer%></td>
+            <td><%=playerScore%>&nbsp;-&nbsp;<%=vsScore%></td>
+            <td>
+                <% if (playerScore === '11') { %>
+                    <span class="good"><span class="glyphicon glyphicon-circle-arrow-up"></span> <%= Math.round(playerElo*10) / 10 %></span>
+                <% } else { %>
+                    <span class="bad"><span class="glyphicon glyphicon-circle-arrow-down"></span> <%= Math.round(playerElo*10) / 10 %></span>
+                <% } %>
+            </td>
         </tr>
     </script>
 
@@ -96,7 +102,7 @@
             <div class="col-xs-7 percentBar">
                 <div class="bar barGood radius-left <% if (loss_num < 1) {%>radius-right<% } %>" style="width: <%=winPercent%>%"><strong><span><%=win_num%></span></strong></div>
                 <div class="bar barBad radius-right <% if (win_num < 1) {%>radius-left<% } %>" style="width: <%=lossPercent%>%"><span><%=loss_num%></span></div>
-                <div class="barInfo"><span><%=winPercent%>%</span></div>
+                <div class="barInfo"><span class="<% if (winPercent < 50) {%>bad<% } %>"><%=winPercent%>%</span></div>
             </div>
             <div class="col-xs-2">
                 <button class="btn btn-sm btn-default" onclick="console.log('compareRivls(Liam, Dean)');">Compare</button>
