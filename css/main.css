@@ -68,20 +68,14 @@ h3.bigVal, h4.bigVal {
 #resultsSection {
 	margin-bottom: 20px;
 }
-#resultsSection span {
-	font-size: 25px;
-}
-span.rankDown, span.rankUp, span.rankNeutral {
-	background-repeat:no-repeat;
-	background-position:left;
-	display: inline-block;
-	padding-left: 55px;
+.rankUp, .rankDown {
+	font-size: 2em;
 }
 span.rankDown {
-	background-image: url("../img/down_arrow_48.png");
+	color: red;
 }
 span.rankUp {
-	background-image: url("../img/up_arrow_48.png");
+	color: green;
 }
 span.rankNeutral {
 	background-image: url("../img/neutral_arrow_48.png");

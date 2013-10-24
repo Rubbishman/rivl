@@ -2,7 +2,9 @@
 <html lang="en">
 
 <head>
-	
+
+    <?php $randomlol = rand(0,100000); ?>
+
     <meta charset="utf-8">
     
     <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0, user-scalable = 0" />
@@ -18,7 +20,7 @@
         }
     </style>
 
-    <link rel="stylesheet" href="<?=base_url("/css/main.css")?>"  media="screen"/>
+    <link rel="stylesheet" href="<?=base_url("/css/main.css?moo=")?><?=$randomlol?>"  media="screen"/>
 
 </head>
 
@@ -70,10 +72,10 @@
 
 	<script id="competitorGameRowTemplate" type="text/template">
         <tr>
-            <td><%=date%></td>
-            <td><strong><%=winner_name%></strong> vs <%=loser_name%></td>
-            <td><strong><%=winner_score%></strong> - <%=loser_score%></td>
-            <td><strong>+<%=winner_elo_change%></strong>&nbsp;&nbsp;<%=loser_elo_change%></td>
+            <!--<td><%=date%></td>-->
+            <td><% if (playerScore === '11') { %><strong><% } %><%=vsPlayer%></td><% if (playerScore === '11') { %></strong><% } %></td>
+            <td><% if (playerScore === '11') { %><strong><% } %><%=playerScore%>&nbsp;-&nbsp;<%=vsScore%><% if (playerScore === '11') { %></strong><% } %></td>
+            <td><% if (playerScore === '11') { %><strong>+<% } %><%= Math.round(playerElo*10) / 10 %></td><% if (playerScore === '11') { %></strong><% } %></td>
         </tr>
     </script>
 
@@ -105,7 +107,7 @@
             <div class="row">
                 <div class="col-xs-4">
                     <h3 class="bigVal">1687</h3>
-                    <p>elo score</p>
+                    <p>points</p>
                 </div>
                 <div class="col-xs-4">
                     <h3 class="bigVal"><span id="playerGamesWon">67</span><small>/<span id="playerGamesPlayed">100</span></small></h3>
@@ -137,7 +139,7 @@
             </div>
         </div>
 
-		<h2>Elo over time</h2>
+		<h2>Points over time</h2>
 		<canvas id="playerGraph" width="1024" height="728"></canvas>
 		
         <h2>Recent games</h2>
@@ -145,10 +147,10 @@
             <table class="dataTable">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Players</th>
+                        <!--<th>Date</th>-->
+                        <th>Opponent</th>
                         <th>Score</th>
-                        <th>Elo change</th>
+                        <th>Points</th>
                     </tr>
                 </thead>
                 <tbody id="playerHistory"></tbody>
@@ -165,7 +167,7 @@
                     <tr>
                         <th>Rank</th>
                         <th>Name</th>
-                        <th>Elo</th>
+                        <th>Points</th>
                         <th></th>
                     </th>
                 </thead>
@@ -180,7 +182,7 @@
                         <!--<th>Date</th>-->
                         <th>Players</th>
                         <th>Score</th>
-                        <th>Elo change</th>
+                        <th>Points</th>
                     </tr>
                 </thead>
                 <tbody id="gameHistory"></tbody>
@@ -280,21 +282,20 @@
 
     <script id="newResultsTemplate" type="text/template">
 
-
         <div class="resultsRow span12">
             <div class="col-xs-5 text-center">
                 <% if (p1eloDelta > 0) { %>
-                    <span class="resultsP1 rankUp"><%= p1eloDelta %></span>
+                    <span class="resultsP1 rankUp"><span class="glyphicon glyphicon-circle-arrow-up"></span> <%= p1eloDelta %></span>
                 <% } else if (p1eloDelta < 0) { %>
-                    <span class="resultsP1 rankDown"><%= p1eloDelta %></span>
+                    <span class="resultsP1 rankDown"><span class="glyphicon glyphicon-circle-arrow-down"></span> <%= p1eloDelta %></span>
                 <% } %>
             </div>
             <div class="col-xs-2"></div>
             <div class="col-xs-5 text-center">
                 <% if (p2eloDelta > 0) { %>
-                    <span class="resultsP2 rankUp"><%= p2eloDelta %></span>
+                    <span class="resultsP2 rankUp"><span class="glyphicon glyphicon-circle-arrow-up"></span> <%= p2eloDelta %></span>
                 <% } else if (p2eloDelta < 0) { %>
-                    <span class="resultsP2 rankDown"><%= p2eloDelta %></span>
+                    <span class="resultsP2 rankDown"><span class="glyphicon glyphicon-circle-arrow-down"></span> <%= p2eloDelta %></span>
                 <% } %>
             </div>
         </div>
@@ -378,28 +379,28 @@
 			});
 	</script>
 
-    <script src=<?=base_url("/js/vs.js")?>></script>
-    <script src=<?=base_url("/js/models/competition.js")?>></script>
-    <script src=<?=base_url("/js/models/competitionCollection.js")?>></script>
-    <script src=<?=base_url("/js/models/competitor.js")?>></script>
-    <script src=<?=base_url("/js/models/competitionGraph.js")?>></script>
-    <script src=<?=base_url("/js/models/competitorStat.js")?>></script>
-    <script src=<?=base_url("/js/models/competitorCollection.js")?>></script>
-    <script src=<?=base_url("/js/models/game.js")?>></script>
-    <script src=<?=base_url("/js/models/gameSaver.js")?>></script>
-    <script src=<?=base_url("/js/models/gameCollection.js")?>></script>
+    <script src=<?=base_url("/js/vs.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competition.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competitionCollection.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competitor.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competitionGraph.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competitorStat.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/competitorCollection.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/game.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/gameSaver.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/gameCollection.js?moo=")?><?=$randomlol?>></script>
 
-    <script src=<?=base_url("/js/views/competitionRow.js")?>></script>
-    <script src=<?=base_url("/js/views/competitorRow.js")?>></script>
-    <script src=<?=base_url("/js/views/competitorView.js")?>></script>
-    <script src=<?=base_url("/js/views/competitionGraphView.js")?>></script>
-    <script src=<?=base_url("/js/views/competitorStatView.js")?>></script>
-    <script src=<?=base_url("/js/views/newGameView2.js")?>></script>
-    <script src=<?=base_url("/js/views/gameHistoryView.js")?>></script>
-    <script src=<?=base_url("/js/views/gameRow.js")?>></script>
-    <script src=<?=base_url("/js/views/allCompetitionsView.js")?>></script>
-    <script src=<?=base_url("/js/views/competitionView.js")?>></script>
-    <script src=<?=base_url("/js/router.js")?>></script>
+    <script src=<?=base_url("/js/views/competitionRow.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/competitorRow.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/competitorView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/competitionGraphView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/competitorStatView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/newGameView2.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/gameHistoryView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/gameRow.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/allCompetitionsView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/competitionView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/router.js?moo=")?><?=$randomlol?>></script>
 
 
 </body>
