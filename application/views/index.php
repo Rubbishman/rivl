@@ -87,15 +87,19 @@
 	<script id="playerStatRowTemplate" type="text/template">
         <% var games = Number(win_num) + Number(loss_num); %>
         <% var winPercent = Math.round(Number(win_num) / Number(games) * 100); %>
-        <div class="row">
-            <div class="col-xs-4">
+        <% var lossPercent = 100 - winPercent; %>
+
+        <div class="row percentBarRow">
+            <div class="col-xs-3">
                 <%=opponent_name%>
             </div>
-            <div class="col-xs-4">
-                Won <strong><%=win_num%></strong>/<%=games%> (<%=winPercent%>%)
+            <div class="col-xs-7 percentBar">
+                <div class="bar barGood radius-left <% if (loss_num < 1) {%>radius-right<% } %>" style="width: <%=winPercent%>%"><strong><span><%=win_num%></span></strong></div>
+                <div class="bar barBad radius-right <% if (win_num < 1) {%>radius-left<% } %>" style="width: <%=lossPercent%>%"><span><%=loss_num%></span></div>
+                <div class="barInfo"><span><%=winPercent%>%</span></div>
             </div>
-            <div class="col-xs-4">
-                <button class="btn btn-block btn-sm btn-default" onclick="console.log('compareRivls(Liam, Dean)');">Compare rivls</button>
+            <div class="col-xs-2">
+                <button class="btn btn-sm btn-default" onclick="console.log('compareRivls(Liam, Dean)');">Compare</button>
             </div>
         </div>
     </script>

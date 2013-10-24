@@ -97,3 +97,47 @@ span.rankNeutral {
 .modal-open, .modal-open .navbar-fixed-top {
 	margin-right: auto !important;
 }
+
+.radius-left {
+	border-bottom-left-radius: 3px;
+	border-top-left-radius: 3px;
+}
+.radius-right {
+	border-bottom-right-radius: 3px;
+	border-top-right-radius: 3px;
+}
+.percentBarRow {
+	line-height: 2em;
+	margin: 3px 0;
+}
+.percentBar {
+}
+.bar {
+	position: absolute;
+	overflow: hidden;
+}
+.bar span:before, .bar span:after {
+	content: "\00a0";
+}
+.barBad {
+	background: #FC9797;
+	right: 0;
+	text-align: right;
+}
+.barGood {
+	background: #87DF87;
+	left: 0;
+	text-align: left;
+}
+.barInfo {
+	text-align: center;
+	margin-left: -50px;
+}
+.barInfo span {
+	background: rgba(255, 255, 255, 0.7);
+	position: absolute;
+	width: 50px;
+	height: 1.6em;
+	line-height: 1.6em;
+	margin-top: 0.2em;
+}
