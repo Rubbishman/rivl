@@ -127,7 +127,7 @@ class Competitor_Graph extends CI_Controller{
 
     private function get_graph(){
 		$competitor = $this->competitor_model->get_competitor($this->input->get('competition_id'),$this->input->get('competitor_id'));
-		
+
 		$params = array(
             'competitor_id' => $this->input->get('competitor_id'),
             'competition_id' => $this->input->get('competition_id'));
@@ -171,6 +171,15 @@ class Competitor_Graph extends CI_Controller{
 		$graphData['data'] = array($playerGames);
 
 		$graphData['gameHistory'] = $this->game_model->get_competitor_games($this->input->get('competition_id'),$this->input->get('competitor_id'));
+
+        $competitor_simple_stat = $this->competitor_model->get_competitor_simple_stats($this->input->get('competition_id'),$this->input->get('competitor_id'));
+
+        $graphData['current_elo'] = $competitor_simple_stat->elo;
+        $graphData['games_won'] = $competitor_simple_stat->wins;
+        $graphData['games_played'] = $competitor_simple_stat->games;
+        $graphData['games_won_percent'] = $competitor_simple_stat->games_won_percent;
+        $graphData['rank'] = $competitor_simple_stat->rank;
+        $graphData['total_competitors'] = $competitor_simple_stat->total_competitors;
 
         //$this->load->view('competitor_graph',$graphData);
         $this->_render($graphData);

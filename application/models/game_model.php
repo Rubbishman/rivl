@@ -80,7 +80,8 @@ class Game_model extends CI_Model {
         join competitor c2 on c2.id = s2.competitor_id
     where s1.competitor_id = '.$params['competitor_id'].'
     	and game.competition_id = '.$params['competition_id'].'
-    group by s1.competitor_id, s2.competitor_id;');
+    group by s1.competitor_id, s2.competitor_id
+    order by count(1) desc;');
 		return $res->result_array();
 		/*
 		 select count(CASE WHEN s1.rank = 1 THEN 1 ELSE null END) win_num, 

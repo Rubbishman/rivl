@@ -105,7 +105,7 @@
                 <div class="barInfo"><span class="<% if (winPercent < 50) {%>bad<% } %>"><%=winPercent%>%</span></div>
             </div>
             <div class="col-xs-2">
-                <button class="btn btn-sm btn-default" onclick="console.log('compareRivls(Liam, Dean)');">Compare</button>
+<!--                <button class="btn btn-sm btn-default" onclick="console.log('compareRivls(Liam, Dean)');">Compare</button>-->
             </div>
         </div>
     </script>
@@ -116,28 +116,32 @@
 
             <div class="row">
                 <div class="col-xs-4">
-                    <h3 class="bigVal">1687</h3>
+                    <h3 class="bigVal"><%=current_elo%></h3>
                     <p>points</p>
                 </div>
                 <div class="col-xs-4">
-                    <h3 class="bigVal"><span id="playerGamesWon">67</span><small>/<span id="playerGamesPlayed">100</span></small></h3>
-                    <p>games won (<span id="playerWinPercent">67</span>%)</p>
+                    <h3 class="bigVal"><span id="playerGamesWon"><%=games_won%></span><small>/<span id="playerGamesPlayed"><%=games_played%></span></small></h3>
+                    <p>games won (<span id="playerWinPercent"><%=games_won_percent%></span>%)</p>
                 </div>
 
                 <div class="col-xs-4">
-                    <h3 class="bigVal"><span id="playerRank">5th</span></h3>
-                    <p>of <span id="playersTotal">18</span> players</p>
+                    <h3 class="bigVal"><span id="playerRank"><%=rank%></span></h3>
+                    <p>of <span id="playersTotal"><%=total_competitors%></span> players</p>
                 </div>
-
             </div>
             
             <h2>Top rivls</h2>
             <div id="playerStats"></div>
-            <a href="#" id="topRivlsShowMore">Show more</a>
+<!--            <a href="#" id="topRivlsShowMore">Show more</a>-->
 
         </div>
 
-        <h2>Current titles</h2>
+        <h2>Current titles </h2>
+        <div class="row">
+            <div class="col-xs-12">
+                <h4>These are temp examples, feel free to email me some examples + logic on how to calculate them</h4>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xs-12">
                 <h4 class="bigVal"><span class="glyphicon glyphicon-fire"></span> The bully</h4>
