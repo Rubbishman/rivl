@@ -100,8 +100,8 @@
                 <%=opponent_name%>
             </div>
             <div class="col-xs-7 percentBar">
-                <div class="bar barGood radius-left <% if (loss_num < 1) {%>radius-right<% } %>" style="width: <%=winPercent%>%"><strong><span><%=win_num%></span></strong></div>
-                <div class="bar barBad radius-right <% if (win_num < 1) {%>radius-left<% } %>" style="width: <%=lossPercent%>%"><span><%=loss_num%></span></div>
+                <div class="bar barGood" style="width: <%=winPercent%>%"><strong><span><%=win_num%></span></strong></div>
+                <div class="bar barBad" style="width: <%=lossPercent%>%"><span><%=loss_num%></span></div>
                 <div class="barInfo"><span class="<% if (winPercent < 50) {%>bad<% } %>"><%=winPercent%>%</span></div>
             </div>
             <div class="col-xs-2">

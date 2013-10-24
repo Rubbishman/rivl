@@ -111,6 +111,11 @@ span.rankNeutral {
 	margin: 3px 0;
 }
 .percentBar {
+    background: #FC9797;
+    line-height: 2em;
+    margin: 3px 0;
+    overflow: hidden;
+    height: 2em;
 }
 .bar {
 	position: absolute;
@@ -120,7 +125,6 @@ span.rankNeutral {
 	content: "\00a0";
 }
 .barBad {
-	background: #FC9797;
 	right: 0;
 	text-align: right;
 }
