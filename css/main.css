@@ -68,20 +68,14 @@ h3.bigVal, h4.bigVal {
 #resultsSection {
 	margin-bottom: 20px;
 }
-#resultsSection span {
-	font-size: 25px;
-}
-span.rankDown, span.rankUp, span.rankNeutral {
-	background-repeat:no-repeat;
-	background-position:left;
-	display: inline-block;
-	padding-left: 55px;
+.rankUp, .rankDown {
+	font-size: 2em;
 }
 span.rankDown {
-	background-image: url("../img/down_arrow_48.png");
+	color: red;
 }
 span.rankUp {
-	background-image: url("../img/up_arrow_48.png");
+	color: green;
 }
 span.rankNeutral {
 	background-image: url("../img/neutral_arrow_48.png");
@@ -102,4 +96,58 @@ span.rankNeutral {
 /*bootstrap modal fix*/
 .modal-open, .modal-open .navbar-fixed-top {
 	margin-right: auto !important;
+}
+
+.radius-left {
+	border-bottom-left-radius: 3px;
+	border-top-left-radius: 3px;
+}
+.radius-right {
+	border-bottom-right-radius: 3px;
+	border-top-right-radius: 3px;
+}
+.percentBarRow {
+	line-height: 2em;
+	margin: 3px 0;
+}
+.percentBar {
+    background: #FC9797;
+    line-height: 2em;
+    margin: 3px 0;
+    overflow: hidden;
+    height: 2em;
+}
+.bar {
+	position: absolute;
+	overflow: hidden;
+}
+.bar span:before, .bar span:after {
+	content: "\00a0";
+}
+.barBad {
+	right: 0;
+	text-align: right;
+}
+.barGood {
+	background: #87DF87;
+	left: 0;
+	text-align: left;
+}
+.barInfo {
+	text-align: center;
+	margin-left: -50px;
+}
+.barInfo span {
+	background: rgba(255, 255, 255, 0.7);
+	position: absolute;
+	width: 50px;
+	height: 1.6em;
+	line-height: 1.6em;
+	margin-top: 0.2em;
+}
+.bad {
+	color: red;
+}
+.good {
+	color: green;
 }

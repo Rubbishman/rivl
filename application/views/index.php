@@ -47,7 +47,7 @@
               <ul class="nav navbar-nav">
                 <li><a href="#competition/<%=id%>">Home</a></li>
                 <li><a href="#competition/<%=id%>/game">Enter scores</a></li>
-                <li><a href="#">Compare rivls</a></li>
+                <!--<li><a href="#">Compare rivls</a></li>-->
                 <li><a href="#competition_graph/<%=id%>">Graph</a></li>
                 <li id="notifications" class="hide"><a href="#competitor_home/<%=id%>">Notifications <span class="badge">4</span></a></li>
                 <li id="login" class="hide"><a>Login</a></li>
@@ -71,9 +71,15 @@
 	<script id="competitorGameRowTemplate" type="text/template">
         <tr>
             <!--<td><%=date%></td>-->
-            <td><% if (playerScore === '11') { %><strong><% } %><%=vsPlayer%></td><% if (playerScore === '11') { %></strong><% } %></td>
-            <td><% if (playerScore === '11') { %><strong><% } %><%=playerScore%>&nbsp;-&nbsp;<%=vsScore%><% if (playerScore === '11') { %></strong><% } %></td>
-            <td><% if (playerScore === '11') { %><strong>+<% } %><%= Math.round(playerElo*10) / 10 %></td><% if (playerScore === '11') { %></strong><% } %></td>
+            <td><%=vsPlayer%></td>
+            <td><%=playerScore%>&nbsp;-&nbsp;<%=vsScore%></td>
+            <td>
+                <% if (playerScore === '11') { %>
+                    <span class="good"><span class="glyphicon glyphicon-circle-arrow-up"></span> <%= Math.round(playerElo*10) / 10 %></span>
+                <% } else { %>
+                    <span class="bad"><span class="glyphicon glyphicon-circle-arrow-down"></span> <%= Math.round(playerElo*10) / 10 %></span>
+                <% } %>
+            </td>
         </tr>
     </script>
 
@@ -85,36 +91,55 @@
 	<script id="playerStatRowTemplate" type="text/template">
         <% var games = Number(win_num) + Number(loss_num); %>
         <% var winPercent = Math.round(Number(win_num) / Number(games) * 100); %>
-        <div class="row">
-            <div class="col-xs-4">
+        <% var lossPercent = 100 - winPercent; %>
+
+        <div class="row percentBarRow">
+            <div class="col-xs-3">
                 <%=opponent_name%>
             </div>
-            <div class="col-xs-4">
-                Won <strong><%=win_num%></strong>/<%=games%> (<%=winPercent%>%)
+            <div class="col-xs-7 percentBar">
+                <div class="bar barGood" style="width: <%=winPercent%>%"><strong><span><%=win_num%></span></strong></div>
+                <div class="bar barBad" style="width: <%=lossPercent%>%"><span><%=loss_num%></span></div>
+                <div class="barInfo"><span class="<% if (winPercent < 50) {%>bad<% } %>"><%=winPercent%>%</span></div>
             </div>
-            <div class="col-xs-4">
-                <button class="btn btn-block btn-sm btn-default" onclick="console.log('compareRivls(Liam, Dean)');">Compare rivls</button>
+            <div class="col-xs-2">
+<!--                <button class="btn btn-sm btn-default" onclick="console.log('compareRivls(Liam, Dean)');">Compare</button>-->
             </div>
         </div>
     </script>
 
 	<script id="playerPageTemplate" type="text/template">
-		<h1><%=playerName%>&apos;s stats</h1>
-		<div id="competitors" class="sectionBody">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Games</th>
-                        <th></th>
-                        <th>Avg scores</th>
-                    </tr>
-                </thead>
-                <tbody id="playerStats"></tbody>
-            </table>
+		<h1><%=playerName%></h1>
+		<div class="sectionBody">
+
+            <div class="row">
+                <div class="col-xs-4">
+                    <h3 class="bigVal"><%=current_elo%></h3>
+                    <p>points</p>
+                </div>
+                <div class="col-xs-4">
+                    <h3 class="bigVal"><span id="playerGamesWon"><%=games_won%></span><small>/<span id="playerGamesPlayed"><%=games_played%></span></small></h3>
+                    <p>games won (<span id="playerWinPercent"><%=games_won_percent%></span>%)</p>
+                </div>
+
+                <div class="col-xs-4">
+                    <h3 class="bigVal"><span id="playerRank"><%=rank%></span></h3>
+                    <p>of <span id="playersTotal"><%=total_competitors%></span> players</p>
+                </div>
+            </div>
+            
+            <h2>Top rivls</h2>
+            <div id="playerStats"></div>
+<!--            <a href="#" id="topRivlsShowMore">Show more</a>-->
+
         </div>
 
-        <!--<h2>Current titles</h2>
+        <h2>Current titles </h2>
+        <div class="row">
+            <div class="col-xs-12">
+                <h4>These are temp examples, feel free to email me some examples + logic on how to calculate them</h4>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xs-12">
                 <h4 class="bigVal"><span class="glyphicon glyphicon-fire"></span> The bully</h4>
@@ -124,9 +149,9 @@
                 <h4 class="bigVal"><span class="glyphicon glyphicon-cutlery"></span> Game hungry</h4>
                 <p>You can&apos;t keep <%=playerName%> away from the action</p>
             </div>
-        </div>-->
+        </div>
 
-		<h2>Elo over time</h2>
+		<h2>Points over time</h2>
 		<canvas id="playerGraph" width="1024" height="728"></canvas>
 		
         <h2>Recent games</h2>
@@ -137,7 +162,7 @@
                         <!--<th>Date</th>-->
                         <th>Opponent</th>
                         <th>Score</th>
-                        <th>Elo change</th>
+                        <th>Points</th>
                     </tr>
                 </thead>
                 <tbody id="playerHistory"></tbody>
@@ -154,7 +179,7 @@
                     <tr>
                         <th>Rank</th>
                         <th>Name</th>
-                        <th>Elo</th>
+                        <th>Points</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -169,7 +194,7 @@
                         <!--<th>Date</th>-->
                         <th>Players</th>
                         <th>Score</th>
-                        <th>Elo change</th>
+                        <th>Points</th>
                     </tr>
                 </thead>
                 <tbody id="gameHistory"></tbody>
@@ -269,21 +294,20 @@
 
     <script id="newResultsTemplate" type="text/template">
 
-
         <div class="resultsRow span12">
             <div class="col-xs-5 text-center">
                 <% if (p1eloDelta > 0) { %>
-                    <span class="resultsP1 rankUp"><%= p1eloDelta %></span>
+                    <span class="resultsP1 rankUp"><span class="glyphicon glyphicon-circle-arrow-up"></span> <%= p1eloDelta %></span>
                 <% } else if (p1eloDelta < 0) { %>
-                    <span class="resultsP1 rankDown"><%= p1eloDelta %></span>
+                    <span class="resultsP1 rankDown"><span class="glyphicon glyphicon-circle-arrow-down"></span> <%= p1eloDelta %></span>
                 <% } %>
             </div>
             <div class="col-xs-2"></div>
             <div class="col-xs-5 text-center">
                 <% if (p2eloDelta > 0) { %>
-                    <span class="resultsP2 rankUp"><%= p2eloDelta %></span>
+                    <span class="resultsP2 rankUp"><span class="glyphicon glyphicon-circle-arrow-up"></span> <%= p2eloDelta %></span>
                 <% } else if (p2eloDelta < 0) { %>
-                    <span class="resultsP2 rankDown"><%= p2eloDelta %></span>
+                    <span class="resultsP2 rankDown"><span class="glyphicon glyphicon-circle-arrow-down"></span> <%= p2eloDelta %></span>
                 <% } %>
             </div>
         </div>

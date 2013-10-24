@@ -44,6 +44,56 @@ class Competitor_model extends CI_Model {
 
 		return $results;
 	}
+
+    public function get_competitor_simple_stats($competition_id,$id = FALSE) {
+        if($competition_id == FALSE || $id == FALSE){
+            return;
+        }
+        $this->db->select('competitor_elo.competitor_id, competitor_elo.elo ,competitor.name,
+			 COUNT(CASE WHEN s1.rank = 1 THEN 1 ELSE NULL END) wins,
+			 COUNT(CASE WHEN s1.rank != 1 THEN 1 ELSE NULL END) loses');
+        $this->db->select('competitor_elo.competitor_id, competitor_elo.elo ,competitor.name');
+        $this->db->from('competitor');
+        $this->db->join('competitor_elo', 'competitor.id = competitor_elo.competitor_id');
+        $this->db->join('game', 'game.competition_id = competitor_elo.competition_id','left	');
+        $this->db->join('score s1', 's1.competitor_id = competitor.id and s1.game_id = game.id','left');
+        $this->db->where('competitor_elo.competition_id', $competition_id);
+        $this->db->group_by('competitor.id');
+        $this->db->where('competitor.id', $id);
+
+        $query = $this->db->get();
+        $results = $query->result();
+        $results = $results[0];
+
+        $rankInfo = $this->get_competitor($competition_id,false);
+        $totalCompetitors = 0;
+        foreach($rankInfo as $rank) {
+            $totalCompetitors++;
+            if($rank->competitor_id == $id) {
+                if($rank->rank == 1) {
+                    $results->rank = $rank->rank."st";
+                } else if($rank->rank == 2) {
+                    $results->rank = $rank->rank."nd";
+                } else if($rank->rank == 3) {
+                    $results->rank = $rank->rank."rd";
+                } else {
+                    $results->rank = $rank->rank."th";
+                }
+            }
+        }
+
+        $results->elo = round($results->elo);
+
+        $results->games = $results->wins + $results->loses;
+        if($results->games == 0) {
+            $results->games_won_percent = 0;
+        } else {
+            $results->games_won_percent = round(($results->wins/$results->games)*100);
+        }
+
+        $results->total_competitors = $totalCompetitors;
+        return $results;
+    }
 }
 
 
