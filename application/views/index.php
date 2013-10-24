@@ -101,7 +101,7 @@
 	<script id="playerPageTemplate" type="text/template">
 		<h1><%=playerName%></h1>
 		<div class="sectionBody">
-            <!--
+
             <div class="row">
                 <div class="col-xs-4">
                     <h3 class="bigVal">1687</h3>
@@ -118,16 +118,14 @@
                 </div>
 
             </div>
-            -->
             
             <h2>Top rivls</h2>
-            <div id="playerStats">
-            </div>
+            <div id="playerStats"></div>
             <a href="#" id="topRivlsShowMore">Show more</a>
 
         </div>
 
-        <!--<h2>Current titles</h2>
+        <h2>Current titles</h2>
         <div class="row">
             <div class="col-xs-12">
                 <h4 class="bigVal"><span class="glyphicon glyphicon-fire"></span> The bully</h4>
@@ -137,7 +135,7 @@
                 <h4 class="bigVal"><span class="glyphicon glyphicon-cutlery"></span> Game hungry</h4>
                 <p>You can&apos;t keep <%=playerName%> away from the action</p>
             </div>
-        </div>-->
+        </div>
 
 		<h2>Elo over time</h2>
 		<canvas id="playerGraph" width="1024" height="728"></canvas>
