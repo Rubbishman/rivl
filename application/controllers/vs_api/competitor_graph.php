@@ -136,6 +136,17 @@ class Competitor_Graph extends CI_Controller{
 
 		$stat_details = $this->game_model->get_competitor_stats($params);
 
+        $max_games = 1;
+
+        foreach($stat_details as &$stat){
+
+            if($stat['win_num'] + $stat['loss_num'] > $max_games) {
+                $max_games = $stat['win_num'] + $stat['loss_num'];
+            }
+
+            $stat['gamePercent'] = (($stat['win_num'] + $stat['loss_num'])/$max_games)*100;
+        }
+
         $graphData = array(
         	'playerName' => $competitor[0]->name,
         	'data' => array(1500), 

@@ -97,12 +97,16 @@
             <div class="col-xs-3">
                 <%=opponent_name%>
             </div>
-            <div class="col-xs-7 percentBar">
+            <div class="col-xs-6 percentBar">
                 <div class="bar barGood" style="width: <%=winPercent%>%"><strong><span><%=win_num%></span></strong></div>
                 <div class="bar barBad" style="width: <%=lossPercent%>%"><span><%=loss_num%></span></div>
                 <div class="barInfo"><span class="<% if (winPercent < 50) {%>bad<% } %>"><%=winPercent%>%</span></div>
             </div>
-            <div class="col-xs-2">
+            <div class="col-xs-2" style="line-height: 2em;margin: 1px 0;overflow: hidden;height: 2em;">
+                <div class="bar" style="background:#333;width:<%=gamePercent%>%;line-height: 2em;margin: 3px 0;overflow: hidden;height: 2em;"></div>
+                <div class="barInfo"><span style="margin-top: 0.3em;margin-right:1em;width:79%"><%=games%></span></div>
+            </div>
+            <div class="col-xs-1">
 <!--                <button class="btn btn-sm btn-default" onclick="console.log('compareRivls(Liam, Dean)');">Compare</button>-->
             </div>
         </div>
@@ -214,6 +218,7 @@
         <% var game1_elo_change = Math.round(game1.elo_change * 10 ) / 10; %>
         <% var game2_elo_change = Math.round(game2.elo_change * 10 ) / 10; %>
         <tr>
+            <!--<td><%=game1.game_id%></td>-->
             <td><strong><%=game1.name%></strong> vs <%=game2.name%></td>
             <td><strong><%=game1.score%></strong> - <%=game2.score%></td>
             <td><strong>+<%=game1_elo_change%></strong>&nbsp;&nbsp;<%=game2_elo_change%></td>

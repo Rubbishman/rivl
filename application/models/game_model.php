@@ -62,7 +62,7 @@ class Game_model extends CI_Model {
         join competitor c2 on c2.id = s2.competitor_id
     where s1.competitor_id = '.$competitor_id.'
     	and game.competition_id = '.$competition_id.'
-    	order by game.date desc');
+    	order by game.date desc, game.id desc');
 		return $res->result_array();
 	}
 
