@@ -192,17 +192,35 @@
         </div>
         <h2>Game History</h2>
         <div class="sectionBody">
-            <table class="dataTable">
-                <thead>
-                    <tr>
-                        <!--<th>Date</th>-->
-                        <th>Players</th>
-                        <th>Score</th>
-                        <th>Points</th>
-                    </tr>
-                </thead>
-                <tbody id="gameHistory"></tbody>
-            </table>
+        	<div id="gameHistoryTodayContent">
+	        	<h4>Today</h4>
+	            <table class="dataTable">
+	                <thead>
+	                    <tr>
+	                        <!--<th>Date</th>-->
+	                        <th>Players</th>
+	                        <th>Score</th>
+	                        <th>Points</th>
+	                    </tr>
+	                </thead>
+	                <tbody id="gameHistoryToday"></tbody>
+	            </table>
+            </div>
+            <div id="gameHistoryYesterdayContent">
+	            <h4>Yesterday</h4>
+	            <table class="dataTable">
+	                <thead>
+	                    <tr>
+	                        <!--<th>Date</th>-->
+	                        <th>Players</th>
+	                        <th>Score</th>
+	                        <th>Points</th>
+	                    </tr>
+	                </thead>
+	                <tbody id="gameHistoryYesterday"></tbody>
+	            </table>
+            </div>
+            <h4 id="noGameHistory">No games today or yesterday</h4>
         </div>
     </script>
     

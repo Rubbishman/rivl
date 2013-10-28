@@ -19,6 +19,7 @@
  *
  */
 	define('ENVIRONMENT', 'development');
+	date_default_timezone_set('pacific/auckland');
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING

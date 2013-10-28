@@ -27,14 +27,22 @@ class Game_model extends CI_Model {
 	}
 
 	public function get_games($params = FALSE) {
-		$this->db->select('score.id, score.game_id, game.date, competitor.name, score.rank, score.score, 
-                                (score.elo_after - score.elo_before) elo_change, score_details.detail_id');
+		$today = new DateTime();
+		$sqlToday = $today->format('Y-m-d').' 00:00:00';
+		$today->modify('-1 day');
+		$sqlYesterday = $today->format('Y-m-d').' 00:00:00';
+		
+		$this->db->select("score.id, score.game_id, game.date, competitor.name, score.rank, score.score, 
+                                (score.elo_after - score.elo_before) elo_change, score_details.detail_id,
+                                (CASE WHEN game.date > '".$sqlToday."' THEN true ELSE false END) today");
 		$this->db->from('game');
 		$this->db->join('score', 'game.id = score.game_id');
         $this->db->join('competitor', 'score.competitor_id = competitor.id');
         $this->db->join('score_details', 'score_details.score_id = score.id', 'left outer');
 		$this->db->order_by('game.id desc,score.rank asc');
-		$this->db->where(array('game.competition_id' => $params['competition_id']));
+		$this->db->where(array(
+			'game.competition_id' => $params['competition_id'],
+			'game.date >' => $sqlYesterday));
 
 		// foreach ($params as $key => $value) {
 			// $this->db->where('game.'.$key, $value);
@@ -50,6 +58,7 @@ class Game_model extends CI_Model {
 		$res =$this->db->query('select game.date, 
 		CASE WHEN s1.rank = 1 THEN c1.name ELSE c2.name END winner_name, 
     CASE WHEN s1.rank = 2 THEN c1.name ELSE c2.name END loser_name,
+    c2.id opponent_id,
     CASE WHEN s1.rank = 1 THEN s1.score ELSE s2.score END winner_score,
     CASE WHEN s1.rank = 2 THEN s1.score ELSE s2.score END loser_score,
     CASE WHEN s1.rank = 1 THEN (s1.elo_after - s1.elo_before) ELSE (s2.elo_after - s2.elo_before) END winner_elo_change,
@@ -73,7 +82,8 @@ class Game_model extends CI_Model {
     CAST((count(CASE WHEN s1.rank = 1 THEN 1 ELSE null END)/(count(CASE WHEN s1.rank = 1 THEN 1 ELSE null END) + count(CASE WHEN s1.rank = 2 THEN 1 ELSE null END)))*100 as DECIMAL(4,1)) win_percent,
     AVG(s1.score) avg_score,
     AVG(s2.score) avg_opp_score,
-    c1.name player, c2.name opponent_name
+    c1.name player, c2.name opponent_name,
+    c2.id opponent_id
     from score s1 
     	join game on s1.game_id = game.id
         join score s2 on s1.game_id = s2.game_id 

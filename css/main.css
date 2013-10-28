@@ -92,7 +92,18 @@ span.rankNeutral {
 #submitScore {
 	margin: 15px 0;
 }
-
+#playerStats .row:hover {
+	background: #f5f5f5;
+}
+#playerHistory tr:hover {
+	background: #f5f5f5;
+}
+#playerStats .row {
+	cursor: pointer;
+}
+#playerHistory tr {
+	cursor: pointer;
+}
 /*bootstrap modal fix*/
 .modal-open, .modal-open .navbar-fixed-top {
 	margin-right: auto !important;

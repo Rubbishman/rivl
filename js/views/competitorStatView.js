@@ -4,11 +4,10 @@ Vs.CompetitorStatView = Backbone.View.extend({
     navbarTemplate : _.template($('#navbarTemplate').html()),
 	statRowTemplate : _.template($('#playerStatRowTemplate').html()),
 	competitorGameRowTemplate : _.template($('#competitorGameRowTemplate').html()),
-	
     initialize: function () {
         $mainPage = $("#mainContainer");
+        el = $("#mainContainer");
     },
-
     render: function() {
         var self = this;
         console.dir(this.model.toJSON());
@@ -26,10 +25,16 @@ Vs.CompetitorStatView = Backbone.View.extend({
         options = {'pointDot' : false };
 		myNewChart = new Chart(mainGraph).Line(data,options);
         
+        $(document).scrollTop(0);
+        
         return this;
     },
     renderPlayerStatRow: function() {
     	$("#playerStats").append(Vs.competitorStatView.statRowTemplate(this));
+    	$('#playerStats .row').last().bind('click', { competition_id: Vs.competition.get('id'), opponent_id: this.opponent_id }, function(event) {
+		    var data = event.data;
+		    Vs.router.navigate('competition/' + data.competition_id + '/competitor_home/' + data.opponent_id, true);
+		});
     },
     renderGameHistory: function(model, game) {
         game.vsPlayer = game.loser_name !== model.playerName ? game.loser_name : game.winner_name;
@@ -38,6 +43,10 @@ Vs.CompetitorStatView = Backbone.View.extend({
         game.playerElo = game.loser_name !== model.playerName ? game.winner_elo_change : game.loser_elo_change;
         //console.dir(model);
     	$("#playerHistory").append(Vs.competitorStatView.competitorGameRowTemplate(game));
+    	$('#playerHistory tr').last().bind('click', { competition_id: Vs.competition.get('id'), opponent_id: game.opponent_id }, function(event) {
+		    var data = event.data;
+		    Vs.router.navigate('competition/' + data.competition_id + '/competitor_home/' + data.opponent_id, true);
+		});
     }
 });
 
