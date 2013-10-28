@@ -20,7 +20,23 @@ class Title_Calculator extends CI_Controller {
     }
 
 	public function recalculate_titles(){
-		$this->title_model->recalculate_titles();
+		
+		$params = $_GET;
+
+        try {
+
+            if (isset($params['competition_id'])) {
+            	$this->title_model->recalculate_titles($params['competition_id']);
+            } else {
+                $this->output->set_status_header(500,'No competition id supplied');
+				$this->output->set_output();
+            }	
+		}
+		catch (Exception $e) {
+            $this->output->set_status_header(500,$e->getMessage());
+			$this->output->set_output();
+        }
+		
 		$this->output->set_status_header(200,'Titles recalculated');
 		$this->output->set_output('Titles recalculated');
 	}
