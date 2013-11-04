@@ -102,12 +102,14 @@
                 <div class="bar barBad" style="width: <%=lossPercent%>%"><span><%=loss_num%></span></div>
                 <div class="barInfo"><span class="<% if (winPercent < 50) {%>bad<% } %>"><%=winPercent%>%</span></div>
             </div>
-            <div class="col-xs-2" style="line-height: 2em;margin: 1px 0;overflow: hidden;height: 2em;">
-                <div class="bar" style="background:#333;width:<%=gamePercent%>%;line-height: 2em;margin: 3px 0;overflow: hidden;height: 2em;"></div>
-                <div class="barInfo"><span style="margin-top: 0.3em;margin-right:1em;width:79%"><%=games%></span></div>
-            </div>
-            <div class="col-xs-1">
-<!--                <button class="btn btn-sm btn-default" onclick="console.log('compareRivls(Liam, Dean)');">Compare</button>-->
+            <div class="col-xs-3 playerGamesBarWrap">
+                
+                <div class="fl playedMeterWrap">
+                    <div class="fl gamesPlayedLabel">
+                        <%=games%> <small>games</small>
+                    </div>
+                    <div class="playerGamesBar" style="width:<%=gamePercent%>%;"></div>
+                </div>
             </div>
         </div>
     </script>
