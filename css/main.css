@@ -161,9 +161,6 @@ span.rankNeutral {
 	line-height: 1.6em;
 	margin-top: 0.2em;
 }
-.playerGamesBarWrap {
-	position: relative;
-}
 .playedMeterWrap {
 	background: #dddddd;
 	width: 100%;
@@ -171,11 +168,8 @@ span.rankNeutral {
 .playerGamesBar {
 	background: #a0a0a0;
 	height: 2em;
-	z-index: 2;
 }
 .gamesPlayedLabel {
-	z-index: 3;
-	text-align: right;
 	padding-left: 5px;
 	text-shadow: 0 1px 0 #bbb;
 }

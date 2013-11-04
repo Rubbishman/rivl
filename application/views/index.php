@@ -102,8 +102,7 @@
                 <div class="bar barBad" style="width: <%=lossPercent%>%"><span><%=loss_num%></span></div>
                 <div class="barInfo"><span class="<% if (winPercent < 50) {%>bad<% } %>"><%=winPercent%>%</span></div>
             </div>
-            <div class="col-xs-3 playerGamesBarWrap">
-                
+            <div class="col-xs-3">
                 <div class="fl playedMeterWrap">
                     <div class="fl gamesPlayedLabel">
                         <%=games%> <small>games</small>
