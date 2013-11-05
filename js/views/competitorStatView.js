@@ -31,7 +31,7 @@ Vs.CompetitorStatView = Backbone.View.extend({
     },
     renderPlayerStatRow: function() {
     	$("#playerStats").append(Vs.competitorStatView.statRowTemplate(this));
-    	$('#playerStats .row').last().bind('click', { competition_id: Vs.competition.get('id'), opponent_id: this.opponent_id }, function(event) {
+    	$('#playerStats .playerLink').last().bind('click', { competition_id: Vs.competition.get('id'), opponent_id: this.opponent_id }, function(event) {
 		    var data = event.data;
 		    Vs.router.navigate('competition/' + data.competition_id + '/competitor_home/' + data.opponent_id, true);
 		});
@@ -43,7 +43,7 @@ Vs.CompetitorStatView = Backbone.View.extend({
         game.playerElo = game.loser_name !== model.playerName ? game.winner_elo_change : game.loser_elo_change;
         //console.dir(model);
     	$("#playerHistory").append(Vs.competitorStatView.competitorGameRowTemplate(game));
-    	$('#playerHistory tr').last().bind('click', { competition_id: Vs.competition.get('id'), opponent_id: game.opponent_id }, function(event) {
+    	$('#playerHistory .playerLink').last().bind('click', { competition_id: Vs.competition.get('id'), opponent_id: game.opponent_id }, function(event) {
 		    var data = event.data;
 		    Vs.router.navigate('competition/' + data.competition_id + '/competitor_home/' + data.opponent_id, true);
 		});

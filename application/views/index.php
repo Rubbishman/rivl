@@ -69,18 +69,21 @@
     </script>
 
 	<script id="competitorGameRowTemplate" type="text/template">
-        <tr>
-            <!--<td><%=date%></td>-->
-            <td><%=vsPlayer%></td>
-            <td><%=playerScore%>&nbsp;-&nbsp;<%=vsScore%></td>
-            <td>
+        <div class="row">
+            <div class="col-xs-5">
+                <a class="playerLink link"><%=vsPlayer%></a>
+            </div>
+            <div class="col-xs-4">
+                <%=playerScore%>&nbsp;-&nbsp;<%=vsScore%></td>
+            </div>
+            <div class="col-xs-3">
                 <% if (playerScore === '11') { %>
                     <span class="good"><span class="glyphicon glyphicon-circle-arrow-up"></span> <%= Math.round(playerElo*10) / 10 %></span>
                 <% } else { %>
                     <span class="bad"><span class="glyphicon glyphicon-circle-arrow-down"></span> <%= Math.round(playerElo*10) / 10 %></span>
                 <% } %>
-            </td>
-        </tr>
+            </div>
+        </div>
     </script>
 
 	<script id="competitionGraphTemplate" type="text/template">
@@ -95,7 +98,7 @@
 
         <div class="row percentBarRow">
             <div class="col-xs-3">
-                <%=opponent_name%>
+                <a class="playerLink link"><%=opponent_name%></a>
             </div>
             <div class="col-xs-6 percentBar">
                 <div class="bar barGood" style="width: <%=winPercent%>%"><strong><span><%=win_num%></span></strong></div>
@@ -160,18 +163,8 @@
 		<canvas id="playerGraph" width="1024" height="728"></canvas>
 		
         <h2>Recent games</h2>
-        <div id="gameHistory" class="sectionBody">
-            <table class="dataTable">
-                <thead>
-                    <tr>
-                        <!--<th>Date</th>-->
-                        <th>Opponent</th>
-                        <th>Score</th>
-                        <th>Points</th>
-                    </tr>
-                </thead>
-                <tbody id="playerHistory"></tbody>
-            </table>
+        <div class="sectionBody"> 
+            <div id="playerHistory"></div>
         </div>
 	</script>
 
@@ -179,47 +172,18 @@
 
         <h1><%=name%> Leaderboard</h1>
         <div class="sectionBody">
-            <table class="dataTable rowLinks">
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Name</th>
-                        <th>Points</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody id="competitors"></tbody>
-            </table>
+            <div id="competitors"></div>
         </div>
+
         <h2>Game History</h2>
         <div class="sectionBody">
         	<div id="gameHistoryTodayContent">
 	        	<h4>Today</h4>
-	            <table class="dataTable">
-	                <thead>
-	                    <tr>
-	                        <!--<th>Date</th>-->
-	                        <th>Players</th>
-	                        <th>Score</th>
-	                        <th>Points</th>
-	                    </tr>
-	                </thead>
-	                <tbody id="gameHistoryToday"></tbody>
-	            </table>
+                <div id="gameHistoryToday"></div>
             </div>
             <div id="gameHistoryYesterdayContent">
-	            <h4>Yesterday</h4>
-	            <table class="dataTable">
-	                <thead>
-	                    <tr>
-	                        <!--<th>Date</th>-->
-	                        <th>Players</th>
-	                        <th>Score</th>
-	                        <th>Points</th>
-	                    </tr>
-	                </thead>
-	                <tbody id="gameHistoryYesterday"></tbody>
-	            </table>
+	            <h4>Today</h4>
+                <div id="gameHistoryYesterday"></div>
             </div>
             <h4 id="noGameHistory">No games today or yesterday</h4>
         </div>
@@ -227,21 +191,34 @@
     
     <script id="competitorRowTemplate" type="text/template">
         <% var elo = Math.round(elo); %>
-        <td><%=document.getElementById('competitors').getElementsByTagName("tr").length + 1 %></td>
-        <td><%=name%></td>
-    	<td><%=elo%></td>
-        
+        <div class="col-xs-2">
+            <%= $('#competitors .row').length + 1 %>
+        </div>
+        <div class="col-xs-6">
+            <a class="playerLink link"><%=name%></a>
+        </div>
+    	<div class="col-xs-4">
+            <div class="fl playedMeterWrap">
+                <div class="playerGamesBar" style="width:<%=elo_percent%>%;"></div>
+            </div>
+        </div>
     </script>
 
     <script id="gameRowTemplate" type="text/template">
         <% var game1_elo_change = Math.round(game1.elo_change * 10 ) / 10; %>
         <% var game2_elo_change = Math.round(game2.elo_change * 10 ) / 10; %>
-        <tr>
+        <div class="row">
             <!--<td><%=game1.game_id%></td>-->
-            <td><strong><%=game1.name%></strong> vs <%=game2.name%></td>
-            <td><strong><%=game1.score%></strong> - <%=game2.score%></td>
-            <td><strong>+<%=game1_elo_change%></strong>&nbsp;&nbsp;<%=game2_elo_change%></td>
-        </tr>
+            <div class="col-xs-6">
+                <strong><a class="playerLink link"><%=game1.name%></a></strong> vs <a class="playerLink link"><%=game2.name%></a>
+            </div>
+            <div class="col-xs-3">
+                <strong><%=game1.score%></strong> - <%=game2.score%>
+            </div>
+            <div class="col-xs-3">
+                <strong>+<%=game1_elo_change%></strong>&nbsp;&nbsp;<%=game2_elo_change%>
+            </div>
+        </div>
     </script>
 
     <script id="newGame2Template" type="text/template">
