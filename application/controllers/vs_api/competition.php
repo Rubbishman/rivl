@@ -48,6 +48,23 @@ class Competition extends CI_Controller {
 
             if (isset($params['competition_id'])) {
                 $res = $this->competitor_model->get_competitor($params['competition_id'],FALSE);
+
+                $min = PHP_INT_MAX;
+                $max = -PHP_INT_MAX;
+                foreach($res as $competitor) {
+                    if($competitor->elo < $min) {
+                        $min = $competitor->elo;
+                    }
+                    if($competitor->elo > $max) {
+                        $max = $competitor->elo;
+                    }
+                }
+
+                $max = $max - $min;
+
+                foreach($res as &$competitor) {
+                    $competitor->elo_percent = (($competitor->elo - $min) / $max)*100;
+                }
             } else {
                 $this->output->set_status_header(500,'No competition id supplied');
 				$this->output->set_output();
