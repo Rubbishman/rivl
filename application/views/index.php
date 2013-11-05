@@ -300,7 +300,7 @@
             <div class="col-xs-6 text-center">
                 <select class="scoreP1">
                     <option value=''></option>
-                    <% for (var i = points; i > 0; i--) { %>
+                    <% for (var i = points; i >= 0; i--) { %>
                         <option value='<%= i %>'><%= i %></option>
                     <% } %>
                 </select>
@@ -308,7 +308,7 @@
             <div class="col-xs-6 text-center">
                 <select class="scoreP2">
                     <option value=''></option>
-                    <% for (var i = points; i > 0; i--) { %>
+                    <% for (var i = points; i >= 0; i--) { %>
                         <option value='<%= i %>'><%= i %></option>
                     <% } %>
                 </select>
