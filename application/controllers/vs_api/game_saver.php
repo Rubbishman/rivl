@@ -51,9 +51,10 @@ class Game_Saver extends CI_Controller{
     }
 
     public function recalculate_games() {
-        $res = $this->game_model->recalculate_games();
-        $response = array('data'=>$res);
-        $this->_render($response);
+        $this->game_model->recalculate_games();
+//        $response = array('data'=>$res);
+//        $this->_render($response);
+        echo 'DONE!';
     }
 
     private function new_game() {
