@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-	
+
     <meta charset="utf-8">
-    
+
     <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
     <title>rivl</title>
 
@@ -70,19 +70,21 @@
 
 	<script id="competitorGameRowTemplate" type="text/template">
         <div class="row">
-            <div class="col-xs-5">
+            <div class="col-m-3  col-xs-6">
                 <a class="playerLink link"><%=vsPlayer%></a>
             </div>
-            <div class="col-xs-4">
+            <div class="col-m-2  col-xs-3">
                 <%=playerScore%>&nbsp;-&nbsp;<%=vsScore%></td>
             </div>
-            <div class="col-xs-3">
+            <div class="col-m-2  col-xs-3">
                 <% if (playerScore === '11') { %>
                     <span class="good"><span class="glyphicon glyphicon-circle-arrow-up"></span> <%= Math.round(playerElo*10) / 10 %></span>
                 <% } else { %>
                     <span class="bad"><span class="glyphicon glyphicon-circle-arrow-down"></span> <%= Math.round(playerElo*10) / 10 %></span>
                 <% } %>
             </div>
+            <div class="col-m-5 hidden-phone"></div>
+
         </div>
     </script>
 
@@ -90,7 +92,7 @@
 		<h1><%=name%> Graph</h1>
 		<canvas id="mainGraph" width="1024" height="728"></canvas>
 	</script>
-		
+
 	<script id="playerStatRowTemplate" type="text/template">
         <% var games = Number(win_num) + Number(loss_num); %>
         <% var winPercent = Math.round(Number(win_num) / Number(games) * 100); %>
@@ -135,7 +137,7 @@
                     <p>of <span id="playersTotal"><%=total_competitors%></span> players</p>
                 </div>
             </div>
-            
+
             <h2>Top rivls</h2>
             <div id="playerStats"></div>
 <!--            <a href="#" id="topRivlsShowMore">Show more</a>-->
@@ -161,9 +163,9 @@
 
 		<h2>Points over time</h2>
 		<canvas id="playerGraph" width="1024" height="728"></canvas>
-		
+
         <h2>Recent games</h2>
-        <div class="sectionBody"> 
+        <div class="sectionBody">
             <div id="playerHistory"></div>
         </div>
 	</script>
@@ -188,7 +190,7 @@
             <h4 id="noGameHistory">No games today or yesterday</h4>
         </div>
     </script>
-    
+
     <script id="competitorRowTemplate" type="text/template">
         <% var elo = Math.round(elo); %>
         <div class="col-xs-2">
@@ -210,7 +212,7 @@
         <div class="row">
             <!--<td><%=game1.game_id%></td>-->
             <div class="col-xs-6">
-                <strong><a class="playerLink link"><%=game1.name%></a></strong> vs <a class="playerLink link"><%=game2.name%></a>
+                <strong><%=game1.name%></strong> vs <%=game2.name%>
             </div>
             <div class="col-xs-3">
                 <strong><%=game1.score%></strong> - <%=game2.score%>
@@ -222,7 +224,7 @@
     </script>
 
     <script id="newGame2Template" type="text/template">
-            
+
         <div class="newGameContainer sectionBody">
             <div id="playerSection" class="row text-center">
                 <div id="selectPlayer1" class="col-xs-5">
@@ -240,12 +242,12 @@
             </div>
             <div id="scoresSection" class="row"></div>
             <div id="resultsSection" class="row"></div>
-            
+
             <div id="buttonsSection" class="row">
                 <div class="col-xs-12 text-center">
                     <button id="addScore" class="btn btn-sm btn-default">Add another score</button>
                     <button id="removeScore" class="btn btn-sm btn-danger">Remove last score</button>
-                    <button id="submitScore" class="btn btn-lg btn-success btn-block">Save scores</button>                
+                    <button id="submitScore" class="btn btn-lg btn-success btn-block">Save scores</button>
                 </div>
             </div>
         </div>
@@ -326,8 +328,8 @@
             </div>
         </div>
     </script>
-            
-            
+
+
     <script src="https://login.persona.org/include.js"></script>
     <script src=<?=base_url("/js/lib/json2.js")?>></script>
     <script src=<?=base_url("/js/lib/jquery-1.7.1.js")?>></script>
@@ -344,12 +346,12 @@
 		    // 1. Send the assertion to your backend for verification and to create a session.
 		    // 2. Update your UI.
 			onlogin: function(assertion) {
-				
+
 			    $.ajax({ /* <-- This example uses jQuery, but you can use whatever you'd like */
 				      type: 'POST',
 				      url: "<?=base_url('/auth/login')?>", // This is a URL on your website.
 				      data: {assertion: assertion},
-				      success: function(res, status, xhr) { 
+				      success: function(res, status, xhr) {
 				      	$('#login').hide();
 				      	$('#logout').show();
 				      	$('#notifications').show();
@@ -370,10 +372,10 @@
 			    $.ajax({
 			      type: 'POST',
 			      url: "<?=base_url('/auth/logout')?>", // This is a URL on your website.
-			      success: function(res, status, xhr) { 
+			      success: function(res, status, xhr) {
 			      	$('#login').show();
 			      	$('#logout').hide();
-			      	$('#notifications').hide(); 
+			      	$('#notifications').hide();
 		      	},
 			      error: function(xhr, status, err) { alert("Logout failure: " + err); }
 			    });
