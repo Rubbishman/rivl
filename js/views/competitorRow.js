@@ -1,13 +1,14 @@
 Vs.CompetitorRow = Backbone.View.extend({
 
 	template : _.template($('#competitorRowTemplate').html()),            
-    tagName : "tr",
+    tagName : "div",
+    className: "row percentBarRow",
 
     initialize: function () {
     },
 
     events : {
-    	'click': 'clickedCompetitor'
+    	'click .playerLink': 'clickedCompetitor'
     },
     clickedCompetitor: function() {
     	Vs.router.navigate('competition/' + Vs.competition.get('id') + "/competitor_home/" + this.model.get('competitor_id'), true);
