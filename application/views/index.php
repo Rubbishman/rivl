@@ -184,7 +184,7 @@
                 <div id="gameHistoryToday"></div>
             </div>
             <div id="gameHistoryYesterdayContent">
-	            <h4>Today</h4>
+	            <h4>Yesterday</h4>
                 <div id="gameHistoryYesterday"></div>
             </div>
             <h4 id="noGameHistory">No games today or yesterday</h4>
