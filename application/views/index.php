@@ -11,13 +11,6 @@
     <link rel="shortcut icon" href="<?=base_url("/favicon.ico" )?>"/>
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="<?=base_url("/css/bootstrap.css")?>"  media="screen"/>
-
-    <style>
-        body {
-            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-        }
-    </style>
-
     <link rel="stylesheet" href="<?=base_url("/css/main.css")?>"  media="screen"/>
 
 </head>
