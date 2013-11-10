@@ -16,6 +16,14 @@ Vs.CompetitorRow = Backbone.View.extend({
     render: function() {
 
         $(this.el).html(this.template(this.model.toJSON()));
+        
+        var self = this;
+        $(this.el).mouseenter(function() {
+    		self.$el.find('.pointsDisplay').show();
+    	});
+        $(this.el).mouseleave(function() {
+    		self.$el.find('.pointsDisplay').hide();
+    	});
         return this;
     }
 

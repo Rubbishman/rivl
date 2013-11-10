@@ -213,7 +213,12 @@
         </div>
     	<div class="col-xs-4">
             <div class="fl playedMeterWrap">
-                <div class="playerGamesBar" style="width:<%=elo_percent%>%;"></div>
+                <div class="playerGamesBar" style="width:<%=elo_percent%>%;">
+                	<div class="fl gamesPlayedLabel pointsDisplay" style="display: none;">
+                        <%=elo%>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </script>
