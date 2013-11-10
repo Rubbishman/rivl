@@ -163,6 +163,20 @@
         </div>
 	</script>
 
+	<script id="titleRow" type="text/template">
+		<div class="col-xs-4">
+			<b><%=title%></b>:
+		</div>
+		
+		<div class="col-xs-2">
+			<a class="playerLink link"><%=title_holder%></a>
+		</div>
+		
+		<div class="col-xs-6">
+			<%=description%>
+		</div>
+	</script>
+
     <script id="competitionTemplate" type="text/template">
 
         <h1><%=name%> Leaderboard</h1>
@@ -170,6 +184,11 @@
             <div id="competitors"></div>
         </div>
 
+		<h1>Titles</h1>
+		<div class="sectionBody">
+			<div id="titleSection"></div>
+		</div>
+		
         <h2>Game History</h2>
         <div class="sectionBody">
         	<div id="gameHistoryTodayContent">
@@ -397,8 +416,13 @@
     <script src=<?=base_url("/js/models/game.js?moo=")?><?=$randomlol?>></script>
     <script src=<?=base_url("/js/models/gameSaver.js?moo=")?><?=$randomlol?>></script>
     <script src=<?=base_url("/js/models/gameCollection.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/title.js?moo=")?><?=$randomlol?>></script>
+	<script src=<?=base_url("/js/models/titleCollection.js?moo=")?><?=$randomlol?>></script>
+
 
     <script src=<?=base_url("/js/views/competitionRow.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/titleRow.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/titleView.js?moo=")?><?=$randomlol?>></script>
     <script src=<?=base_url("/js/views/competitorRow.js?moo=")?><?=$randomlol?>></script>
     <script src=<?=base_url("/js/views/competitorView.js?moo=")?><?=$randomlol?>></script>
     <script src=<?=base_url("/js/views/competitionGraphView.js?moo=")?><?=$randomlol?>></script>

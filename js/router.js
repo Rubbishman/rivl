@@ -75,6 +75,11 @@ $(function () {
                 Vs.competitorView.render();
             });
             
+            Vs.router._fetchTitles(Vs.competition.get('id'), function() {
+            	Vs.titleView = new Vs.TitleView({el:$('#titleSection'),model: Vs.competition, collection: Vs.titles});
+            	Vs.titleView.render();
+            });
+            
             Vs.router._fetchGames(Vs.competition.get('id'), function() {
                 Vs.gameHistoryView = new Vs.GameHistoryView({model: Vs.competition, collection: Vs.games});
                 Vs.gameHistoryView.render();
@@ -121,7 +126,21 @@ $(function () {
             }
         },
 
-
+		_fetchTitles: function(id, callback) {
+			Vs.titles = new Vs.TitleCollection();
+			Vs.titles.loaded = false;
+			
+			Vs.titles.fetch({
+				data: {competition_id: id},
+				success: function(model, response)  {
+                    Vs.titles.loaded = true;
+                    callback();
+                },
+                error: function(model, response) {
+                    console.log(response);
+                }
+			});
+		},
 
         _fetchCompetition: function(id, callback) {
 
