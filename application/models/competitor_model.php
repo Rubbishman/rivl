@@ -5,6 +5,36 @@ class Competitor_model extends CI_Model {
 		$this->load->database();
 	}
 	
+	public function save_competitor($name, $competition_id) {
+		$this->db->select('name,id');
+		$this->db->from('competitor');
+		$this->db->where('name',$name);
+		
+		$result = $this->db->get();
+		$result = $result->result();
+
+		if(count($result) === 0) {
+			$this->db->insert('competitor',array('name' => $name));
+			$competitor_id = $this->db->insert_id();
+		} else {
+			$competitor_id = $result[0]->id;
+		}
+		
+		$this->db->select('elo');
+		$this->db->from('competitor_elo');
+		$this->db->where('competitor_id',$competitor_id);
+		$this->db->where('competition_id',$competition_id);
+		
+		$result = $this->db->get();
+		$result = $result->result();
+		if(count($result) === 0) {
+			$this->db->insert('competitor_elo',array(
+				'competitor_id' => $competitor_id,
+				'competition_id' => $competition_id,
+				'elo' => 1500));
+		} 
+	}
+	
 	public function get_competitor($competition_id,$id = FALSE)
 	{
 
