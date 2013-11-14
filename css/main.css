@@ -161,12 +161,21 @@ span.rankNeutral {
 	margin-top: 0.2em;
 }
 .playedMeterWrap {
-	background: #dddddd;
+	background: #e2e2e2;
 	width: 100%;
+	border-radius: 4px;
+	box-shadow: 0 0 8px 0px #bbb inset;
 }
 .playerGamesBar {
 	background: #a0a0a0;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#aaa), to(#999));
+	background-image: -webkit-linear-gradient(top, #aaa, #999);
+	background-image: -moz-linear-gradient(top, #aaa, #999);
+	background-image: -ms-linear-gradient(top, #aaa, #999);
+	background-image: -o-linear-gradient(top, #aaa, #999);
+	background-image: linear-gradient(to bottom, #AAA, #999);
 	height: 2em;
+	border-radius: 4px;
 }
 .gamesPlayedLabel {
 	padding-left: 5px;
