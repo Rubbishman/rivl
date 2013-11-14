@@ -71,9 +71,9 @@
             </div>
             <div class="col-m-2  col-xs-3">
                 <% if (playerScore === '11') { %>
-                    <span class="good"><span class="glyphicon glyphicon-circle-arrow-up"></span> <%= Math.round(playerElo*10) / 10 %></span>
+                    <span class="good"><span class="glyphicon glyphicon-circle-arrow-up"></span> <%= Math.abs(Math.round(playerElo*10) / 10) %></span>
                 <% } else { %>
-                    <span class="bad"><span class="glyphicon glyphicon-circle-arrow-down"></span> <%= Math.round(playerElo*10) / 10 %></span>
+                    <span class="bad"><span class="glyphicon glyphicon-circle-arrow-down"></span> <%= Math.abs(Math.round(playerElo*10) / 10) %></span>
                 <% } %>
             </div>
             <div class="col-m-5 hidden-phone"></div>
@@ -225,17 +225,17 @@
 
     <script id="gameRowTemplate" type="text/template">
         <% var game1_elo_change = Math.round(game1.elo_change * 10 ) / 10; %>
-        <% var game2_elo_change = Math.round(game2.elo_change * 10 ) / 10; %>
+        <% var game2_elo_change = Math.abs(Math.round(game2.elo_change * 10 ) / 10); %>
         <div class="row">
-            <!--<td><%=game1.game_id%></td>-->
-            <div class="col-xs-6">
+            <div class="col-xs-5">
                 <strong><%=game1.name%></strong> vs <%=game2.name%>
             </div>
-            <div class="col-xs-3">
+            <div class="col-xs-2">
                 <strong><%=game1.score%></strong> - <%=game2.score%>
             </div>
-            <div class="col-xs-3">
-                <strong>+<%=game1_elo_change%></strong>&nbsp;&nbsp;<%=game2_elo_change%>
+            <div class="col-xs-5">
+                <span class="good"><span class="glyphicon glyphicon-circle-arrow-up"></span> <%= game1_elo_change %></span>&nbsp;&nbsp;
+                <span class="bad"><span class="glyphicon glyphicon-circle-arrow-down"></span> <%= game2_elo_change %></span>
             </div>
         </div>
     </script>
@@ -319,7 +319,7 @@
                 <% if (p1eloDelta > 0) { %>
                     <span class="resultsP1 rankUp"><span class="glyphicon glyphicon-circle-arrow-up"></span> <%= p1eloDelta %></span>
                 <% } else if (p1eloDelta < 0) { %>
-                    <span class="resultsP1 rankDown"><span class="glyphicon glyphicon-circle-arrow-down"></span> <%= p1eloDelta %></span>
+                    <span class="resultsP1 rankDown"><span class="glyphicon glyphicon-circle-arrow-down"></span> <%= Math.abs(p1eloDelta) %></span>
                 <% } %>
             </div>
             <div class="col-xs-2"></div>
@@ -327,7 +327,7 @@
                 <% if (p2eloDelta > 0) { %>
                     <span class="resultsP2 rankUp"><span class="glyphicon glyphicon-circle-arrow-up"></span> <%= p2eloDelta %></span>
                 <% } else if (p2eloDelta < 0) { %>
-                    <span class="resultsP2 rankDown"><span class="glyphicon glyphicon-circle-arrow-down"></span> <%= p2eloDelta %></span>
+                    <span class="resultsP2 rankDown"><span class="glyphicon glyphicon-circle-arrow-down"></span> <%= Math.abs(p2eloDelta) %></span>
                 <% } %>
             </div>
         </div>
