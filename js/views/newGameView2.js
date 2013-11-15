@@ -237,7 +237,7 @@ Vs.NewGameView2 = Backbone.View.extend({
         Vs.addPlayer.fetch({
             data: {name: $('#addPlayerName').val(), competition_id: Vs.competition.get('id')},
             success: function(model, response) {
-                    Vs.router.navigate('competition/'+Vs.competition.get('id')+'/game', true);
+                location.reload();
             },
             error: function(model, response) {
                 console.log(response);
