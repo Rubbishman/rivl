@@ -210,6 +210,14 @@ Vs.NewGameView2 = Backbone.View.extend({
 
         this.$el.html(this.navbarTemplate(this.model.toJSON()));
         this.$el.append(this.gameTemplate(this.model.toJSON()));
+
+        $('#addPlayer').click(function() {
+            $('#addPlayer').hide();
+            $('#addPlayerDiv').removeClass('hidden');
+        });
+
+        $('#addPlayerButton').click(this.addPlayer);
+
         this._renderNewScoreRow();
 
         array.sort(function(a,b){return a.attributes.name < b.attributes.name ? -1 : a.attributes.name > b.attributes.name ? 1 : 0;});
@@ -221,7 +229,20 @@ Vs.NewGameView2 = Backbone.View.extend({
             this._setPlayer('1', player1);
         }
     },
-
+    addPlayer: function() {
+        Vs.addPlayer = new Vs.AddPlayer();
+        if($('#addPlayerName').val() == null || $('#addPlayerName').val().trim() == '') {
+            return;
+        }
+        Vs.addPlayer.fetch({
+            data: {name: $('#addPlayerName').val(), competition_id: Vs.competition.get('id')},
+            success: function(model, response) {
+                    Vs.router.navigate('competition/'+Vs.competition.get('id')+'/game');
+            },
+            error: function(model, response) {
+                console.log(response);
+            }});
+    },
     _renderPlayerSelect: function() {
         var self = this;
         _.each(this.collection.models, function(competitor) {

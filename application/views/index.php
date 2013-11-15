@@ -267,7 +267,12 @@
                     <button id="submitScore" class="btn btn-lg btn-success btn-block">Save scores</button>
                 </div>
             </div>
+            <a id="addPlayer">Not in list?</a>
+            <div id="addPlayerDiv" class="hidden">
+                Name: <input type="text" id ="addPlayerName" name="firstname"> <button id="addPlayerButton">Add player</button>
+            </div>
         </div>
+
 
 
             <div id="playerSelectModal" class="modal fade">
@@ -412,6 +417,7 @@
 	</script>
 
     <script src=<?=base_url("/js/vs.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/addPlayer.js?moo=")?><?=$randomlol?>></script>
     <script src=<?=base_url("/js/models/competition.js?moo=")?><?=$randomlol?>></script>
     <script src=<?=base_url("/js/models/competitionCollection.js?moo=")?><?=$randomlol?>></script>
     <script src=<?=base_url("/js/models/competitor.js?moo=")?><?=$randomlol?>></script>

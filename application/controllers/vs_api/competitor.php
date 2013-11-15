@@ -10,7 +10,7 @@ class Competitor extends CI_Controller {
     public function index() {
 		
         $method = $this->input->server('REQUEST_METHOD');
-        if ($method == 'POST') {
+        if ($method == 'GET') {
             $this->save_competitor();
         }
         else {
@@ -20,6 +20,6 @@ class Competitor extends CI_Controller {
     }
 	
 	private function save_competitor() {
-		$this->competitor_model->save_competitor($this->input->post('name'),$this->input->post('competition_id'));
+		$this->competitor_model->save_competitor($this->input->get('name'),$this->input->get('competition_id'));
 	}
 }
