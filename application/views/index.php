@@ -230,11 +230,13 @@
             <div class="col-xs-5">
                 <strong><%=game1.name%></strong> vs <%=game2.name%>
             </div>
-            <div class="col-xs-2">
+            <div class="col-xs-3">
                 <strong><%=game1.score%></strong> - <%=game2.score%>
             </div>
-            <div class="col-xs-5">
-                <span class="good"><span class="glyphicon glyphicon-circle-arrow-up"></span> <%= game1_elo_change %></span>&nbsp;&nbsp;
+            <div class="col-xs-2">
+                <span class="good"><span class="glyphicon glyphicon-circle-arrow-up"></span> <%= game1_elo_change %></span>
+            </div>
+            <div class="col-xs-2">
                 <span class="bad"><span class="glyphicon glyphicon-circle-arrow-down"></span> <%= game2_elo_change %></span>
             </div>
         </div>
