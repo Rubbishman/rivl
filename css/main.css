@@ -122,15 +122,15 @@ span.rankNeutral {
 	border-top-right-radius: 3px;
 }
 .percentBarRow {
-	line-height: 2em;
+	line-height: 1.5em;
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
 .percentBar {
     background: #FC9797;
-    line-height: 2em;
+    line-height: 1.5em;
     overflow: hidden;
-    height: 2em;
+    height: 1.5em;
 }
 .bar {
 	position: absolute;
@@ -156,9 +156,9 @@ span.rankNeutral {
 	background: rgba(255, 255, 255, 0.7);
 	position: absolute;
 	width: 50px;
-	height: 1.6em;
-	line-height: 1.6em;
-	margin-top: 0.2em;
+	height: 1.2em;
+	line-height: 1.2em;
+	margin-top: 0.1em;
 }
 .playedMeterWrap {
 	background: #e2e2e2;
@@ -174,12 +174,13 @@ span.rankNeutral {
 	background-image: -ms-linear-gradient(top, #aaa, #999);
 	background-image: -o-linear-gradient(top, #aaa, #999);
 	background-image: linear-gradient(to bottom, #AAA, #999);
-	height: 2em;
+	height: 1.5em;
 	border-radius: 4px;
 }
 .gamesPlayedLabel {
 	padding-left: 5px;
 	text-shadow: 0 1px 0 #bbb;
+	line-height: 1.5em;
 }
 .bad {
 	color: red;

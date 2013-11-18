@@ -92,10 +92,10 @@
         <% var lossPercent = 100 - winPercent; %>
 
         <div class="row percentBarRow">
-            <div class="col-xs-3">
+            <div class="col-xs-4">
                 <a class="playerLink link"><%=opponent_name%></a>
             </div>
-            <div class="col-xs-6 percentBar">
+            <div class="col-xs-5 percentBar">
                 <div class="bar barGood" style="width: <%=winPercent%>%"><strong><span><%=win_num%></span></strong></div>
                 <div class="bar barBad" style="width: <%=lossPercent%>%"><span><%=loss_num%></span></div>
                 <div class="barInfo"><span class="<% if (winPercent < 50) {%>bad<% } %>"><%=winPercent%>%</span></div>
@@ -208,10 +208,10 @@
         <div class="col-xs-2">
             <%= $('#competitors .row').length + 1 %>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-5">
             <a class="playerLink link"><%=name%></a>
         </div>
-    	<div class="col-xs-4">
+    	<div class="col-xs-5">
             <div class="fl playedMeterWrap">
                 <div class="playerGamesBar" style="width:<%=elo_percent%>%;">
                 	<div class="fl gamesPlayedLabel pointsDisplay" style="display: none;">
