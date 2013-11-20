@@ -92,6 +92,7 @@ class Game_model extends CI_Model {
         join competitor c2 on c2.id = s2.competitor_id
     where s1.competitor_id = '.$params['competitor_id'].'
     	and game.competition_id = '.$params['competition_id'].'
+    	and c2.status = "active"
     group by s1.competitor_id, s2.competitor_id
     order by count(1) desc;');
 		return $res->result_array();

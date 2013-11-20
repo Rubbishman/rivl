@@ -53,6 +53,7 @@ class Competitor_model extends CI_Model {
         //$this->db->join('score s1', 's1.competitor_id = competitor.id and s1.game_id = game.id','left');
 		//$this->db->join('score s2', 's1.game_id = s2.game_id and s1.competitor_id != s2.competitor_id and s2.game_id = game.id','left');
 		$this->db->where('competitor_elo.competition_id', $competition_id);
+        $this->db->where('competitor.status','active');
         $this->db->group_by('competitor.id');
 		$this->db->order_by('competitor_elo.elo desc, competitor.name asc');
 		
@@ -100,11 +101,13 @@ class Competitor_model extends CI_Model {
         foreach($rankInfo as $rank) {
             $totalCompetitors++;
             if($rank->competitor_id == $id) {
-                if($rank->rank == 1) {
+                if($rank->rank%100 > 3 && $rank->rank%100 < 21){
+                    $results->rank = $rank->rank."th";
+                } else if($rank->rank%10 == 1) {
                     $results->rank = $rank->rank."st";
-                } else if($rank->rank == 2) {
+                } else if($rank->rank%10 == 2) {
                     $results->rank = $rank->rank."nd";
-                } else if($rank->rank == 3) {
+                } else if($rank->rank%10 == 3) {
                     $results->rank = $rank->rank."rd";
                 } else {
                     $results->rank = $rank->rank."th";
