@@ -246,6 +246,7 @@
         <% var game1_elo_change = Math.round(game1.elo_change * 10 ) / 10; %>
         <% var game2_elo_change = Math.abs(Math.round(game2.elo_change * 10 ) / 10); %>
         <div class="row">
+            <!--        <%=game1.game_id%>-->
             <div class="col-xs-5">
                 <strong><%=game1.name%></strong> vs <%=game2.name%>
             </div>
