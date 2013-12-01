@@ -147,37 +147,22 @@ Vs.NewGameView2 = Backbone.View.extend({
 
         if ($selectedPlayer.hasClass('active')) {
             $selectedPlayer.removeClass('active');
-
         } else {
+            $selectedPlayer.parent().children().removeClass('active');
             $selectedPlayer.addClass('active');
 
-            //if we are entering the second player then close modal and update players
-            if ($selectedPlayer.siblings('.active').length == 1) {
-                $('#playerSelectModal').modal('hide');
-
-                playerA = this.collection.where({competitor_id: $selectedPlayer.attr('data-competitor_id')})[0];
-                playerB = this.collection.where({competitor_id: $selectedPlayer.siblings('.active').attr('data-competitor_id')})[0];
-
-                //try to match up newly selected players with currently selected players
-                if (playerA.get('competitor_id') ===  $('#selectPlayer1').attr('data-competitor_id') ||
-                        playerB.get('competitor_id') ===  $('#selectPlayer2').attr('data-competitor_id')) {
-                    player1 = playerA;
-                    player2 = playerB;
-                } else if (playerB.get('competitor_id') ===  $('#selectPlayer1').attr('data-competitor_id') ||
-                        playerA.get('competitor_id') ===  $('#selectPlayer2').attr('data-competitor_id')) {
-                    player1 = playerB;
-                    player2 = playerA;
-                }
-
-                //if we can't match any players then just randomly choose
-                if (!player1) {
-                    player1 = playerA;
-                    player2 = playerB;
-                }
-
-                this._setPlayer('1', player1);
-                this._setPlayer('2', player2);
+            if($selectedPlayer.parent().attr('id') == "left_player_select") {
+            	playerA = this.collection.where({competitor_id: $selectedPlayer.attr('data-competitor_id')})[0];
+            	this._setPlayer('1', playerA);
+            } else {
+            	playerB = this.collection.where({competitor_id: $selectedPlayer.attr('data-competitor_id')})[0];
+            	this._setPlayer('2', playerB);
             }
+            
+            if($('#left_player_select').children('.active').length == 1 
+            	&& $('#right_player_select').children('.active').length == 1) {
+            		$('#playerSelectModal').modal('hide');
+        	}
         }
     },
     _getImage: function(name, direction, result) {

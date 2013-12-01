@@ -299,12 +299,13 @@
 
             <div id="playerSelectModal" class="modal fade">
                 <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content row">
                         <div class="modal-header">
                             <h4 class="modal-title">Select players</h4>
                         </div>
                         <div class="modal-body">
-                            <ul class="list-group"></ul>
+                            <ul id="left_player_select" class="list-group col-xs-6"></ul>
+                            <ul id="right_player_select" class="list-group col-xs-6"></ul>
                         </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
