@@ -2,24 +2,17 @@
 <html lang="en">
 
 <head>
-	<meta charset="utf-8">
 
-	<script src=<?=base_url("/js/thirdparty/json2.js")?>></script>
-	<script src=<?=base_url("/js/thirdparty/jquery-1.7.1.js")?>></script>
-	<script src=<?=base_url("/js/thirdparty/underscore.js")?>></script>
-	<script src=<?=base_url("/js/thirdparty/backbone.js")?>></script>
+    <meta charset="utf-8">
 
-    <script src=<?=base_url("/js/vs.js")?>></script>
-    <script src=<?=base_url("/js/models/competition.js")?>></script>
-    <script src=<?=base_url("/js/models/competitionCollection.js")?>></script>
-    <script src=<?=base_url("/js/views/competitionView.js")?>></script>
-    <script src=<?=base_url("/js/views/allCompetitionsView.js")?>></script>
-    <script src=<?=base_url("/js/router.js")?>></script>
+    <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
+    <title>rivl</title>
 
-<title>rivl!</title>
+    <link rel="shortcut icon" href="<?=base_url("/favicon.ico" )?>"/>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="<?=base_url("/css/bootstrap.css")?>"  media="screen"/>
+    <link rel="stylesheet" href="<?=base_url("/css/main.css")?>"  media="screen"/>
 
 </head>
 
 <body>
-
-	<img src=<?=base_url("/images/graphic.png")?> />
