@@ -20,9 +20,9 @@
 
             <div id="buttonsSection" class="row">
                 <div class="col-xs-12 text-center">
-                    <button id="addScore" class="btn btn-sm btn-default">Add another score</button>
-                    <button id="removeScore" class="btn btn-sm btn-danger">Remove last score</button>
-                    <button id="submitScore" class="btn btn-lg btn-success btn-block">Save scores</button>
+                    <button id="addScore" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-plus"></span> Add another result</button>
+                    <button id="removeScore" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-minus"></span> Remove last result</button>
+                    <button id="submitScore" class="btn btn-lg btn-success btn-block">Save result</button>
                 </div>
             </div>
             <a id="addPlayer">Is your name missing?</a>
@@ -36,8 +36,11 @@
             <div id="playerSelectModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content row">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Select players</h4>
+                        <div class="modal-header col-xs-6 columns">
+                            <h4 class="modal-title">Player 1</h4>
+                        </div>
+                        <div class="modal-header col-xs-6 columns">
+                            <h4 class="modal-title">Player 2</h4>
                         </div>
                         <div class="modal-body">
                             <ul id="left_player_select" class="list-group col-xs-6"></ul>

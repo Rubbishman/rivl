@@ -15,7 +15,8 @@ Vs.NewGameView2 = Backbone.View.extend({
         "click #submitScore": "saveGames",
         "click #selectPlayer1 img, #selectPlayer2 img": "showPlayerSelectModal",
         "click .playerSelection": "handlePlayerSelect",
-        "change .scoreRow select": "_renderScoreUpdate"
+        "change .scoreRow select": "_renderScoreUpdate",
+        "click .scoreRow button": "selectWinner"
     },
     
     saveGames: function() {
@@ -287,5 +288,21 @@ Vs.NewGameView2 = Backbone.View.extend({
             $p2Score.parent().removeClass('losingScore').addClass('winningScore');
             $p1Score.parent().removeClass('winningScore').addClass('losingScore');
         }
+    },
+
+    selectWinner: function (e) {
+        
+        var $winner = $(e.target),
+            $loser;
+
+        if ($winner.hasClass('player1Btn')) {
+            $loser = $winner.closest('.scoreRow').find('.player2Btn');
+        } else {
+            $loser = $winner.closest('.scoreRow').find('.player1Btn');
+        }
+
+        $winner.removeClass('btn-default btn-loser').addClass('btn-primary').html('<span class="glyphicon glyphicon-ok"></span> Winner');
+        $loser.removeClass('btn-primary btn-default').addClass('btn-loser').html('<span class="glyphicon glyphicon-remove"></span> Loser');
     }
+
 });

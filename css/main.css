@@ -31,8 +31,17 @@ a {
 	font-size: 20px;
 	width: 75%;
 }
-.newGameContainer div {
+/*.newGameContainer div {
 	padding: 0;
+}*/
+.gameNumber {
+	color: #999;
+	font-size: 0.8em;
+	line-height: 2.7em;
+}
+.scoreRow .btn-loser {
+	color: #ccc;
+	background: #f1f1f1;
 }
 #vsLabel {
 	background-image: url("../img/graphic_sm.png");
@@ -42,30 +51,32 @@ a {
 }
 #selectPlayer1 img, #selectPlayer2 img {
 	cursor: pointer;
-
 	width:110px;
 	height: auto;
 }
-#scoresSection {
+/*#scoresSection {
 	border-top: solid 1px #CCC;	
 	margin-top: 20px;
 	margin-bottom: 20px;
-}
+}*/
 #playerSelectModal {
 	-webkit-overflow-scrolling: touch;
 }
 #playerSelectModal .modal-body {
 	padding: 0px;
 }
-.scoreRow select {
+#playerSelectModal .list-group-item {
+	border: 0;
+}
+/*.scoreRow select {
 	font-size: 30px;
 	width: 80px;
 	margin: 10px 0 10px;
-}
-.scoreRow div {
+}*/
+/*.scoreRow div {
 	background-color: #F7F7F7;
-}
-.scoreRow .winningScore {
+}*/
+/*.scoreRow .winningScore {
 	background-color: #FFFF9E;
 	background-image: url("../img/trophy_32.png");
 	background-repeat:no-repeat;
@@ -74,6 +85,12 @@ a {
 }
 .scoreRow .losingScore {
 	background-color: #EEE;
+}*/
+.scoreRow {
+	margin: 0.2em 0;
+}
+.scoreRow *:focus {
+    outline: 0;
 }
 #resultsSection {
 	margin-bottom: 20px;
