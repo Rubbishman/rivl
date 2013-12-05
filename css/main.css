@@ -59,6 +59,9 @@ a {
 	margin-top: 20px;
 	margin-bottom: 20px;
 }*/
+#playerSection {
+	margin-bottom: 1.2em;
+}
 #playerSelectModal {
 	-webkit-overflow-scrolling: touch;
 }
