@@ -4,7 +4,10 @@
         <div class="sectionBody">
             <div id="competitors"></div>
         </div>
-
+		<a id="addPlayer">Is your name missing?</a>
+        <div id="addPlayerDiv" class="hidden">
+            Name: <input type="text" id ="addPlayerName" name="firstname"> <button id="addPlayerButton">Add player</button>
+        </div>
 		<h1>Titles</h1>
 		<div class="sectionBody">
 			<div id="titleSection"></div>

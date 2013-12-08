@@ -52,22 +52,40 @@ Vs.NewGameView2 = Backbone.View.extend({
                 return;
             }
 
-            $p1Score = $(scoreRow).find('select').first();
-            $p2Score = $(scoreRow).find('select').last();
+            $p1Score = $(scoreRow).find('.player1Btn').find('.glyphicon-ok').length > 0 ? self.model.get('points') : -1;
+            $p2Score = $(scoreRow).find('.player2Btn').find('.glyphicon-ok').length > 0 ? self.model.get('points') : -1;
 
-            if ($p1Score.val() === self.model.get('points') && $p2Score.val() !== '') {
-                winningScore = $p1Score.val();
-                winningId = p1Id;
-                losingScore = $p2Score.val();
-                losingId = p2Id;
-            } else if ($p2Score.val() === self.model.get('points') && $p1Score.val() !== '') {
-                winningScore = $p2Score.val();
-                winningId = p2Id;
-                losingScore = $p1Score.val();
-                losingId = p1Id;
-            } else {
-                scoresOk = false;
-            }
+			if($p1Score < 0 && $p2Score < 0 || $p1Score > 0 && $p2Score > 0) {
+				scoresOk = false;
+			} else {
+				
+				if($p1Score === self.model.get('points')) {
+					winningScore = $p1Score;
+					winningId = p1Id;
+					losingScore = $p2Score;
+					losingId = p2Id;
+				} else {
+					winningScore = $p2Score;
+					winningId = p2Id;
+					losingScore = $p1Score;
+					losingId = p1Id;
+				}
+				scoresOk = true;
+			}
+
+            // if ($p1Score.val() === self.model.get('points') && $p2Score.val() !== '') {
+                // winningScore = $p1Score.val();
+                // winningId = p1Id;
+                // losingScore = $p2Score.val();
+                // losingId = p2Id;
+            // } else if ($p2Score.val() === self.model.get('points') && $p1Score.val() !== '') {
+                // winningScore = $p2Score.val();
+                // winningId = p2Id;
+                // losingScore = $p1Score.val();
+                // losingId = p1Id;
+            // } else {
+                // scoresOk = false;
+            // }
             
             var newGameModel = {
                 competition_id: self.model.id,
@@ -84,14 +102,16 @@ Vs.NewGameView2 = Backbone.View.extend({
             return;
         }
 
+		Vs.router._fetchCompetitors(self.model.get('id'), function() {
+			self.oldCollection = Vs.competitors;
+		});
+
         var games = new Vs.GameSaver();
 
         games.fetch({
             data: { gameModels: gameModels },
             success: function(collection, response) {
 
-                self.oldCollection = self.collection;
-                
                 Vs.router._fetchCompetitors(self.model.get('id'), function() {
 
                     self.collection = Vs.competitors;
@@ -197,13 +217,6 @@ Vs.NewGameView2 = Backbone.View.extend({
         this.$el.html(this.navbarTemplate(this.model.toJSON()));
         this.$el.append(this.gameTemplate(this.model.toJSON()));
 
-        $('#addPlayer').click(function() {
-            $('#addPlayer').hide();
-            $('#addPlayerDiv').removeClass('hidden');
-        });
-
-        $('#addPlayerButton').click(this.addPlayer);
-
         this._renderNewScoreRow();
 
         array.sort(function(a,b){return a.attributes.name < b.attributes.name ? -1 : a.attributes.name > b.attributes.name ? 1 : 0;});
@@ -214,20 +227,6 @@ Vs.NewGameView2 = Backbone.View.extend({
             player1 = this.collection.where({competitor_id:competitorId})[0];
             this._setPlayer('1', player1);
         }
-    },
-    addPlayer: function() {
-        Vs.addPlayer = new Vs.AddPlayer();
-        if($('#addPlayerName').val() == null || $('#addPlayerName').val().trim() == '') {
-            return;
-        }
-        Vs.addPlayer.fetch({
-            data: {name: $('#addPlayerName').val(), competition_id: Vs.competition.get('id')},
-            success: function(model, response) {
-                location.reload();
-            },
-            error: function(model, response) {
-                console.log(response);
-            }});
     },
     _renderPlayerSelect: function() {
         var self = this;
@@ -295,14 +294,26 @@ Vs.NewGameView2 = Backbone.View.extend({
         var $winner = $(e.target),
             $loser;
 
+		if($winner.hasClass('glyphicon')) {
+			$winner = $winner.parent();
+		}
+
         if ($winner.hasClass('player1Btn')) {
             $loser = $winner.closest('.scoreRow').find('.player2Btn');
+            var $parent = $loser.parent().parent();
+            $parent.find('.scoreP1').removeClass('hidden').hide();
+            $parent.find('.scoreP2').removeClass('hidden').show();
         } else {
             $loser = $winner.closest('.scoreRow').find('.player1Btn');
+            var $parent = $loser.parent().parent();
+            $parent.find('.scoreP2').removeClass('hidden').hide();
+            $parent.find('.scoreP1').removeClass('hidden').show();
         }
 
         $winner.removeClass('btn-default btn-loser').addClass('btn-primary').html('<span class="glyphicon glyphicon-ok"></span> Winner');
-        $loser.removeClass('btn-primary btn-default').addClass('btn-loser').html('<span class="glyphicon glyphicon-remove"></span> Loser');
+        $loser.removeClass('btn-primary btn-default').addClass('btn-loser').html('<span class="glyphicon glyphicon-remove"></span>');
+    	$winner.parent().css('width','');
+    	$loser.parent().css('width','50px');
     }
 
 });

@@ -25,10 +25,6 @@
                     <button id="submitScore" class="btn btn-lg btn-success btn-block">Save result</button>
                 </div>
             </div>
-            <a id="addPlayer">Is your name missing?</a>
-            <div id="addPlayerDiv" class="hidden">
-                Name: <input type="text" id ="addPlayerName" name="firstname"> <button id="addPlayerButton">Add player</button>
-            </div>
         </div>
 
 
