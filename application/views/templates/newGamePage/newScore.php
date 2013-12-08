@@ -8,7 +8,7 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <% for (var i = points-1; i >= 0; i--) { %>
-                        <li><a href="javascript:void();" data-score="<%= i %>"><%= i %> points</a></li>
+                        <li><a href="javascript:void(0);" data-score="<%= i %>"><%= i %> points</a></li>
                     <% } %>
                 </ul>
             </div>   
@@ -23,7 +23,7 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <% for (var i = points-1; i >= 0; i--) { %>
-                        <li><a href="javascript:void();" data-score="<%= i %>"><%= i %> points</a></li>
+                        <li><a href="javascript:void(0);" data-score="<%= i %>"><%= i %> points</a></li>
                     <% } %>
                 </ul>
             </div>
