@@ -15,8 +15,9 @@ Vs.NewGameView2 = Backbone.View.extend({
         "click #submitScore": "saveGames",
         "click #selectPlayer1 img, #selectPlayer2 img": "showPlayerSelectModal",
         "click .playerSelection": "handlePlayerSelect",
-        "change .scoreRow select": "_renderScoreUpdate",
-        "click .scoreRow button": "selectWinner"
+        "change .scoreRow select": "_renderScoreUpdate", //do we still need this?
+        "click .scoreRow button:not(.dropdown-toggle)": "selectWinner",
+        "click .scoreRow .dropdown-menu a": "selectLoserScore"
     },
     
     saveGames: function() {
@@ -292,28 +293,77 @@ Vs.NewGameView2 = Backbone.View.extend({
     selectWinner: function (e) {
         
         var $winner = $(e.target),
-            $loser;
+            $loser,
+            supportsLosingScore = true,
+            supportsWinningScore = false; //we may not ever want to do this...
 
-		if($winner.hasClass('glyphicon')) {
-			$winner = $winner.parent();
-		}
-
-        if ($winner.hasClass('player1Btn')) {
-            $loser = $winner.closest('.scoreRow').find('.player2Btn');
-            var $parent = $loser.parent().parent();
-            $parent.find('.scoreP1').removeClass('hidden').hide();
-            $parent.find('.scoreP2').removeClass('hidden').show();
-        } else {
-            $loser = $winner.closest('.scoreRow').find('.player1Btn');
-            var $parent = $loser.parent().parent();
-            $parent.find('.scoreP2').removeClass('hidden').hide();
-            $parent.find('.scoreP1').removeClass('hidden').show();
+        //allow for clicking on the icon
+        if($winner.hasClass('glyphicon')) {
+            $winner = $winner.parent();
         }
 
-        $winner.removeClass('btn-default btn-loser').addClass('btn-primary').html('<span class="glyphicon glyphicon-ok"></span> Winner');
-        $loser.removeClass('btn-primary btn-default').addClass('btn-loser').html('<span class="glyphicon glyphicon-remove"></span>');
-    	$winner.parent().css('width','');
-    	$loser.parent().css('width','50px');
+        if (supportsLosingScore === true) {
+
+            if ($winner.hasClass('player1Btn')) {
+                $loser = $winner.closest('.scoreRow').find('.player2Btn');
+            } else {
+                $loser = $winner.closest('.scoreRow').find('.player1Btn');
+            }
+
+            $winner.removeClass('btn-default btn-loser')
+                .addClass('btn-primary')
+                .removeAttr('data-toggle')
+                .html('<span class="glyphicon glyphicon-ok"></span> Winner');
+
+            $loser.removeClass('btn-primary btn-default')
+                .addClass('btn-loser dropdown-toggle')
+                .attr('data-toggle','dropdown')
+                .html('Loser\'s score <span class="glyphicon glyphicon-chevron-down"></span>');
+
+            //massive hack
+            setTimeout(function(){
+                $loser.closest('.btnGroupWrap').addClass('btn-group open');
+            }, 100);
+
+            //TODO: put all the btn-group and associated classes/attributes 
+            //      conditions in the template rather than in here?
+            //      We'd still need conditional JS too.
+            
+
+        } else {
+        //when NOT entering a loser's score 
+
+            if ($winner.hasClass('player1Btn')) {
+                $loser = $winner.closest('.scoreRow').find('.player2Btn');
+                var $parent = $loser.parent().parent();
+            } else {
+                $loser = $winner.closest('.scoreRow').find('.player1Btn');
+                var $parent = $loser.parent().parent();
+            }
+
+            $winner.removeClass('btn-default btn-loser')
+                .addClass('btn-primary')
+                .html('<span class="glyphicon glyphicon-ok"></span> Winner');
+
+            $loser.removeClass('btn-primary btn-default')
+                .addClass('btn-loser')
+                .html('<span class="glyphicon glyphicon-remove"></span> Loser');
+
+        }
+
+    },
+
+    selectLoserScore : function (e) {
+
+        var scoreText = $(e.target).html(),
+            score = $(e.target).attr('data-score');
+
+        $(e.target).closest('.btn-group').find('button').html(scoreText + ' <span class="glyphicon glyphicon-chevron-down"></span>');
+
     }
 
 });
+
+
+
+
