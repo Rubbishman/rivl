@@ -44,10 +44,14 @@ class Game extends CI_Controller{
 					foreach($res as $game) {
 						$this->combine_clump($clump, $clumpIndex, $game);
 					}
+
+                    $this->shuffleOrder($clump,$clumpIndex);
+
+                    $res = $clump;
 				}
             }
 			
-            $this->_render($clump);
+            $this->_render($res);
         }
         catch (Exception $e) {
             $this->output->set_status_header(500,$e->getMessage());
@@ -76,20 +80,24 @@ class Game extends CI_Controller{
 			$clump[$clumpIndex]['p1']['elo_change'] += $new_data['loser_elo_change'];
 		} else {
 			
-			if($clump[$clumpIndex]['p2']['wins'] > $clump[$clumpIndex]['p1']['wins']
-				|| ($clump[$clumpIndex]['p2']['wins'] == $clump[$clumpIndex]['p1']['wins']
-					&& $clump[$clumpIndex]['p2']['elo_change'] > $clump[$clumpIndex]['p1']['elo_change'])) {
-				$temp = $clump[$clumpIndex]['p2'];
-				
-				$clump[$clumpIndex]['p2'] = $clump[$clumpIndex]['p1'];
-				$clump[$clumpIndex]['p1'] = $temp;
-			}
+			$this->shuffleOrder($clump,$clumpIndex);
 			
 			$clump[]= $this->gen_new_clump($new_data);
 			$clumpIndex++;
 		}
 	}
-	
+
+    private function shuffleOrder(&$clump, $clumpIndex){
+        if($clump[$clumpIndex]['p2']['wins'] > $clump[$clumpIndex]['p1']['wins']
+            || ($clump[$clumpIndex]['p2']['wins'] == $clump[$clumpIndex]['p1']['wins']
+                && $clump[$clumpIndex]['p2']['elo_change'] > $clump[$clumpIndex]['p1']['elo_change'])) {
+            $temp = $clump[$clumpIndex]['p2'];
+
+            $clump[$clumpIndex]['p2'] = $clump[$clumpIndex]['p1'];
+            $clump[$clumpIndex]['p1'] = $temp;
+        }
+    }
+
 	private function gen_new_clump($new_data) {
 		return array(
 				'p1' => array(
