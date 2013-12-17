@@ -2,22 +2,31 @@
         <div class="row">
 
             <!-- old way: -->
-            <!--
+            <%
+            
+            if(playerScore == -1) {
+            	playerScore = '#';
+            }
+            if(vsScore == -1) {
+            	vsScore = '#';
+            }
+            
+            %>
             <div class="col-m-3  col-xs-6">
                 <a class="playerLink link"><%=vsPlayer%></a>
             </div>
             <div class="col-m-2  col-xs-3">
                 <%=playerScore%>&nbsp;-&nbsp;<%=vsScore%></td>
             </div>
-            -->
+           
 
             <!-- clumps and no scores: -->
-            <div class="col-m-4  col-xs-5">
+            <!-- <div class="col-m-4  col-xs-5">
                 <a class="playerLink link"><%=vsPlayer%></a>
             </div>
             <div class="col-m-6  col-xs-4">
                  2/3 games won
-            </div>
+            </div> -->
 
             <!-- interim solution: -->
             <!--

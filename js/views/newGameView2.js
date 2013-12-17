@@ -294,7 +294,7 @@ Vs.NewGameView2 = Backbone.View.extend({
         
         var $winner = $(e.target),
             $loser,
-            supportsLosingScore = true,
+            supportsLosingScore = false,
             supportsWinningScore = false; //we may not ever want to do this...
 
         //allow for clicking on the icon
