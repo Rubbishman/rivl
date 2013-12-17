@@ -197,17 +197,32 @@ Vs.NewGameView2 = Backbone.View.extend({
     },
     _setPlayer: function(playerNumber, playerModel) {
 
-        if (playerNumber === '1') {
-            $('#selectPlayer1').attr('data-competitor_id', playerModel.get('competitor_id'));
-            //$('#selectPlayer1 span').html("<a href='#competition/" + this.model.get('id') + "/competitor_home/" + playerModel.get('competitor_id') + "'>" + playerModel.get('name') + "</a>");
-            $('#selectPlayer1 span').html(playerModel.get('name'));
-            $('#selectPlayer1 img').attr('src', "img/avatars/" + this._getImage(playerModel.get('name'), 'left', 'win'));
+        if(Vs.competition.get('id') == 2) {
+            if (playerNumber === '1') {
+                $('#selectPlayer1').attr('data-competitor_id', playerModel.get('competitor_id'));
+                //$('#selectPlayer1 span').html("<a href='#competition/" + this.model.get('id') + "/competitor_home/" + playerModel.get('competitor_id') + "'>" + playerModel.get('name') + "</a>");
+                $('#selectPlayer1 span').html(playerModel.get('name'));
+                $('#selectPlayer1 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + playerModel.get('competitor_id') + "_1");
 
+            } else {
+                $('#selectPlayer2').attr('data-competitor_id', playerModel.get('competitor_id'));
+                //$('#selectPlayer2 span').html("<a href='#competition/" + this.model.get('id') + "/competitor_home/" + playerModel.get('competitor_id') + "'>" + playerModel.get('name') + "</a>");
+                $('#selectPlayer2 span').html(playerModel.get('name'));
+                $('#selectPlayer2 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + playerModel.get('competitor_id') + "_1");
+            }
         } else {
-            $('#selectPlayer2').attr('data-competitor_id', playerModel.get('competitor_id'));
-            //$('#selectPlayer2 span').html("<a href='#competition/" + this.model.get('id') + "/competitor_home/" + playerModel.get('competitor_id') + "'>" + playerModel.get('name') + "</a>");
-            $('#selectPlayer2 span').html(playerModel.get('name'));
-            $('#selectPlayer2 img').attr('src', "img/avatars/" + this._getImage(playerModel.get('name'), 'right', 'win'));
+            if (playerNumber === '1') {
+                $('#selectPlayer1').attr('data-competitor_id', playerModel.get('competitor_id'));
+                //$('#selectPlayer1 span').html("<a href='#competition/" + this.model.get('id') + "/competitor_home/" + playerModel.get('competitor_id') + "'>" + playerModel.get('name') + "</a>");
+                $('#selectPlayer1 span').html(playerModel.get('name'));
+                $('#selectPlayer1 img').attr('src', "img/avatars/" + this._getImage(playerModel.get('name'), 'left', 'win'));
+
+            } else {
+                $('#selectPlayer2').attr('data-competitor_id', playerModel.get('competitor_id'));
+                //$('#selectPlayer2 span').html("<a href='#competition/" + this.model.get('id') + "/competitor_home/" + playerModel.get('competitor_id') + "'>" + playerModel.get('name') + "</a>");
+                $('#selectPlayer2 span').html(playerModel.get('name'));
+                $('#selectPlayer2 img').attr('src', "img/avatars/" + this._getImage(playerModel.get('name'), 'right', 'win'));
+            }
         }
     },
     
@@ -250,9 +265,17 @@ Vs.NewGameView2 = Backbone.View.extend({
 
         //update images
         if (results.p1eloDelta < 0) {
-            $('#selectPlayer1 img').attr('src', "img/avatars/" + this._getImage(results.p1name, 'left', 'lose'));
+            if(Vs.competition.get('id') == 2) {
+                $('#selectPlayer1 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + playerModel.get('competitor_id') + "_0");
+            } else {
+                $('#selectPlayer1 img').attr('src', "img/avatars/" + this._getImage(results.p1name, 'left', 'lose'));
+            }
         } else {
-            $('#selectPlayer2 img').attr('src', "img/avatars/" + this._getImage(results.p2name, 'right', 'lose'));
+            if(Vs.competition.get('id') == 2) {
+                $('#selectPlayer2 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + playerModel.get('competitor_id') + "_0");
+            } else {
+                $('#selectPlayer2 img').attr('src', "img/avatars/" + this._getImage(results.p2name, 'right', 'lose'));
+            }
         }
     },
 
@@ -294,7 +317,7 @@ Vs.NewGameView2 = Backbone.View.extend({
         
         var $winner = $(e.target),
             $loser,
-            supportsLosingScore = true,
+            supportsLosingScore = false,
             supportsWinningScore = false; //we may not ever want to do this...
 
         //allow for clicking on the icon
