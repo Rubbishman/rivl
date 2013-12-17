@@ -1,14 +1,16 @@
 Vs.GameHistoryView = Backbone.View.extend({
 
     template : _.template($('#competitionTemplate').html()),   
-    gamePairTemplate : _.template($('#gameRowTemplate').html()),            
+    gamePairTemplate : _.template($('#gameRowTemplate').html()),
+    gamePairShortFormTemplate : _.template($('#gameRowShortFormTemplate').html()),            
+    longFormMode: false,
     initialize: function () {
         $mainPage = $('#gameHistory');
     },
     render: function() {
 
-        var lastGame,
-            self = this;
+        var self = this;
+            
         $mainPage.html('');
 
 		$('#gameHistoryYesterdayContent').hide();
@@ -16,11 +18,7 @@ Vs.GameHistoryView = Backbone.View.extend({
     	$('#noGameHistory').show();
 
         this.collection.each(function(game) {
-            if (lastGame && lastGame.get('game_id') == game.get('game_id')) {
-                self._renderRow({game1: lastGame.attributes, game2: game.attributes});
-            } else {
-                lastGame = game;
-            }
+           	self._renderRow({game: game});
         });
         
     	if($('#gameHistoryYesterday').html() != ''){
@@ -33,13 +31,34 @@ Vs.GameHistoryView = Backbone.View.extend({
     	}
         return this;
     },
-
     _renderRow: function(gamePair) {
-    	
-    	if(gamePair.game1.today == true){
-    		$('#gameHistoryToday').append(this.gamePairTemplate(gamePair));
-    	} else {
-    		$('#gameHistoryYesterday').append(this.gamePairTemplate(gamePair));
+    	var $gameRowP1,
+    		$gameRowP2,
+    		$template;
+    		
+    	if(this.longFormMode) {
+    		$template = this.gamePairTemplate;
+    	} else { 
+    		$template = this.gamePairShortFormTemplate;
     	}
+    	
+    	if(gamePair.today == true){
+    		$('#gameHistoryToday').append($template({p1: gamePair.game.get('p1'), p2: gamePair.game.get('p2')}));
+    		$gameRowP1 = $('#gameHistoryToday .player1Link').last();
+    		$gameRowP2 = $('#gameHistoryToday .player2Link').last();
+    	} else {
+    		$('#gameHistoryYesterday').append($template({p1: gamePair.game.get('p1'), p2: gamePair.game.get('p2')}));
+    		$gameRowP1 = $('#gameHistoryYesterday .player1Link').last();
+    		$gameRowP2 = $('#gameHistoryToday .player2Link').last();
+    	}
+    	
+    	$gameRowP1.bind('click', { competition_id: Vs.competition.get('id'), opponent_id: gamePair.game.get('p1').id }, function(event) {
+		    var data = event.data;
+		    Vs.router.navigate('competition/' + data.competition_id + '/competitor_home/' + data.opponent_id, true);
+		});
+    	$gameRowP2.bind('click', { competition_id: Vs.competition.get('id'), opponent_id: gamePair.game.get('p2').id }, function(event) {
+		    var data = event.data;
+		    Vs.router.navigate('competition/' + data.competition_id + '/competitor_home/' + data.opponent_id, true);
+		});
     }
 });

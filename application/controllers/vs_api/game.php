@@ -36,9 +36,18 @@ class Game extends CI_Controller{
                 $res = $this->game_model->get_game($params['id']);
             } else {
                 $res = $this->game_model->get_games($params);
+				
+				if(true) { //Clumped game history...
+					$clump = array();
+					$clumpIndex = -1;
+					
+					foreach($res as $game) {
+						$this->combine_clump($clump, $clumpIndex, $game);
+					}
+				}
             }
 			
-            $this->_render($res);
+            $this->_render($clump);
         }
         catch (Exception $e) {
             $this->output->set_status_header(500,$e->getMessage());
@@ -46,7 +55,57 @@ class Game extends CI_Controller{
         }
     }
 
-
+	private function combine_clump(&$clump, &$clumpIndex, $new_data) {
+		if($clumpIndex == -1) {
+			$clump[]= $this->gen_new_clump($new_data);
+			$clumpIndex++;
+		} else if($clump[$clumpIndex]['p1']['id'] == $new_data['winner_id']
+			&& $clump[$clumpIndex]['p2']['id'] == $new_data['loser_id']
+			&& $clump[$clumpIndex]['today'] == $new_data['today']) {
+					
+			$clump[$clumpIndex]['p1']['wins'] += 1;
+			$clump[$clumpIndex]['p1']['elo_change'] += $new_data['winner_elo_change'];
+			$clump[$clumpIndex]['p2']['elo_change'] += $new_data['loser_elo_change'];
+				
+		} else if($clump[$clumpIndex]['p2']['id'] == $new_data['winner_id']
+			&& $clump[$clumpIndex]['p1']['id'] == $new_data['loser_id']
+			&& $clump[$clumpIndex]['today'] == $new_data['today']){
+				
+			$clump[$clumpIndex]['p2']['wins'] += 1;
+			$clump[$clumpIndex]['p2']['elo_change'] += $new_data['winner_elo_change'];
+			$clump[$clumpIndex]['p1']['elo_change'] += $new_data['loser_elo_change'];
+		} else {
+			
+			if($clump[$clumpIndex]['p2']['wins'] > $clump[$clumpIndex]['p1']['wins']
+				|| ($clump[$clumpIndex]['p2']['wins'] == $clump[$clumpIndex]['p1']['wins']
+					&& $clump[$clumpIndex]['p2']['elo_change'] > $clump[$clumpIndex]['p1']['elo_change'])) {
+				$temp = $clump[$clumpIndex]['p2'];
+				
+				$clump[$clumpIndex]['p2'] = $clump[$clumpIndex]['p1'];
+				$clump[$clumpIndex]['p1'] = $temp;
+			}
+			
+			$clump[]= $this->gen_new_clump($new_data);
+			$clumpIndex++;
+		}
+	}
+	
+	private function gen_new_clump($new_data) {
+		return array(
+				'p1' => array(
+					'id' => $new_data['winner_id'],
+					'name' => $new_data['winner_name'],
+					'wins' => 1,
+					'elo_change' => $new_data['winner_elo_change']),
+				'p2' => array(
+					'id' => $new_data['loser_id'],
+					'name' => $new_data['loser_name'],
+					'wins' => 0,
+					'elo_change' => $new_data['loser_elo_change']),
+				'today' => $new_data['today']
+				);
+	}
+	
     public function new_game() {
 
         try {

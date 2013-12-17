@@ -32,26 +32,26 @@ class Game_model extends CI_Model {
 		$today->modify('-1 day');
 		$sqlYesterday = $today->format('Y-m-d').' 00:00:00';
 		
-		$this->db->select("score.id, score.game_id, game.date, competitor.name, score.rank, score.score, 
-                                (score.elo_after - score.elo_before) elo_change, score_details.detail_id,
-                                (CASE WHEN game.date > '".$sqlToday."' THEN true ELSE false END) today");
-		$this->db->from('game');
-		$this->db->join('score', 'game.id = score.game_id');
-        $this->db->join('competitor', 'score.competitor_id = competitor.id');
-        $this->db->join('score_details', 'score_details.score_id = score.id', 'left outer');
-		$this->db->order_by('game.id desc,score.rank asc');
-		$this->db->where(array(
-			'game.competition_id' => $params['competition_id'],
-			'game.date >' => $sqlYesterday));
-
-		// foreach ($params as $key => $value) {
-			// $this->db->where('game.'.$key, $value);
-		// }
+		$query =$this->db->query("select
+				CASE WHEN s1.rank = 1 THEN c1.name ELSE c2.name END winner_name, 
+			    CASE WHEN s1.rank = 2 THEN c1.name ELSE c2.name END loser_name,
+			    CASE WHEN s1.rank = 1 THEN c1.id ELSE c2.id END winner_id,
+			    CASE WHEN s1.rank = 2 THEN c1.id ELSE c2.id END loser_id,
+			    CASE WHEN s1.rank = 1 THEN s1.score ELSE s2.score END winner_score,
+			    CASE WHEN s1.rank = 2 THEN s1.score ELSE s2.score END loser_score,
+			    CASE WHEN s1.rank = 1 THEN (s1.elo_after - s1.elo_before) ELSE (s2.elo_after - s2.elo_before) END winner_elo_change,
+			    CASE WHEN s1.rank = 2 THEN (s1.elo_after - s1.elo_before) ELSE (s2.elo_after - s2.elo_before) END loser_elo_change,
+                (CASE WHEN game.date > '".$sqlToday."' THEN true ELSE false END) today
+			from game
+	join (select max(score.id) as id from score join game where game.competition_id = ".$params['competition_id']." and score.game_id = game.id group by game.id) ss1 
+	join score s1 on game.id = s1.game_id and s1.id = ss1.id
+	join score s2 on game.id = s2.game_id and s2.id != s1.id
+	join competitor c1 on s1.competitor_id = c1.id
+	join competitor c2 on s2.competitor_id = c2.id
+		where game.competition_id = ".$params['competition_id']." and game.date > '".$sqlYesterday."'
+		order by game.id desc");
 		
-
-		$query = $this->db->get();
-		
-		return $query->result();
+		return $query->result_array();
 	}
 
 	public function get_competitor_games($competition_id, $competitor_id) {
