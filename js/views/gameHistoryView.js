@@ -42,14 +42,14 @@ Vs.GameHistoryView = Backbone.View.extend({
     		$template = this.gamePairShortFormTemplate;
     	}
     	
-    	if(gamePair.today == true){
+    	if(gamePair.game.get('today') == true) {
     		$('#gameHistoryToday').append($template({p1: gamePair.game.get('p1'), p2: gamePair.game.get('p2')}));
     		$gameRowP1 = $('#gameHistoryToday .player1Link').last();
     		$gameRowP2 = $('#gameHistoryToday .player2Link').last();
     	} else {
     		$('#gameHistoryYesterday').append($template({p1: gamePair.game.get('p1'), p2: gamePair.game.get('p2')}));
     		$gameRowP1 = $('#gameHistoryYesterday .player1Link').last();
-    		$gameRowP2 = $('#gameHistoryToday .player2Link').last();
+    		$gameRowP2 = $('#gameHistoryYesterday .player2Link').last();
     	}
     	
     	$gameRowP1.bind('click', { competition_id: Vs.competition.get('id'), opponent_id: gamePair.game.get('p1').id }, function(event) {

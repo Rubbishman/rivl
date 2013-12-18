@@ -4,7 +4,7 @@
         <div class="col-xs-5 text-center">
             <div class="btnGroupWrap">
                 <button type="button" class="player1Btn btn btn-default btn-block">
-                    Winner
+                    Winner?
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <% for (var i = points-1; i >= 0; i--) { %>
@@ -19,7 +19,7 @@
         <div class="col-xs-5 text-center">
             <div class="btnGroupWrap">
                 <button type="button" class="player2Btn btn btn-default btn-block">
-                    Winner
+                    Winner?
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <% for (var i = points-1; i >= 0; i--) { %>

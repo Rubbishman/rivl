@@ -110,7 +110,7 @@ class Competitor_Graph extends CI_Controller{
 					
 			foreach($res as $elo_change){
 	            //$graphData['data'][] = $elo_change['elo_change'];
-	            $playerGames->data[] = $elo_change['elo_after'];
+	            $playerGames->data[] = max($elo_change['elo_after'],1000);
         	}
             if($competitor->name != 'Andrew') {
                 $graphData['data'][] = $playerGames;
