@@ -219,3 +219,9 @@ span.rankNeutral {
 .good {
 	color: green;
 }
+
+/* button overrides, so that last-entered score doesn't look different */
+.btn-primary:focus {
+  background-color: #428bca;
+  border-color: #357ebd;
+}
