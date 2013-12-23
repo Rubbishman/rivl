@@ -43,7 +43,7 @@ class Game_model extends CI_Model {
 			    CASE WHEN s1.rank = 2 THEN (s1.elo_after - s1.elo_before) ELSE (s2.elo_after - s2.elo_before) END loser_elo_change,
                 (CASE WHEN game.date > '".$sqlToday."' THEN true ELSE false END) today
 			from game
-	join (select max(score.id) as id from score join game where game.competition_id = ".$params['competition_id']." and score.game_id = game.id group by game.id) ss1 
+	join (select max(score.id) as id from score join game on score.game_id = game.id where game.competition_id = ".$params['competition_id']." and game.date > '".$sqlYesterday."' group by game.id) ss1
 	join score s1 on game.id = s1.game_id and s1.id = ss1.id
 	join score s2 on game.id = s2.game_id and s2.id != s1.id
 	join competitor c1 on s1.competitor_id = c1.id
