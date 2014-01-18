@@ -151,6 +151,7 @@ select AVG(CASE WHEN rank = 2 THEN score ELSE null END) avg_loss_score from scor
         $this->db->join('game','game.id = score.game_id');
         $this->db->group_by('game_id');
         $this->db->order_by('date', 'asc');
+        $this->db->order_by('game.id', 'asc');
         $allGames = $this->db->get()->result_array();
 
         foreach($allGames as &$game) {
