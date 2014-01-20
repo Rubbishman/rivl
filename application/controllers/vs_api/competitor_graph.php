@@ -152,8 +152,8 @@ class Competitor_Graph extends CI_Controller{
         	'data' => array(1500), 
         	'labels' => array(),
 			'stat_details' => array(
-				'avg_loss_score' => $competitor[0]->avg_loss_score,
-				'avg_opp_loss_score' => $competitor[0]->avg_opp_loss_score,
+				// 'avg_loss_score' => $competitor[0]->avg_loss_score,
+				// 'avg_opp_loss_score' => $competitor[0]->avg_opp_loss_score,
 				'stat_array' => $stat_details));
 		
 		$red = round(rand(0,255));

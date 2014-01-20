@@ -32,7 +32,14 @@ class Competitor_model extends CI_Model {
 				'competitor_id' => $competitor_id,
 				'competition_id' => $competition_id,
 				'elo' => 1500));
-		} 
+				
+				$this->db->query("insert into agg_competitor_stats (competition_id, competitor_id_1, competitor_id_2, competitor_1_wins, competitor_2_wins, competitor_1_streak, competitor_2_streak, current_streak, current_streak_competitor)
+    select comp.id, c1.competitor_id, c2.competitor_id, 0, 0, 0, 0, 0, 0 from competition comp 
+        join competitor_elo c1 on comp.id = c1.competition_id
+        join competitor_elo c2 on c1.competitor_id != c2.competitor_id 
+        	and c1.competitor_id < c2.competitor_id and c2.competition_id = c1.competition_id 
+        	and c2.competitor_id = $competitor_id and comp.id = $competition_id;");
+		}
 	}
 	
 	public function get_competitor($competition_id,$id = FALSE)
@@ -80,7 +87,7 @@ class Competitor_model extends CI_Model {
         if($competition_id == FALSE || $id == FALSE){
             return;
         }
-        $this->db->select('competitor_elo.competitor_id, competitor_elo.elo ,competitor.name,
+        /*$this->db->select('competitor_elo.competitor_id, competitor_elo.elo ,competitor.name,
 			 COUNT(CASE WHEN s1.rank = 1 THEN 1 ELSE NULL END) wins,
 			 COUNT(CASE WHEN s1.rank != 1 THEN 1 ELSE NULL END) loses');
         $this->db->select('competitor_elo.competitor_id, competitor_elo.elo ,competitor.name');
@@ -91,8 +98,23 @@ class Competitor_model extends CI_Model {
         $this->db->where('competitor_elo.competition_id', $competition_id);
         $this->db->group_by('competitor.id');
         $this->db->where('competitor.id', $id);
-
-        $query = $this->db->get();
+        
+        $query = $this->db->get();*/
+       
+       	$query = $this->db->query("
+       	select elo, sum(win_num) wins, sum(loss_num) loses from 
+(select case when acs.competitor_id_1 = $id then competitor_1_wins else competitor_2_wins end win_num,
+			case when acs.competitor_id_1 = $id then competitor_2_wins else competitor_1_wins end loss_num,
+			case when acs.competitor_id_1 = $id then c2.name else c1.name end opponent_name
+			from agg_competitor_stats acs
+				join competitor c1 on c1.id = acs.competitor_id_1
+				join competitor c2 on c2.id = acs.competitor_id_2
+			where acs.competition_id = $competition_id
+				and (acs.competitor_id_1 = $id
+					or acs.competitor_id_2 = $id)
+        and (acs.competitor_1_wins > 0 or acs.competitor_2_wins > 0)) as t, competitor_elo ce
+        where ce.competition_id = $competition_id and ce.competitor_id = $id;");
+		
         $results = $query->result();
         $results = $results[0];
 
