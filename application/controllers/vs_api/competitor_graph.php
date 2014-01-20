@@ -149,6 +149,7 @@ class Competitor_Graph extends CI_Controller{
 
         $graphData = array(
         	'playerName' => $competitor[0]->name,
+            'player_id' => $competitor[0]->competitor_id,
         	'data' => array(1500), 
         	'labels' => array(),
 			'stat_details' => array(

@@ -167,6 +167,7 @@ class Game_model extends CI_Model {
         $this->db->join('game','game.id = score.game_id');
         $this->db->group_by('game_id');
         $this->db->order_by('date', 'asc');
+        $this->db->order_by('game.id', 'asc');
         $allGames = $this->db->get()->result_array();
 
         foreach($allGames as &$game) {

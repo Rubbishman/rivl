@@ -3,7 +3,10 @@
 		<div class="sectionBody">
 
             <div class="row">
-                <div class="col-xs-4">
+                <div class="col-xs-2">
+                    <img src="img/avatars/2_<%=player_id%>_1?ver=2" class="headingAvatar" />
+                </div>
+                <div class="col-xs-3">
                     <h3 class="bigVal"><%=current_elo%></h3>
                     <p>points</p>
                 </div>
@@ -12,7 +15,7 @@
                     <p>games won (<span id="playerWinPercent"><%=games_won_percent%></span>%)</p>
                 </div>
 
-                <div class="col-xs-4">
+                <div class="col-xs-3">
                     <h3 class="bigVal"><span id="playerRank"><%=rank%></span></h3>
                     <p>of <span id="playersTotal"><%=total_competitors%></span> players</p>
                 </div>
