@@ -4,10 +4,16 @@ Vs.CompetitorStatView = Backbone.View.extend({
     navbarTemplate : _.template($('#navbarTemplate').html()),
 	statRowTemplate : _.template($('#playerStatRowTemplate').html()),
 	competitorGameRowTemplate : _.template($('#competitorGameRowTemplate').html()),
+    
+    events: {
+        'click #showRivlStatsOverflow': 'toggleRivlStatsOverflow'
+    },
+
     initialize: function () {
         $mainPage = $("#mainContainer");
         el = $("#mainContainer");
     },
+    
     render: function() {
         var self = this;
         console.dir(this.model.toJSON());
@@ -26,8 +32,29 @@ Vs.CompetitorStatView = Backbone.View.extend({
 		myNewChart = new Chart(mainGraph).Line(data,options);
         
         $(document).scrollTop(0);
+
+        var rivls = $('#playerStats .rivlsStatsRow'),
+            rivlsCount = rivls.length,
+            limit = 5;
+        
+        if (rivlsCount > limit) {
+            rivls.slice(limit, rivlsCount).wrapAll("<div id='rivlStatsOverflow'></div>");
+            $('#playerStats').append('<button class="btn btn-default" id="showRivlStatsOverflow">+ show more</button>')
+        }
         
         return this;
+    },
+    toggleRivlStatsOverflow: function () {
+        console.log('clicked!!!!');
+        var $container = $('#rivlStatsOverflow'),
+            $toggle = $('#showRivlStatsOverflow');
+        if ($container.is(':hidden')) {
+            $container.slideDown('fast');
+            $toggle.html('- show less').addClass('toggleOn').removeClass('toggleOff');
+        } else {
+            $container.slideUp('fast');
+            $toggle.html('+ show more').addClass('toggleOff').removeClass('toggleOn');
+        }
     },
     renderPlayerStatRow: function() {
     	$("#playerStats").append(Vs.competitorStatView.statRowTemplate(this));

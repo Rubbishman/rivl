@@ -239,6 +239,9 @@ span.rankNeutral {
 .good {
 	color: green;
 }
+#rivlStatsOverflow {
+	display: none;
+}
 
 /* button overrides, so that last-entered score doesn't look different */
 .btn-primary:focus {
