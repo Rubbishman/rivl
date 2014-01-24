@@ -94,13 +94,52 @@ a {
     margin-right: 4px;
 }
 .headingAvatar {
-    height: 50px;
-    width: 50px;
     float: left;
     margin: 0 5px 0 0;
-    border-radius: 25px;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 0 1px #888;
+}
+.roundAvatar {
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px #555;
+}
+.smallAvatar {
+    height: 40px;
+    width: 40px;
+}
+.mediumAvatar {
+    height: 50px;
+    width: 50px;
+}
+.largeAvatar {
+    height: 60px;
+    width: 60px;
+}
+
+#recentGames .roundAvatar {
+    margin-bottom: 6px;
+}
+.recentWin, .recentLoss {
+    color: #fff;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-block;
+    line-height: 22px;
+}
+.recentWin {
+    background: green;
+    text-shadow: 0 -1px 0 rgb(14, 53, 14);
+}
+.recentLoss {
+    background: red;
+    text-shadow: 0 -1px 0 rgb(97, 15, 0);
+}
+.vs {
+    font-size: 26px;
+    color: #ccc;
+    text-shadow: 0 -1px 0 #9C9C9C;
+    font-weight: normal;
+    letter-spacing: 1px;
+    font-style: italic;
 }
 /*.scoreRow select {
 	font-size: 30px;
@@ -241,6 +280,7 @@ span.rankNeutral {
 }
 #rivlStatsOverflow {
 	display: none;
+    margin-top: -5px;
 }
 
 /* button overrides, so that last-entered score doesn't look different */

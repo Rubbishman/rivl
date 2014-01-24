@@ -23,14 +23,15 @@ Vs.CompetitorStatView = Backbone.View.extend({
         $.each(this.model.attributes.gameHistory, function(index, curGame) {
             self.renderGameHistory(self.model.attributes, curGame);
         });        
-        mainGraph = $("#playerGraph").get(0).getContext("2d");
+
+        /*mainGraph = $("#playerGraph").get(0).getContext("2d");
 		data = {
 			labels : this.model.attributes.labels,
 			datasets : this.model.attributes.data
 		};
         options = {'pointDot' : false };
 		myNewChart = new Chart(mainGraph).Line(data,options);
-        
+        */
         $(document).scrollTop(0);
 
         var rivls = $('#playerStats .rivlsStatsRow'),
@@ -39,13 +40,13 @@ Vs.CompetitorStatView = Backbone.View.extend({
         
         if (rivlsCount > limit) {
             rivls.slice(limit, rivlsCount).wrapAll("<div id='rivlStatsOverflow'></div>");
-            $('#playerStats').append('<button class="btn btn-default" id="showRivlStatsOverflow">+ show more</button>')
+            $('#playerStats').append('<button class="btn btn-default btn-sm" id="showRivlStatsOverflow">+ show more</button>')
         }
         
         return this;
     },
     toggleRivlStatsOverflow: function () {
-        console.log('clicked!!!!');
+
         var $container = $('#rivlStatsOverflow'),
             $toggle = $('#showRivlStatsOverflow');
         if ($container.is(':hidden')) {

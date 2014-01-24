@@ -4,7 +4,7 @@
 
         <div class="row">
             <div class="col-xs-2">
-                <img src="img/avatars/2_<%=player_id%>_1?ver=2" class="headingAvatar" />
+                <img src="img/avatars/2_<%=player_id%>_1?ver=2" class="roundAvatar headingAvatar largeAvatar" />
             </div>
             <div class="col-xs-3">
                 <h3 class="bigVal"><%=current_elo%></h3>
@@ -55,6 +55,34 @@
 
     <h2>Recent games</h2>
     <div class="sectionBody">
+
+        <div id="recentGames" class="row">
+            <div class="col-xs-2">
+                <img src="img/avatars/2_<%=player_id%>_1?ver=2" class="mediumAvatar roundAvatar" />
+            </div>
+            <div class="col-xs-2">
+                <span class="vs">vs...</span>
+            </div>
+            <div class="col-xs-2 text-center">
+                <img src="img/avatars/2_13_1?ver=2" class="mediumAvatar roundAvatar" /><br />
+                <span class="recentWin">2</span> - <span>1</span>
+            </div>
+            <div class="col-xs-2 text-center">
+                <img src="img/avatars/2_10_1?ver=2" class="mediumAvatar roundAvatar" /><br />
+                <span class="recentWin">4</span> - <span class="">3</span>
+            </div>
+            <div class="col-xs-2 text-center">
+                <img src="img/avatars/2_8_1?ver=2" class="mediumAvatar roundAvatar" /><br />
+                <span class="">1</span> - <span class="recentLoss">2</span>
+            </div>
+            <div class="col-xs-2 text-center">
+                <img src="img/avatars/2_1_1?ver=2" class="mediumAvatar roundAvatar" /><br />
+                <span class=recentWin"">1</span> - <span class="">1</span>
+            </div>
+
+        </div>
+
+        <br /><br /><br /><br /><em>discard this version:</em>
         <div id="playerHistory"></div>
     </div>
 </script>
