@@ -101,7 +101,10 @@ a {
     border-radius: 50%;
     box-shadow: 0 0 0 2px #555;
 }
-.roundAvatarHover:hover {
+.avatarLink {
+	cursor: pointer;
+}
+.avatarLink:hover {
 	box-shadow: 0 0 0 2px #1C94C4;
 }
 .smallAvatar {
