@@ -203,6 +203,7 @@ class Competitor_Graph extends CI_Controller{
 					
 					$recent_games[$recent_game['opponent_id']] = array(
 						'opponent_id' => $recent_game['opponent_id'],
+						'opponent_name' => $recent_game['opponent_name'],
 						'won' => $recent_game['player_won'] ? 1 : 0,
 						'lost' => $recent_game['player_won'] ? 0 : 1);
 						

@@ -67,7 +67,7 @@
             <%
             	$.each(recentGames, function(index,rg){
             		%>
-					<div class="col-xs-2 text-center">
+					<div class="col-xs-2 text-center" title="<%=rg.opponent_name%>">
 		                <img id="recentGame_<%=index%>" src="img/avatars/2_<%=rg.opponent_id%>_1.png?ver=2" class="mediumAvatar roundAvatar avatarLink" /><br />
 		            <%
 		            	if(rg.highlight == 1) {
