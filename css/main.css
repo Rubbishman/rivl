@@ -284,6 +284,7 @@ span.rankNeutral {
 #rivlStatsOverflow {
 	display: none;
     margin-top: -5px;
+    width: 100%;
 }
 
 /* button overrides, so that last-entered score doesn't look different */
