@@ -182,8 +182,51 @@ class Competitor_Graph extends CI_Controller{
 
 		$graphData['data'] = array($playerGames);
 
-		$graphData['gameHistory'] = $this->game_model->get_competitor_games($this->input->get('competition_id'),$this->input->get('competitor_id'));
-
+		$gameHistory = $this->game_model->get_competitor_games($this->input->get('competition_id'),$this->input->get('competitor_id'));
+		// $graphData['gameHistory'] = $gameHistory;
+		
+		$recent_games = array();
+		$recent_game_order = array();
+		$last_opponent = 0;
+		foreach($gameHistory as $recent_game) {
+			if($last_opponent == $recent_game['opponent_id']) {
+				if($recent_game['player_won']) {
+					$recent_games[$recent_game['opponent_id']]['won'] 
+						= $recent_games[$recent_game['opponent_id']]['won']+1;
+				} else {
+					$recent_games[$recent_game['opponent_id']]['lost']
+						= $recent_games[$recent_game['opponent_id']]['lost']+1;
+				}
+			} else if(!isset($recent_games[$recent_game['opponent_id']])) {
+				if(count($recent_games) < 4) {
+					$last_opponent = $recent_game['opponent_id'];
+					
+					$recent_games[$recent_game['opponent_id']] = array(
+						'opponent_id' => $recent_game['opponent_id'],
+						'won' => $recent_game['player_won'] ? 1 : 0,
+						'lost' => $recent_game['player_won'] ? 0 : 1);
+						
+					$recent_game_order[] = $recent_game['opponent_id'];
+				} else {
+					break;
+				}
+			}
+		}
+		$graphData['recentGames'] = array();
+		
+		foreach($recent_game_order as $order) {
+			if($recent_games[$order]['won'] > $recent_games[$order]['lost']) {
+				$recent_games[$order]['highlight'] = 1;
+			} else if($recent_games[$order]['won'] < $recent_games[$order]['lost']) {
+				$recent_games[$order]['highlight'] = -1;
+			} else {
+				$recent_games[$order]['highlight'] = 0;
+			}
+			$graphData['recentGames'][] = $recent_games[$order];
+		}
+		
+		$graphData['recentGameWhiteSpace'] =  (4 - count($graphData['recentGames'])) * 2;
+		
         $competitor_simple_stat = $this->competitor_model->get_competitor_simple_stats($this->input->get('competition_id'),$this->input->get('competitor_id'));
 
         $graphData['current_elo'] = $competitor_simple_stat->elo;

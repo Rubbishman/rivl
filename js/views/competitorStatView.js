@@ -20,9 +20,19 @@ Vs.CompetitorStatView = Backbone.View.extend({
         $("#mainContainer").html(this.navbarTemplate(this.competition.toJSON()));
         $("#mainContainer").append(this.template(this.model.toJSON()));
         $.each(this.model.attributes.stat_details.stat_array,this.renderPlayerStatRow);
-        $.each(this.model.attributes.gameHistory, function(index, curGame) {
-            self.renderGameHistory(self.model.attributes, curGame);
-        });        
+        
+        //This needs to be made cleaner
+        $.each(this.model.attributes.recentGames, function(index, value){
+        	$('#recentGame_'+index).bind('click', { competition_id: Vs.competition.get('id'), 
+	        	opponent_id: value.opponent_id }, function(event) {
+			    var data = event.data;
+			    Vs.router.navigate('competition/' + data.competition_id + '/competitor_home/' + data.opponent_id, true);
+			});
+        });
+        
+        // $.each(this.model.attributes.gameHistory, function(index, curGame) {
+            // self.renderGameHistory(self.model.attributes, curGame);
+        // });        
 
         /*mainGraph = $("#playerGraph").get(0).getContext("2d");
 		data = {

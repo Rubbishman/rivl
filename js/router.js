@@ -207,7 +207,7 @@ $(function () {
     Vs.allCompetitionsView = new Vs.AllCompetitionsView();
     Vs.newGameView2 = new Vs.NewGameView2();
     Vs.competitionGraphView = new Vs.CompetitionGraphView();
-    Vs.competitorStatView = new Vs.CompetitorStatView();
+    Vs.competitorStatView = new Vs.CompetitorStatView({el:'#mainContainer'});
     // Initiate the router
     Vs.router = new Vs.Router();
 

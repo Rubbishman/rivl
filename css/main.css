@@ -101,6 +101,9 @@ a {
     border-radius: 50%;
     box-shadow: 0 0 0 2px #555;
 }
+.roundAvatarHover:hover {
+	box-shadow: 0 0 0 2px #1C94C4;
+}
 .smallAvatar {
     height: 40px;
     width: 40px;

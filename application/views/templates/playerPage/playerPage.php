@@ -63,26 +63,42 @@
             <div class="col-xs-2">
                 <span class="vs">vs...</span>
             </div>
-            <div class="col-xs-2 text-center">
-                <img src="img/avatars/2_13_1?ver=2" class="mediumAvatar roundAvatar" /><br />
-                <span class="recentWin">2</span> - <span>1</span>
-            </div>
-            <div class="col-xs-2 text-center">
-                <img src="img/avatars/2_10_1?ver=2" class="mediumAvatar roundAvatar" /><br />
-                <span class="recentWin">4</span> - <span class="">3</span>
-            </div>
-            <div class="col-xs-2 text-center">
-                <img src="img/avatars/2_8_1?ver=2" class="mediumAvatar roundAvatar" /><br />
-                <span class="">1</span> - <span class="recentLoss">2</span>
-            </div>
-            <div class="col-xs-2 text-center">
-                <img src="img/avatars/2_1_1?ver=2" class="mediumAvatar roundAvatar" /><br />
-                <span class=recentWin"">1</span> - <span class="">1</span>
-            </div>
-
+            
+            <%
+            	$.each(recentGames, function(index,rg){
+            		%>
+					<div class="col-xs-2 text-center">
+		                <img id="recentGame_<%=index%>" src="img/avatars/2_<%=rg.opponent_id%>_1?ver=2" class="mediumAvatar roundAvatar roundAvatarHover" /><br />
+		            <%
+		            	if(rg.highlight == 1) {
+		            %>
+		                <span class="recentWin"><%=rg.won%></span> - <span><%=rg.lost%></span>
+	                <%
+	                	} else if(rg.highlight == -1){
+	                %>
+	                	<span><%=rg.won%></span> - <span class="recentLoss"><%=rg.lost%></span>
+	                <%
+	                	} else {
+	                %>
+	                	<span><%=rg.won%></span> - <span><%=rg.lost%></span>
+	                <%
+	                	}
+	                %>
+	                
+		            </div>
+					<%
+            	});
+				
+				if(recentGameWhiteSpace > 0) {
+			%>
+					<div class="col-xs-<%=recentGameWhiteSpace%> text-center">  
+		            </div>
+			<%
+				}
+            %>
         </div>
 
-        <br /><br /><br /><br /><em>discard this version:</em>
-        <div id="playerHistory"></div>
+        <!-- <br /><br /><br /><br /><em>discard this version:</em>
+        <div id="playerHistory"></div> -->
     </div>
 </script>

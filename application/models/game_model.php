@@ -54,10 +54,11 @@ class Game_model extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function get_competitor_games($competition_id, $competitor_id) {
+	public function get_competitor_games($competition_id, $competitor_id, $limit = 50) {
 		$res =$this->db->query('select game.date, 
 		CASE WHEN s1.rank = 1 THEN c1.name ELSE c2.name END winner_name, 
     CASE WHEN s1.rank = 2 THEN c1.name ELSE c2.name END loser_name,
+    CASE WHEN s1.rank = 1 THEN true ELSE false END player_won,
     c2.id opponent_id,
     CASE WHEN s1.rank = 1 THEN s1.score ELSE s2.score END winner_score,
     CASE WHEN s1.rank = 2 THEN s1.score ELSE s2.score END loser_score,
@@ -71,7 +72,8 @@ class Game_model extends CI_Model {
         join competitor c2 on c2.id = s2.competitor_id
     where s1.competitor_id = '.$competitor_id.'
     	and game.competition_id = '.$competition_id.'
-    	order by game.date desc, game.id desc');
+    	order by game.date desc, game.id desc
+    	limit '.$limit);
 		return $res->result_array();
 	}
 
