@@ -98,7 +98,9 @@ class Game_model extends CI_Model {
 				and (acs.competitor_id_1 = $competitor_id
 					or acs.competitor_id_2 = $competitor_id)
 				and (acs.competitor_1_wins > 0 or acs.competitor_2_wins > 0)
-				order by (case when acs.competitor_id_1 = $competitor_id then competitor_1_wins else competitor_2_wins end + case when acs.competitor_id_1 = $competitor_id then competitor_2_wins else competitor_1_wins end) desc");
+				order by (50/ABS(50 - CAST((case when acs.competitor_id_1 = $competitor_id then competitor_1_wins else competitor_2_wins end/(case when acs.competitor_id_1 = $competitor_id then competitor_1_wins else competitor_2_wins end + case when acs.competitor_id_1 = $competitor_id then competitor_2_wins else competitor_1_wins end))*100 as DECIMAL(4,1))))
+				*
+				(case when acs.competitor_id_1 = $competitor_id then competitor_1_wins else competitor_2_wins end + case when acs.competitor_id_1 = $competitor_id then competitor_2_wins else competitor_1_wins end) desc");
 		/*
 		$res =$this->db->query('select count(CASE WHEN s1.rank = 1 THEN 1 ELSE null END) win_num, 
     count(CASE WHEN s1.rank = 2 THEN 1 ELSE null END) loss_num,
