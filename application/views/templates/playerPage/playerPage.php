@@ -4,7 +4,7 @@
 
         <div class="row">
             <div class="col-xs-2">
-                <img src="img/avatars/2_<%=player_id%>_1.png?ver=2" class="roundAvatar headingAvatar largeAvatar" />
+                <img src="img/avatars/2_<%=player_id%>_1.png?ver=3" class="roundAvatar headingAvatar largeAvatar" />
             </div>
             <div class="col-xs-3">
                 <h3 class="bigVal"><%=current_elo%></h3>
@@ -58,7 +58,7 @@
 
         <div id="recentGames" class="row">
             <div class="col-xs-2">
-                <img src="img/avatars/2_<%=player_id%>_1.png?ver=2" class="mediumAvatar roundAvatar" />
+                <img src="img/avatars/2_<%=player_id%>_1.png?ver=3" class="mediumAvatar roundAvatar" />
             </div>
             <div class="col-xs-2">
                 <span class="vs">vs...</span>
@@ -68,7 +68,7 @@
             	$.each(recentGames, function(index,rg){
             		%>
 					<div class="col-xs-2 text-center" title="<%=rg.opponent_name%>">
-		                <img id="recentGame_<%=index%>" src="img/avatars/2_<%=rg.opponent_id%>_1.png?ver=2" class="mediumAvatar roundAvatar avatarLink" /><br />
+		                <img id="recentGame_<%=index%>" src="img/avatars/2_<%=rg.opponent_id%>_1.png?ver=3" class="mediumAvatar roundAvatar avatarLink" /><br />
 		            <%
 		            	if(rg.highlight == 1) {
 		            %>
