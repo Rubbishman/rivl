@@ -143,10 +143,12 @@ class Competitor_Graph extends CI_Controller{
             if($stat['win_num'] + $stat['loss_num'] > $max_games) {
                 $max_games = $stat['win_num'] + $stat['loss_num'];
             }
-
-            $stat['gamePercent'] = (($stat['win_num'] + $stat['loss_num'])/$max_games)*100;
         }
-
+		
+		foreach($stat_details as &$stat){
+			$stat['gamePercent'] = (($stat['win_num'] + $stat['loss_num'])/$max_games)*100;
+		}
+        
         $graphData = array(
         	'playerName' => $competitor[0]->name,
             'player_id' => $competitor[0]->competitor_id,

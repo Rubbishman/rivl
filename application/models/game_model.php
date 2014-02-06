@@ -98,7 +98,8 @@ class Game_model extends CI_Model {
 				and (acs.competitor_id_1 = $competitor_id
 					or acs.competitor_id_2 = $competitor_id)
 				and (acs.competitor_1_wins > 0 or acs.competitor_2_wins > 0)
-				order by (50/ABS(50 - CAST((case when acs.competitor_id_1 = $competitor_id then competitor_1_wins else competitor_2_wins end/(case when acs.competitor_id_1 = $competitor_id then competitor_1_wins else competitor_2_wins end + case when acs.competitor_id_1 = $competitor_id then competitor_2_wins else competitor_1_wins end))*100 as DECIMAL(4,1))))
+				and (CASE WHEN c1.id = $competitor_id THEN c2.status = 'active' ELSE c1.status = 'active' END) 
+				order by (POW((50-ABS(50 - CAST((case when acs.competitor_id_1 = $competitor_id then competitor_1_wins else competitor_2_wins end/(case when acs.competitor_id_1 = $competitor_id then competitor_1_wins else competitor_2_wins end + case when acs.competitor_id_1 = $competitor_id then competitor_2_wins else competitor_1_wins end))*100 as DECIMAL(4,1))))/25,2)+0.1)
 				*
 				(case when acs.competitor_id_1 = $competitor_id then competitor_1_wins else competitor_2_wins end + case when acs.competitor_id_1 = $competitor_id then competitor_2_wins else competitor_1_wins end) desc");
 		/*
