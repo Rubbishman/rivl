@@ -20,90 +20,12 @@ class Competitor_Graph extends CI_Controller{
         }
     }
 
-    public function get_all_graphs_better() {
-        $allCompetitors = $this->competitor_model->get_competitor($this->input->get('competition_id'));
-
-        $maxGames = $this->db->query("select max(id) max_game_id from game")->result_array();//;
-
-        $maxGames = $maxGames[0]['max_game_id'];
-
-        $graphData = array('playerName' => 'All Competitors','data' => array(), 'labels' => array());
-
-        foreach($allCompetitors as $competitor){
-            $res = $this->game_model->get_elo_graph(array(
-                'competitor_id' => $competitor->competitor_id,
-                'competition_id' => $this->input->get('competition_id')));
-
-            $red = round(rand(0,255));
-            $green = round(rand(0,255));
-            $blue = round(rand(0,255));
-
-            $playerGames = (Object)array(
-                'player' => $competitor->name,
-                'playerId' => $competitor->competitor_id,
-                'fillColor' => "rgba(0,0,0,0)",
-                'strokeColor' => "rgba(".$red.",".$green.",".$blue.",1)",
-                'pointColor' => "rgba(".$red.",".$green.",".$blue.",1)",
-                'pointStrokeColor' => "#fff",
-                'data' => array(1500));
-
-            $last_game = 0;
-            $last_elo = 1500;
-
-            foreach($res as $elo_change){
-
-                if($last_game + 1 != $elo_change['game_id']) {
-                    for($i = $last_game; $i < $elo_change['game_id']; $i++){
-                        $playerGames->data[] = $last_elo;
-                    }
-                }
-                //$graphData['data'][] = $elo_change['elo_change'];
-                $playerGames->data[] = $elo_change['elo_after'];
-                $last_elo = $elo_change['elo_after'];
-                $last_game = $elo_change['game_id'];
-            }
-
-            if($last_game < $maxGames) {
-                for($i = $last_game; $i < $maxGames; $i++){
-                    $playerGames->data[] = $last_elo;
-                }
-            }
-            $graphData['data'][] = $playerGames;
-        }
-
-        for($i = 0; $i <= $maxGames; $i++){
-            $graphData['labels'][] = $i;
-        }
-
-        $this->_render($graphData);
-        //$this->load->view('competitor_graph',$graphData);
-    }
-
 	public function get_all_graphs() {
 		$allCompetitors = $this->competitor_model->get_competitor($this->input->get('competition_id'));
 		
 		$maxGames = 0;
 		
 		$graphData = (Object)array('title' => 'All Competitors','series' => array());
-
-/*
- var model = {
-        title: 'Example Chart', 
-        series: [{
-          title: 'Line 1',
-          points: [
-            {x: secondsInYear * 0, y: 7.0},
-          ] 
-        },
-        {
-          title: 'Line 2',
-          points: [
-            {x: secondsInYear * 0, y: -0.2},
-          ] 
-        }]
-      };
- */
-
 
 		foreach($allCompetitors as $competitor) {
 			$res = $this->game_model->get_elo_graph(array(
@@ -120,31 +42,16 @@ class Competitor_Graph extends CI_Controller{
 			
 			$graphData->series[] = $playerGames;
 			
-			/*$playerGames = (Object)array(
-				'player' => $competitor->name,
-				'playerId' => $competitor->competitor_id,
-				'fillColor' => "rgba(0,0,0,0)",
-				'strokeColor' => "rgba(".$red.",".$green.",".$blue.",1)",
-				'pointColor' => "rgba(".$red.",".$green.",".$blue.",1)",
-				'pointStrokeColor' => "#fff",
-				'data' => array(1500));*/
 			$firstElo = true;
 			$lastTime = 0;
 			$lastTimeCount = 0;
 			foreach($res as $elo_change){
-	            //$graphData['data'][] = $elo_change['elo_change'];
-	            
 	            if($firstElo) {
 	            	$playerGames->points[] = (Object)array("x" => $elo_change['game_date']-(60*60*24), "y" => 1500);
 					$firstElo = false;
 	            }
 				if(abs($lastTime - $elo_change['game_date']) < (60*60*24)) {
 					continue;
-					// $elo_change['game_date'] += (30*$lastTimeCount);
-					// $lastTimeCount++;
-				// } else {
-					// $lastTime = $elo_change['game_date'];
-					// $lastTimeCount = 0;
 				} else {
 					$lastTime = $elo_change['game_date'];
 				}
@@ -153,7 +60,6 @@ class Competitor_Graph extends CI_Controller{
 		}
 
 		$this->_render($graphData);
-        //$this->load->view('competitor_graph',$graphData);
 	}
 
     private function get_graph(){
@@ -170,7 +76,6 @@ class Competitor_Graph extends CI_Controller{
         $max_games = 1;
 
         foreach($stat_details as &$stat){
-
             if($stat['win_num'] + $stat['loss_num'] > $max_games) {
                 $max_games = $stat['win_num'] + $stat['loss_num'];
             }
@@ -216,7 +121,7 @@ class Competitor_Graph extends CI_Controller{
 		$graphData['data'] = array($playerGames);
 
 		$gameHistory = $this->game_model->get_competitor_games($this->input->get('competition_id'),$this->input->get('competitor_id'));
-		// $graphData['gameHistory'] = $gameHistory;
+		$graphData['gameHistory'] = $gameHistory;
 		
 		$recent_games = array();
 		$recent_game_order = array();

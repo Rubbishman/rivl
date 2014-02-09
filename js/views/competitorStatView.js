@@ -30,10 +30,79 @@ Vs.CompetitorStatView = Backbone.View.extend({
 			});
         });
         
-        // $.each(this.model.attributes.gameHistory, function(index, curGame) {
+        var canvas = document.getElementById("previousGameBars");
+		var ctx = canvas.getContext("2d");
+		      
+        	var curIndex = 0;
+        	var curWidth = 10;
+        	var maxEloChange = 0;
+        	
+        	
+        $.each(this.model.attributes.gameHistory, function(index, curGame) {
+        	if(maxEloChange < Math.abs(curGame.competitor_elo_change)) {
+        		maxEloChange = Math.abs(curGame.competitor_elo_change);
+        	}
+        });
+        
+        ctx.fillStyle = '#EEE';
+        ctx.fillRect(0,0,500,50);
+        
+        var heightModifier = 25/maxEloChange;
+        
+        $.each(this.model.attributes.gameHistory, function(index, curGame) {
+		      if(curGame.competitor_elo_change < 0) {
+		      	ctx.fillStyle = '#FC9797';
+		      } else {
+		      	ctx.fillStyle = '#87DF87';
+		      }
+        	ctx.fillRect(curIndex*curWidth, 25,curWidth,curGame.competitor_elo_change*-heightModifier);
+        	
+        	// ctx.lineWidth = 0.5;
+        	ctx.strokeStyle = "#CCC";
+        	
+        	ctx.beginPath();
+		      ctx.moveTo(curIndex*curWidth, 25);
+		      ctx.lineTo(curIndex*curWidth, 25+curGame.competitor_elo_change*-heightModifier);
+		      ctx.stroke();
+		      
+		      ctx.beginPath();
+		      ctx.moveTo(curIndex*curWidth, 25+curGame.competitor_elo_change*-heightModifier);
+		      ctx.lineTo(curIndex*curWidth+10, 25+curGame.competitor_elo_change*-heightModifier);
+		      ctx.stroke();
+		      
+		      ctx.beginPath();
+		      ctx.moveTo(curIndex*curWidth+10, 25+curGame.competitor_elo_change*-heightModifier);
+		      ctx.lineTo(curIndex*curWidth+10, 25);
+		      ctx.stroke();
+		      
+        	curIndex++;
             // self.renderGameHistory(self.model.attributes, curGame);
-        // });        
-
+        });
+		
+		ctx.strokeStyle = "#999";
+		
+		ctx.beginPath();
+		ctx.moveTo(0, 25);
+		ctx.lineTo(500, 25);
+		ctx.stroke();
+			
+		ctx.lineWidth = 1;
+			ctx.beginPath();
+        ctx.moveTo(0, 0);
+		      ctx.lineTo(500, 0);
+		      ctx.stroke();
+		      ctx.beginPath();
+		 ctx.moveTo(0, 50);
+		      ctx.lineTo(500, 50);
+		      ctx.stroke(); 
+		      ctx.beginPath();    
+		  ctx.moveTo(500, 0);
+		      ctx.lineTo(500, 50);
+		      ctx.stroke();
+		      ctx.beginPath();
+			ctx.moveTo(0, 0);
+		      ctx.lineTo(0, 50);
+		      ctx.stroke();
         /*mainGraph = $("#playerGraph").get(0).getContext("2d");
 		data = {
 			labels : this.model.attributes.labels,

@@ -64,7 +64,8 @@ class Game_model extends CI_Model {
     CASE WHEN s1.rank = 1 THEN s1.score ELSE s2.score END winner_score,
     CASE WHEN s1.rank = 2 THEN s1.score ELSE s2.score END loser_score,
     CASE WHEN s1.rank = 1 THEN (s1.elo_after - s1.elo_before) ELSE (s2.elo_after - s2.elo_before) END winner_elo_change,
-    CASE WHEN s1.rank = 2 THEN (s1.elo_after - s1.elo_before) ELSE (s2.elo_after - s2.elo_before) END loser_elo_change
+    CASE WHEN s1.rank = 2 THEN (s1.elo_after - s1.elo_before) ELSE (s2.elo_after - s2.elo_before) END loser_elo_change,
+    s1.elo_after - s1.elo_before competitor_elo_change
     from score s1 
     	join game on s1.game_id = game.id
         join score s2 on s1.game_id = s2.game_id 
