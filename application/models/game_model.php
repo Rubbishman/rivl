@@ -127,6 +127,22 @@ class Game_model extends CI_Model {
 
     public function get_elo_graph($params = FALSE) {
         //$this->db->select('(score.elo_after - score.elo_before) elo_change');
+        $this->db->select('UNIX_TIMESTAMP(game.date) game_date, score.elo_after');
+        $this->db->from('game');
+        $this->db->join('score', 'game.id = score.game_id');
+        $this->db->join('competitor', 'score.competitor_id = competitor.id');
+		$this->db->order_by('game.date', 'asc');
+        $this->db->order_by('game.id', 'asc');
+        $this->db->where(array('game.competition_id' => $params['competition_id']));
+        $this->db->where(array('score.competitor_id' => $params['competitor_id']));
+
+        $query = $this->db->get();
+
+        return $query->result_array();
+    }
+
+	public function get_elo_graph_old($params = FALSE) {
+        //$this->db->select('(score.elo_after - score.elo_before) elo_change');
         $this->db->select('game_id, score.elo_after');
         $this->db->from('game');
         $this->db->join('score', 'game.id = score.game_id');

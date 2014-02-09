@@ -15,7 +15,7 @@
                 <li><a href="#competition/<%=id%>">Home</a></li>
                 <li><a href="#competition/<%=id%>/game">Enter result</a></li>
                 <!--<li><a href="#">Compare rivls</a></li>-->
-                <!--<li><a href="#competition_graph/<%=id%>">Graph</a></li>-->
+				<li><a href="#competition_graph/<%=id%>">Graph</a></li>
                 <li id="notifications" class="hide"><a href="#competitor_home/<%=id%>">Notifications <span class="badge">4</span></a></li>
                 <li id="login" class="hide"><a>Login</a></li>
                 <li id="logout" class="hide"><a>Logout</a></li>

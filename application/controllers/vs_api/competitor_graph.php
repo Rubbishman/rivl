@@ -84,42 +84,73 @@ class Competitor_Graph extends CI_Controller{
 		
 		$maxGames = 0;
 		
-		$graphData = array('playerName' => 'All Competitors','data' => array(), 'labels' => array());
+		$graphData = (Object)array('title' => 'All Competitors','series' => array());
 
-		foreach($allCompetitors as $competitor){
+/*
+ var model = {
+        title: 'Example Chart', 
+        series: [{
+          title: 'Line 1',
+          points: [
+            {x: secondsInYear * 0, y: 7.0},
+          ] 
+        },
+        {
+          title: 'Line 2',
+          points: [
+            {x: secondsInYear * 0, y: -0.2},
+          ] 
+        }]
+      };
+ */
+
+
+		foreach($allCompetitors as $competitor) {
 			$res = $this->game_model->get_elo_graph(array(
             'competitor_id' => $competitor->competitor_id,
             'competition_id' => $this->input->get('competition_id')));
-			
-			if(count($res) > $maxGames) {
-				$maxGames = count($res);
-			}
 			
 			$red = round(rand(0,255));
 			$green = round(rand(0,255));
 			$blue = round(rand(0,255));
 			
 			$playerGames = (Object)array(
+				'title' => $competitor->name,
+				'points' => array());
+			
+			$graphData->series[] = $playerGames;
+			
+			/*$playerGames = (Object)array(
 				'player' => $competitor->name,
 				'playerId' => $competitor->competitor_id,
 				'fillColor' => "rgba(0,0,0,0)",
 				'strokeColor' => "rgba(".$red.",".$green.",".$blue.",1)",
 				'pointColor' => "rgba(".$red.",".$green.",".$blue.",1)",
 				'pointStrokeColor' => "#fff",
-				'data' => array(1500));
-					
+				'data' => array(1500));*/
+			$firstElo = true;
+			$lastTime = 0;
+			$lastTimeCount = 0;
 			foreach($res as $elo_change){
 	            //$graphData['data'][] = $elo_change['elo_change'];
-	            $playerGames->data[] = max($elo_change['elo_after'],1000);
+	            
+	            if($firstElo) {
+	            	$playerGames->points[] = (Object)array("x" => $elo_change['game_date']-(60*60*24), "y" => 1500);
+					$firstElo = false;
+	            }
+				if(abs($lastTime - $elo_change['game_date']) < (60*60*24)) {
+					continue;
+					// $elo_change['game_date'] += (30*$lastTimeCount);
+					// $lastTimeCount++;
+				// } else {
+					// $lastTime = $elo_change['game_date'];
+					// $lastTimeCount = 0;
+				} else {
+					$lastTime = $elo_change['game_date'];
+				}
+	            $playerGames->points[] = (Object)array("x" => $elo_change['game_date'], "y" => $elo_change['elo_after']);
         	}
-            if($competitor->name != 'Andrew') {
-                $graphData['data'][] = $playerGames;
-            }
 		}
-
-        for($i = 0; $i <= $maxGames; $i++){
-            $graphData['labels'][] = $i;
-        }
 
 		$this->_render($graphData);
         //$this->load->view('competitor_graph',$graphData);
