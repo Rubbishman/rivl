@@ -121,12 +121,17 @@ class Competitor_Graph extends CI_Controller{
 		$graphData['data'] = array($playerGames);
 
 		$gameHistory = $this->game_model->get_competitor_games($this->input->get('competition_id'),$this->input->get('competitor_id'));
-		$graphData['gameHistory'] = $gameHistory;
-		
+		$graphData['gameHistory'] = array();//$gameHistory;
+		foreach($gameHistory as $recent_game) {
+			if(count($graphData['gameHistory']) <= 25) {
+				array_unshift($graphData['gameHistory'],$recent_game);
+			}
+		}
 		$recent_games = array();
 		$recent_game_order = array();
 		$last_opponent = 0;
 		foreach($gameHistory as $recent_game) {
+			
 			if($last_opponent == $recent_game['opponent_id']) {
 				if($recent_game['player_won']) {
 					$recent_games[$recent_game['opponent_id']]['won'] 

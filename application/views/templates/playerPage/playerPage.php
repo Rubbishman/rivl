@@ -21,10 +21,6 @@
             </div>
         </div>
 
-        <h2>Recent games</h2>
-
-		<canvas id="previousGameBars" width="500" height="50"></canvas>
-
         <h2>Top rivls</h2>
         <div id="playerStats"></div>
         <!--
@@ -58,6 +54,11 @@
     -->
 
     <h2>Recent games</h2>
+    
+    <canvas id="previousGameBars" width="500" height="50"></canvas>
+    
+    <div id="previousGameBarDetails"></div>
+    
     <div class="sectionBody">
 
         <div id="recentGames" class="row">

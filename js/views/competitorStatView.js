@@ -31,8 +31,70 @@ Vs.CompetitorStatView = Backbone.View.extend({
         });
         
         var canvas = document.getElementById("previousGameBars");
-		var ctx = canvas.getContext("2d");
+        var ctx = canvas.getContext("2d");
         ctx.translate(0.5, 0.5);
+        
+        var self = this;
+        function getMousePos(canvas, evt) {
+	        var rect = canvas.getBoundingClientRect();
+	        return {
+	          x: evt.clientX - rect.left,
+	          y: evt.clientY - rect.top
+	        };
+      	}
+        
+        canvas.addEventListener('mousemove', function(evt) {
+        	var mousePos = getMousePos(canvas, evt);
+        	ctx.clearRect(-1, -1, canvas.width+1, canvas.height+1);
+        	
+        	var mouseBlockX = (mousePos.x - (mousePos.x % 20));
+        	
+        	if(mouseBlockX/20 < self.model.attributes.gameHistory.length && self.model.attributes.gameHistory[mouseBlockX/20].competitor_elo_change > 0) {
+        		ctx.fillStyle = "#D0FFCF";
+        	} else if(mouseBlockX/20 < self.model.attributes.gameHistory.length) {
+        		ctx.fillStyle = "#FFCFD0";
+        	} else {
+        		self.renderEloBar();
+        		return;
+        	}
+        	
+        	ctx.fillRect(mouseBlockX+1,0,18,50);
+        	
+        	self.renderEloBar();
+        	
+        	ctx.strokeStyle = "#999";
+        	ctx.beginPath();
+        	ctx.moveTo(mouseBlockX+1,0);
+        	ctx.lineTo(mouseBlockX+1,49);
+        	ctx.lineTo(mouseBlockX+19,49);
+        	ctx.lineTo(mouseBlockX+19,0);
+        	ctx.lineTo(mouseBlockX+1,0);
+        	ctx.closePath();
+        	ctx.stroke();
+        	
+        	$('#previousGameBarDetails').show();
+        	$('#previousGameBarDetails').html(self.model.attributes.gameHistory[mouseBlockX/20].competitor_elo_change);
+      	}, false);
+        
+        this.renderEloBar();
+        
+        $(document).scrollTop(0);
+
+        var rivls = $('#playerStats .rivlsStatsRow'),
+            rivlsCount = rivls.length,
+            limit = 5;
+        
+        if (rivlsCount > limit) {
+            rivls.slice(limit, rivlsCount).wrapAll("<div id='rivlStatsOverflow'></div>");
+            $('#playerStats').append('<button class="btn btn-default btn-sm" id="showRivlStatsOverflow">+ show more</button>')
+        }
+        
+        return this;
+    },
+    renderEloBar: function () {
+    	var canvas = document.getElementById("previousGameBars");
+		var ctx = canvas.getContext("2d");
+        
         	var curIndex = 0;
         	var curWidth = 20;
         	var maxEloChange = 0;
@@ -44,16 +106,13 @@ Vs.CompetitorStatView = Backbone.View.extend({
         	}
         });
         
-//        ctx.fillStyle = '#EEE';
-//        ctx.fillRect(0,0,500,50);
-        
         var heightModifier = 25/maxEloChange;
         
         $.each(this.model.attributes.gameHistory, function(index, curGame) {
 
-            if(index > 25) {
-                return;
-            }
+	            if(index > 25) {
+	                return;
+	            }
 
 		      if(curGame.competitor_elo_change < 0) {
 		      	ctx.fillStyle = '#FC9797';
@@ -86,26 +145,6 @@ Vs.CompetitorStatView = Backbone.View.extend({
 		ctx.moveTo(1, 25);
 		ctx.lineTo(499, 25);
 		ctx.stroke();
-        /*mainGraph = $("#playerGraph").get(0).getContext("2d");
-		data = {
-			labels : this.model.attributes.labels,
-			datasets : this.model.attributes.data
-		};
-        options = {'pointDot' : false };
-		myNewChart = new Chart(mainGraph).Line(data,options);
-        */
-        $(document).scrollTop(0);
-
-        var rivls = $('#playerStats .rivlsStatsRow'),
-            rivlsCount = rivls.length,
-            limit = 5;
-        
-        if (rivlsCount > limit) {
-            rivls.slice(limit, rivlsCount).wrapAll("<div id='rivlStatsOverflow'></div>");
-            $('#playerStats').append('<button class="btn btn-default btn-sm" id="showRivlStatsOverflow">+ show more</button>')
-        }
-        
-        return this;
     },
     toggleRivlStatsOverflow: function () {
 
