@@ -32,9 +32,9 @@ Vs.CompetitorStatView = Backbone.View.extend({
         
         var canvas = document.getElementById("previousGameBars");
 		var ctx = canvas.getContext("2d");
-		      
+        ctx.translate(0.5, 0.5);
         	var curIndex = 0;
-        	var curWidth = 10;
+        	var curWidth = 20;
         	var maxEloChange = 0;
         	
         	
@@ -44,12 +44,17 @@ Vs.CompetitorStatView = Backbone.View.extend({
         	}
         });
         
-        ctx.fillStyle = '#EEE';
-        ctx.fillRect(0,0,500,50);
+//        ctx.fillStyle = '#EEE';
+//        ctx.fillRect(0,0,500,50);
         
         var heightModifier = 25/maxEloChange;
         
         $.each(this.model.attributes.gameHistory, function(index, curGame) {
+
+            if(index > 25) {
+                return;
+            }
+
 		      if(curGame.competitor_elo_change < 0) {
 		      	ctx.fillStyle = '#FC9797';
 		      } else {
@@ -58,21 +63,16 @@ Vs.CompetitorStatView = Backbone.View.extend({
         	ctx.fillRect(curIndex*curWidth, 25,curWidth,curGame.competitor_elo_change*-heightModifier);
         	
         	// ctx.lineWidth = 0.5;
-        	ctx.strokeStyle = "#CCC";
-        	
+        	ctx.strokeStyle = "#FFF";
+
         	ctx.beginPath();
 		      ctx.moveTo(curIndex*curWidth, 25);
 		      ctx.lineTo(curIndex*curWidth, 25+curGame.competitor_elo_change*-heightModifier);
 		      ctx.stroke();
-		      
+
 		      ctx.beginPath();
-		      ctx.moveTo(curIndex*curWidth, 25+curGame.competitor_elo_change*-heightModifier);
-		      ctx.lineTo(curIndex*curWidth+10, 25+curGame.competitor_elo_change*-heightModifier);
-		      ctx.stroke();
-		      
-		      ctx.beginPath();
-		      ctx.moveTo(curIndex*curWidth+10, 25+curGame.competitor_elo_change*-heightModifier);
-		      ctx.lineTo(curIndex*curWidth+10, 25);
+		      ctx.moveTo(curIndex*curWidth+curWidth, 25+curGame.competitor_elo_change*-heightModifier);
+		      ctx.lineTo(curIndex*curWidth+curWidth, 25);
 		      ctx.stroke();
 		      
         	curIndex++;
@@ -80,29 +80,12 @@ Vs.CompetitorStatView = Backbone.View.extend({
         });
 		
 		ctx.strokeStyle = "#999";
-		
-		ctx.beginPath();
-		ctx.moveTo(0, 25);
-		ctx.lineTo(500, 25);
-		ctx.stroke();
-			
 		ctx.lineWidth = 1;
-			ctx.beginPath();
-        ctx.moveTo(0, 0);
-		      ctx.lineTo(500, 0);
-		      ctx.stroke();
-		      ctx.beginPath();
-		 ctx.moveTo(0, 50);
-		      ctx.lineTo(500, 50);
-		      ctx.stroke(); 
-		      ctx.beginPath();    
-		  ctx.moveTo(500, 0);
-		      ctx.lineTo(500, 50);
-		      ctx.stroke();
-		      ctx.beginPath();
-			ctx.moveTo(0, 0);
-		      ctx.lineTo(0, 50);
-		      ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(1, 25);
+		ctx.lineTo(499, 25);
+		ctx.stroke();
         /*mainGraph = $("#playerGraph").get(0).getContext("2d");
 		data = {
 			labels : this.model.attributes.labels,

@@ -20,7 +20,9 @@
                 <p>of <span id="playersTotal"><%=total_competitors%></span> players</p>
             </div>
         </div>
-		
+
+        <h2>Recent games</h2>
+
 		<canvas id="previousGameBars" width="500" height="50"></canvas>
 
         <h2>Top rivls</h2>
