@@ -23,6 +23,9 @@ h3.bigVal, h4.bigVal {
 a {
 	cursor: pointer;
 }
+h2 {
+	font-size: 1.1em;
+}
 .sectionBody {
 	max-width: 500px;
 	padding: 10px 0px 25px;
@@ -221,15 +224,32 @@ span.rankNeutral {
 	border-top-right-radius: 3px;
 }
 .percentBarRow {
-	line-height: 1.5em;
-	margin-top: 5px;
-	margin-bottom: 5px;
+	margin-right: 0;
+	border-bottom: 1px solid #999;
+}
+.percentBarRow {
+	margin-left: 0;
+	padding-left: 0px;
+	line-height: 30px;
+	height: 30px;
+}
+.percentBarRow a {
+	display: block;
+}
+.playerStatsRowName, .playerPosition {
+	padding-left: 0;
+}
+.playerStatsRowName a {
+	display: block;
+}
+#showRivlStatsOverflow {
+	margin-top: 8px;
 }
 .percentBar {
     background: #FC9797;
-    line-height: 1.5em;
+    line-height: 29px;
     overflow: hidden;
-    height: 1.5em;
+    height: 29px;
 }
 .bar {
 	position: absolute;
@@ -249,37 +269,31 @@ span.rankNeutral {
 }
 .barInfo {
 	text-align: center;
-	margin-left: -50px;
+	margin-left: -65px;
 }
 .barInfo span {
 	background: rgba(255, 255, 255, 0.7);
 	position: absolute;
-	width: 50px;
+	width: 65px;
 	height: 1.2em;
 	line-height: 1.2em;
-	margin-top: 0.1em;
+	margin-top: 0.3em;
+}
+.playedMeterWrapParent {
+	padding-right: 0;
 }
 .playedMeterWrap {
 	background: #e2e2e2;
 	width: 100%;
-	border-radius: 4px;
-	box-shadow: 0 0 8px 0px #bbb inset;
 }
 .playerGamesBar {
 	background: #a0a0a0;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#aaa), to(#999));
-	background-image: -webkit-linear-gradient(top, #aaa, #999);
-	background-image: -moz-linear-gradient(top, #aaa, #999);
-	background-image: -ms-linear-gradient(top, #aaa, #999);
-	background-image: -o-linear-gradient(top, #aaa, #999);
-	background-image: linear-gradient(to bottom, #AAA, #999);
-	height: 1.5em;
-	border-radius: 4px;
+	height: 1.8em;
 }
 .gamesPlayedLabel {
 	padding-left: 5px;
 	text-shadow: 0 1px 0 #bbb;
-	line-height: 1.5em;
+	line-height: 1.8em;
 }
 .bad {
 	color: red;
@@ -289,7 +303,6 @@ span.rankNeutral {
 }
 #rivlStatsOverflow {
 	display: none;
-    margin-top: -5px;
     width: 100%;
 }
 
