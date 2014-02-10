@@ -4,21 +4,14 @@
     <% var lossPercent = 100 - winPercent; %>
 
     <div class="row percentBarRow rivlsStatsRow">
-        <div class="col-xs-4">
+        <div class="col-xs-5 playerStatsRowName">
             <a class="playerLink link"><%=opponent_name%></a>
         </div>
-        <div class="col-xs-5 percentBar">
-            <div class="bar barGood" style="width: <%=winPercent%>%"><strong><span><%=win_num%></span></strong></div>            
-            <div class="bar barBad" style="width: <%=lossPercent%>%"><span><%=loss_num%></span></div>
-            <div class="barInfo"><span class="<% if (winPercent < 50) {%>bad<% } %>"><%=winPercent%>%</span></div>
+        <div class="col-xs-7 percentBar">
+            <div class="bar barGood" style="width: <%=winPercent%>%">&nbsp;</div>            
+            <div class="bar barBad" style="width: <%=lossPercent%>%"></div>
+            <div class="barInfo"><span class="<% if (winPercent < 50) {%>bad<% } %>"><%=win_num%>/<%=games%></span></div>
         </div>
-        <div class="col-xs-3">
-            <div class="fl playedMeterWrap">
-                <div class="fl gamesPlayedLabel">
-                    <%=games%> <small>games</small>
-                </div>
-                <div class="playerGamesBar" style="width:<%=gamePercent%>%;"></div>
-            </div>
-        </div>
+
     </div>
 </script>
