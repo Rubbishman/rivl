@@ -24,12 +24,12 @@
         <div class="col-xs-2 playerPosition">
             <%=rank%><%=rankPostfix%>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-5">
             <a class="playerLink link"><%=name%></a>
         </div>
-    	<div class="col-xs-6 playedMeterWrapParent">
+    	<div class="col-xs-5 playedMeterWrapParent">
             <div class="fl playedMeterWrap">
-                <div class="playerGamesBar" style="width:<%=elo_percent%>%;">
+                <div class="playerGamesBar bgGood" style="width:<%=elo_percent%>%;">
                 	<div class="fl gamesPlayedLabel pointsDisplay" style="display: none;">
                         <%=elo%>
                     </div>

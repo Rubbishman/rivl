@@ -1,6 +1,7 @@
 body {
     padding-top: 60px;
     font-size: 16px;
+    background: #fcfcfc;
 }
 h1 small, .row small {
 	color: #333;
@@ -30,6 +31,13 @@ h2 {
 	max-width: 500px;
 	padding: 10px 0px 25px;
 }
+.bgGood {
+	background: #87DF87;
+}
+.bgBad {
+	background: #FC9797;
+}
+
 #previousGameBars {
 	margin-top: 5px;
 }
@@ -225,10 +233,9 @@ span.rankNeutral {
 }
 .percentBarRow {
 	margin-right: 0;
-	border-bottom: 1px solid #999;
-}
-.percentBarRow {
 	margin-left: 0;
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #ddd;
 	padding-left: 0px;
 	line-height: 30px;
 	height: 30px;
@@ -238,6 +245,7 @@ span.rankNeutral {
 }
 .playerStatsRowName, .playerPosition {
 	padding-left: 0;
+	height:29px;
 }
 .playerStatsRowName a {
 	display: block;
@@ -283,16 +291,13 @@ span.rankNeutral {
 	padding-right: 0;
 }
 .playedMeterWrap {
-	background: #e2e2e2;
 	width: 100%;
 }
 .playerGamesBar {
-	background: #a0a0a0;
 	height: 1.8em;
 }
 .gamesPlayedLabel {
 	padding-left: 5px;
-	text-shadow: 0 1px 0 #bbb;
 	line-height: 1.8em;
 }
 .bad {
