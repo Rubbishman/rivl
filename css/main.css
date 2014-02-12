@@ -295,6 +295,7 @@ span.rankNeutral {
 }
 .playerGamesBar {
 	height: 1.8em;
+	min-width: 2px;
 }
 .gamesPlayedLabel {
 	padding-left: 5px;
