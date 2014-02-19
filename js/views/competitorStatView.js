@@ -3,8 +3,8 @@ Vs.CompetitorStatView = Backbone.View.extend({
     template : _.template($('#playerPageTemplate').html()),
     navbarTemplate : _.template($('#navbarTemplate').html()),
 	statRowTemplate : _.template($('#playerStatRowTemplate').html()),
+	gameViewTemplate : _.template($('#gameViewTemplate').html()),
 	competitorGameRowTemplate : _.template($('#competitorGameRowTemplate').html()),
-    
     events: {
         'click #showRivlStatsOverflow': 'toggleRivlStatsOverflow'
     },
@@ -72,9 +72,19 @@ Vs.CompetitorStatView = Backbone.View.extend({
         	ctx.closePath();
         	ctx.stroke();
         	
-        	$('#previousGameBarDetails').show();
-        	$('#previousGameBarDetails').html(self.model.attributes.gameHistory[mouseBlockX/20].competitor_elo_change);
+        	$('#previousGameBarDetails').html(self.gameViewTemplate(self.model.attributes.gameHistory[mouseBlockX/20]));
+        	// $('#previousGameBarEloHover').html(self.model.attributes.gameHistory[mouseBlockX/20].competitor_elo_change);
       	}, false);
+        
+        // canvas.addEventListener('click', function(evt) {
+        	// var mousePos = getMousePos(canvas, evt);
+        	// ctx.clearRect(-1, -1, canvas.width+1, canvas.height+1);
+//         	
+        	// var mouseBlockX = (mousePos.x - (mousePos.x % 20));
+        	// self.renderEloBar();
+        	// self.selectedGame = mouseBlockX/20;
+//         	
+        // });
         
         this.renderEloBar();
         
@@ -92,8 +102,9 @@ Vs.CompetitorStatView = Backbone.View.extend({
         return this;
     },
     renderEloBar: function () {
-    	var canvas = document.getElementById("previousGameBars");
-		var ctx = canvas.getContext("2d");
+    	var canvas = document.getElementById("previousGameBars"),
+    	ctx = canvas.getContext("2d"),
+    	self = this;
         
         	var curIndex = 0;
         	var curWidth = 20;

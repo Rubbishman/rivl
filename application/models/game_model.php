@@ -58,6 +58,8 @@ class Game_model extends CI_Model {
 		$res =$this->db->query('select game.date, 
 		CASE WHEN s1.rank = 1 THEN c1.name ELSE c2.name END winner_name, 
     CASE WHEN s1.rank = 2 THEN c1.name ELSE c2.name END loser_name,
+    CASE WHEN s1.rank = 1 THEN c1.id ELSE c2.id END winner_id, 
+    CASE WHEN s1.rank = 2 THEN c1.id ELSE c2.id END loser_id,
     CASE WHEN s1.rank = 1 THEN true ELSE false END player_won,
     c2.id opponent_id,
     c2.name opponent_name,

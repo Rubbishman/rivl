@@ -57,6 +57,7 @@
     
     <canvas id="previousGameBars" width="500" height="50"></canvas>
     
+<!--     <div id="previousGameBarEloHover">--</div> -->
     <div id="previousGameBarDetails"></div>
     
     <div class="sectionBody">
