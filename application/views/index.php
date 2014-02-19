@@ -31,7 +31,7 @@
 
 	<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.7.4.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.2.1/moment.min.js"></script>
-    <script src="http://d3lp1msu2r81bx.cloudfront.net/mc/js/lib/meteorcharts-v0.0.11.min.js"></script>
+    <script src=<?=base_url("/js/lib/meteorcharts-v0.0.11-CUSTOM.js")?>></script>
 
 	<script type="text/javascript">
 	    navigator.id.watch({
