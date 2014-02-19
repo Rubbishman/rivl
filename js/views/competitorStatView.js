@@ -5,6 +5,7 @@ Vs.CompetitorStatView = Backbone.View.extend({
 	statRowTemplate : _.template($('#playerStatRowTemplate').html()),
 	gameViewTemplate : _.template($('#gameViewTemplate').html()),
 	competitorGameRowTemplate : _.template($('#competitorGameRowTemplate').html()),
+    selectedCompetitorId : -1,
     events: {
         'click #showRivlStatsOverflow': 'toggleRivlStatsOverflow'
     },
@@ -48,7 +49,9 @@ Vs.CompetitorStatView = Backbone.View.extend({
         	ctx.clearRect(-1, -1, canvas.width+1, canvas.height+1);
         	
         	var mouseBlockX = (mousePos.x - (mousePos.x % 20));
-        	
+
+            self.selectedCompetitorId = self.model.attributes.gameHistory[mouseBlockX/20].opponent_id;
+
         	if(mouseBlockX/20 < self.model.attributes.gameHistory.length && self.model.attributes.gameHistory[mouseBlockX/20].competitor_elo_change > 0) {
         		ctx.fillStyle = "#D0FFCF";
         	} else if(mouseBlockX/20 < self.model.attributes.gameHistory.length) {
@@ -124,6 +127,11 @@ Vs.CompetitorStatView = Backbone.View.extend({
 	            if(index > 25) {
 	                return;
 	            }
+
+            if(self.selectedCompetitorId == self.model.attributes.gameHistory[index].opponent_id) {
+                ctx.fillStyle = '#DDDDDD';
+                ctx.fillRect(curIndex*curWidth, 0,curWidth,50);
+            }
 
 		      if(curGame.competitor_elo_change < 0) {
 		      	ctx.fillStyle = '#FC9797';
