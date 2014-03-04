@@ -202,13 +202,13 @@ Vs.NewGameView2 = Backbone.View.extend({
                 $('#selectPlayer1').attr('data-competitor_id', playerModel.get('competitor_id'));
                 //$('#selectPlayer1 span').html("<a href='#competition/" + this.model.get('id') + "/competitor_home/" + playerModel.get('competitor_id') + "'>" + playerModel.get('name') + "</a>");
                 $('#selectPlayer1 span').html(playerModel.get('name'));
-                $('#selectPlayer1 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + playerModel.get('competitor_id') + "_1"+"?ver=3");
+                $('#selectPlayer1 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + playerModel.get('competitor_id') + "_1"+"?ver=5");
 
             } else {
                 $('#selectPlayer2').attr('data-competitor_id', playerModel.get('competitor_id'));
                 //$('#selectPlayer2 span').html("<a href='#competition/" + this.model.get('id') + "/competitor_home/" + playerModel.get('competitor_id') + "'>" + playerModel.get('name') + "</a>");
                 $('#selectPlayer2 span').html(playerModel.get('name'));
-                $('#selectPlayer2 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + playerModel.get('competitor_id') + "_1"+"?ver=3");
+                $('#selectPlayer2 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + playerModel.get('competitor_id') + "_1"+"?ver=5");
             }
         } else {
             if (playerNumber === '1') {
@@ -266,13 +266,13 @@ Vs.NewGameView2 = Backbone.View.extend({
         //update images
         if (results.p1eloDelta < 0) {
             if(Vs.competition.get('id') == 2) {
-                $('#selectPlayer1 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + playerModel.get('competitor_id') + "_0"+"?ver=3");
+                $('#selectPlayer1 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + playerModel.get('competitor_id') + "_0"+"?ver=5");
             } else {
                 $('#selectPlayer1 img').attr('src', "img/avatars/" + this._getImage(results.p1name, 'left', 'lose'));
             }
         } else {
             if(Vs.competition.get('id') == 2) {
-                $('#selectPlayer2 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + playerModel.get('competitor_id') + "_0"+"?ver=3");
+                $('#selectPlayer2 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + playerModel.get('competitor_id') + "_0"+"?ver=5");
             } else {
                 $('#selectPlayer2 img').attr('src', "img/avatars/" + this._getImage(results.p2name, 'right', 'lose'));
             }
