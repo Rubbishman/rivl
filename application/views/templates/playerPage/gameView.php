@@ -19,8 +19,10 @@
 			    </div>
 			</div>
 			<div class="col-xs-3">
-				<span class="notesHeader">Notes:</span>
-				<div id="noteAnchor"></div>
+				<div id="notesArea">
+					<span class="notesHeader">Notes:</span>
+					<div id="noteAnchor"></div>
+				</div>
 			</div>
 			<div class='col-xs-5'></div>
 		</div>
