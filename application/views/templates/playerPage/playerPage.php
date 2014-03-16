@@ -57,54 +57,6 @@
     
     <canvas id="previousGameBars" width="500" height="50"></canvas>
     
-<!--     <div id="previousGameBarEloHover">--</div> -->
     <div id="previousGameBarDetails"></div>
     
-    <div class="sectionBody">
-
-        <div id="recentGames" class="row">
-            <div class="col-xs-2">
-                <img src="img/avatars/2_<%=player_id%>_1.png?ver=5" class="mediumAvatar roundAvatar" />
-            </div>
-            <div class="col-xs-2">
-                <span class="vs">vs...</span>
-            </div>
-            
-            <%
-            	$.each(recentGames, function(index,rg){
-            		%>
-					<div class="col-xs-2 text-center" title="<%=rg.opponent_name%>">
-		                <img id="recentGame_<%=index%>" src="img/avatars/2_<%=rg.opponent_id%>_1.png?ver=5" class="mediumAvatar roundAvatar avatarLink" /><br />
-		            <%
-		            	if(rg.highlight == 1) {
-		            %>
-		                <span class="recentWin"><%=rg.won%></span> - <span><%=rg.lost%></span>
-	                <%
-	                	} else if(rg.highlight == -1){
-	                %>
-	                	<span><%=rg.won%></span> - <span class="recentLoss"><%=rg.lost%></span>
-	                <%
-	                	} else {
-	                %>
-	                	<span><%=rg.won%></span> - <span><%=rg.lost%></span>
-	                <%
-	                	}
-	                %>
-	                
-		            </div>
-					<%
-            	});
-				
-				if(recentGameWhiteSpace > 0) {
-			%>
-					<div class="col-xs-<%=recentGameWhiteSpace%> text-center">  
-		            </div>
-			<%
-				}
-            %>
-        </div>
-
-        <!-- <br /><br /><br /><br /><em>discard this version:</em>
-        <div id="playerHistory"></div> -->
-    </div>
 </script>

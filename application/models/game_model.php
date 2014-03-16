@@ -55,19 +55,19 @@ class Game_model extends CI_Model {
 	}
 
 	public function get_competitor_games($competition_id, $competitor_id, $limit = 50) {
-		$res =$this->db->query('select game.date, 
-		CASE WHEN s1.rank = 1 THEN c1.name ELSE c2.name END winner_name, 
-    CASE WHEN s1.rank = 2 THEN c1.name ELSE c2.name END loser_name,
+		$res =$this->db->query("select game.date, 
+		CASE WHEN s1.rank = 1 THEN 
+			CASE WHEN ce1.pseudonym is not null THEN CONCAT(c1.name, ', ', ce1.pseudonym) ELSE c1.name END ELSE CASE WHEN ce2.pseudonym is not null THEN CONCAT(c2.name, ', ', ce2.pseudonym) ELSE c2.name END END winner_name, 
+    CASE WHEN s1.rank = 2 THEN CASE WHEN ce1.pseudonym is not null THEN CONCAT(c1.name, ', ', ce1.pseudonym) ELSE c1.name END ELSE CASE WHEN ce2.pseudonym is not null THEN CONCAT(c2.name, ', ', ce2.pseudonym) ELSE c2.name END END loser_name,
     CASE WHEN s1.rank = 1 THEN c1.id ELSE c2.id END winner_id, 
     CASE WHEN s1.rank = 2 THEN c1.id ELSE c2.id END loser_id,
     CASE WHEN s1.rank = 1 THEN true ELSE false END player_won,
-    c2.id opponent_id,
-    c2.name opponent_name,
     CASE WHEN s1.rank = 1 THEN s1.score ELSE s2.score END winner_score,
     CASE WHEN s1.rank = 2 THEN s1.score ELSE s2.score END loser_score,
     CASE WHEN s1.rank = 1 THEN (s1.elo_after - s1.elo_before) ELSE (s2.elo_after - s2.elo_before) END winner_elo_change,
     CASE WHEN s1.rank = 2 THEN (s1.elo_after - s1.elo_before) ELSE (s2.elo_after - s2.elo_before) END loser_elo_change,
     s1.elo_after - s1.elo_before competitor_elo_change,
+    game.id game_id,
     s2.competitor_id opponent_id
     from score s1 
     	join game on s1.game_id = game.id
@@ -75,10 +75,12 @@ class Game_model extends CI_Model {
             and s1.competitor_id != s2.competitor_id
         join competitor c1 on c1.id = s1.competitor_id
         join competitor c2 on c2.id = s2.competitor_id
-    where s1.competitor_id = '.$competitor_id.'
-    	and game.competition_id = '.$competition_id.'
+        join competitor_elo ce1 on c1.id = ce1.competitor_id and ce1.competition_id = game.competition_id
+    	join competitor_elo ce2 on c2.id = ce2.competitor_id and ce2.competition_id = game.competition_id
+    where s1.competitor_id = ".$competitor_id."
+    	and game.competition_id = ".$competition_id."
     	order by game.date desc, game.id desc
-    	limit '.$limit);
+    	limit ".$limit);
 		return $res->result_array();
 	}
 
@@ -177,14 +179,16 @@ class Game_model extends CI_Model {
 
     public function recalculate_games() {
     	
-    	$this->db->update('agg_competitor_stats',
-    		array(
-    			'competitor_1_wins' => 0, 
-    			'competitor_2_wins' => 0, 
-    			'competitor_1_streak' => 0, 
-    			'competitor_2_streak' => 0, 
-    			'current_streak' => 0, 
-    			'current_streak_competitor' => 0));
+		$this->db->empty_table('agg_competitor_stats');
+		
+    	// $this->db->update('agg_competitor_stats',
+    		// array(
+    			// 'competitor_1_wins' => 0, 
+    			// 'competitor_2_wins' => 0, 
+    			// 'competitor_1_streak' => 0, 
+    			// 'competitor_2_streak' => 0, 
+    			// 'current_streak' => 0, 
+    			// 'current_streak_competitor' => 0));
 		
         $this->db->update('competitor_elo',array('elo' => 1500));
 
@@ -213,6 +217,25 @@ class Game_model extends CI_Model {
 			$this->db->where('competitor_id_1',$p1_id);
 			$this->db->where('competitor_id_2',$p2_id);
 			$agg_stat = $this->db->get()->row_array();
+			
+			if(count($agg_stat) === 0) {
+				$agg_stat = array(
+						'competition_id' => $game['competition_id'],
+						'competitor_id_1' => $p1_id,
+						'competitor_id_2' => $p2_id,
+						'competitor_1_wins' => 0,
+						'competitor_2_wins' => 0,
+						'competitor_1_streak' => 0,
+						'competitor_2_streak' => 0,
+						'current_streak' => 0,
+						'current_streak_competitor' => $p1_id
+					);
+				
+				$this->db->insert(
+					'agg_competitor_stats', 
+					$agg_stat
+				);
+			}
 			
 			if($agg_stat['competitor_id_1'] == $game['winner_id']) {
 				$agg_stat['competitor_1_wins']++;
@@ -259,7 +282,9 @@ class Game_model extends CI_Model {
 
             $this->db->select('count(CASE WHEN competitor_id = '.$game['winner_id'].' THEN 1 ELSE NULL END) winner_games, count(CASE WHEN competitor_id = '.$game['loser_id'].' THEN 1 ELSE NULL END) loser_games');
             $this->db->from('score');
-            $this->db->where('game_id <',$game['game_id']);
+			$this->db->join('game', 'game.id = score.game_id');
+            $this->db->where('score.game_id <',$game['game_id']);
+            $this->db->where('game.competition_id', $game['competition_id']);
             $game_number = $this->db->get()->row_array();
 
             $elo_after = elo_helper($winner_details['elo'],$loser_details['elo'],$game_number['winner_games'],$game_number['loser_games']);
@@ -331,6 +356,8 @@ class Game_model extends CI_Model {
 
         $this->db->select('count(CASE WHEN competitor_id = '.$winner_details['competitor_id'].' THEN 1 ELSE NULL END) winner_games, count(CASE WHEN competitor_id = '.$loser_details['competitor_id'].' THEN 1 ELSE NULL END) loser_games');
         $this->db->from('score');
+        $this->db->join('game', 'game.id = score.game_id');
+        $this->db->where('game.competition_id', $game['competition_id']);
         $game_number = $this->db->get()->row_array();
 
 		$elo_after = elo_helper($winner_details['elo'],$loser_details['elo'],$game_number['winner_games'],$game_number['loser_games']);
@@ -398,20 +425,6 @@ class Game_model extends CI_Model {
 		$this->db->update('competitor_elo',
 			array('elo' => $elo_after['loser_elo']));
 			
-//		foreach($new_data['results'] as $result){
-//
-//			$status = "pending";
-//			if($result['confirmed']) {
-//				$status = 'confirmed';
-//			}
-//
-//			$this->db->insert('game_verification',
-//				array(
-//					'game_id' => $game_id,
-//					'competitor_id' => $result['competitor_id'],
-//					'status' => $status));
-//		}
-			
         	$p1_id = $winner_details['competitor_id'];
 			$p2_id = $loser_details['competitor_id'];
 			if($p2_id < $p1_id) {
@@ -425,6 +438,25 @@ class Game_model extends CI_Model {
 			$this->db->where('competitor_id_1',$p1_id);
 			$this->db->where('competitor_id_2',$p2_id);
 			$agg_stat = $this->db->get()->row_array();
+			
+			if(count($agg_stat) === 0) {
+				$agg_stat = array(
+						'competition_id' => $new_data['competition_id'],
+						'competitor_id_1' => $p1_id,
+						'competitor_id_2' => $p2_id,
+						'competitor_1_wins' => 0,
+						'competitor_2_wins' => 0,
+						'competitor_1_streak' => 0,
+						'competitor_2_streak' => 0,
+						'current_streak' => 0,
+						'current_streak_competitor' => $p1_id
+					);
+				
+				$this->db->insert(
+					'agg_competitor_stats', 
+					$agg_stat
+				);
+			}
 			
 			if($agg_stat['competitor_id_1'] == $winner_details['competitor_id']) {
 				$agg_stat['competitor_1_wins']++;
