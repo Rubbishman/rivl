@@ -6,6 +6,7 @@ class Competitor_Graph extends CI_Controller{
         parent::__construct();
         $this->load->model('game_model');
 		$this->load->model('competitor_model');
+		$this->load->model('note_model');
     }
 
     public function index() {
@@ -124,6 +125,10 @@ class Competitor_Graph extends CI_Controller{
 		$graphData['gameHistory'] = array();//$gameHistory;
 		foreach($gameHistory as $recent_game) {
 			if(count($graphData['gameHistory']) < 25) {
+				$notes = $this->note_model->get_note('game', $recent_game['game_id']);
+				if(count($notes) > 0) {
+					$recent_game['notes'] = $notes;
+				}
 				array_unshift($graphData['gameHistory'],$recent_game);
 			}
 		}
