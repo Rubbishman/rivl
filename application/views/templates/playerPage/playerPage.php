@@ -27,6 +27,10 @@
         <a href="#" id="topRivlsShowMore">Show more</a>
         -->
 
+        <h2>Recent games</h2>
+        <canvas id="previousGameBars" width="500" height="50"></canvas>
+        <div id="previousGameBarDetails"></div>
+
     </div>
 
     <!--
@@ -52,11 +56,5 @@
 	<h2>Points over time</h2>
 	<canvas id="playerGraph" width="1024" height="728"></canvas>
     -->
-
-    <h2>Recent games</h2>
-    
-    <canvas id="previousGameBars" width="500" height="50"></canvas>
-    
-    <div id="previousGameBarDetails"></div>
     
 </script>

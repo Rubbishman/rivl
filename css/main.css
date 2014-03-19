@@ -27,12 +27,11 @@ a {
 h2 {
 	font-size: 1.1em;
 }
-.gameViewBorder {
+#previousGameBarDetails {
 	padding: 10px;
-	border-style: solid;
-	border-width: 1px;
-	border-color: #B6B6B6;
+	border: 1px solid #B6B6B6;
 	background: #F5F5F5;
+	border-radius: 4px;
 }
 .sectionBody {
 	max-width: 500px;
@@ -161,8 +160,8 @@ h2 {
     text-shadow: 0 -1px 0 rgb(97, 15, 0);
 }
 .vs {
-    font-size: 26px;
-    color: #ccc;
+    font-size: 30px;
+    color: #888;
     text-shadow: 0 -1px 0 #9C9C9C;
     font-weight: normal;
     letter-spacing: 1px;
@@ -195,7 +194,7 @@ h2 {
 #resultsSection {
 	margin-bottom: 20px;
 }
-.rankUp, .rankDown {
+.resultsRow .rankUp, .resultsRow .rankDown {
 	font-size: 2em;
 }
 span.rankDown {

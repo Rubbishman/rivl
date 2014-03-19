@@ -13,6 +13,10 @@ Vs.CompetitorStatView = Backbone.View.extend({
     initialize: function () {
         $mainPage = $("#mainContainer");
         el = $("#mainContainer");
+
+        /*$(document).on('mouseout', '#previousGameBars', function () {
+            $('#previousGameBarDetails').html('');
+        });*/
     },
     
     render: function() {
