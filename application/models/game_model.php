@@ -56,9 +56,8 @@ class Game_model extends CI_Model {
 
 	public function get_competitor_games($competition_id, $competitor_id, $limit = 50) {
 		$res =$this->db->query("select game.date, 
-		CASE WHEN s1.rank = 1 THEN 
-			CASE WHEN ce1.pseudonym is not null THEN CONCAT(c1.name, ', ', ce1.pseudonym) ELSE c1.name END ELSE CASE WHEN ce2.pseudonym is not null THEN CONCAT(c2.name, ', ', ce2.pseudonym) ELSE c2.name END END winner_name, 
-    CASE WHEN s1.rank = 2 THEN CASE WHEN ce1.pseudonym is not null THEN CONCAT(c1.name, ', ', ce1.pseudonym) ELSE c1.name END ELSE CASE WHEN ce2.pseudonym is not null THEN CONCAT(c2.name, ', ', ce2.pseudonym) ELSE c2.name END END loser_name,
+		CASE WHEN s1.rank = 1 THEN c1.name ELSE c2.name END winner_name,
+    CASE WHEN s1.rank = 2 THEN c1.name ELSE c2.name END loser_name,
     CASE WHEN s1.rank = 1 THEN c1.id ELSE c2.id END winner_id, 
     CASE WHEN s1.rank = 2 THEN c1.id ELSE c2.id END loser_id,
     CASE WHEN s1.rank = 1 THEN true ELSE false END player_won,
@@ -75,8 +74,6 @@ class Game_model extends CI_Model {
             and s1.competitor_id != s2.competitor_id
         join competitor c1 on c1.id = s1.competitor_id
         join competitor c2 on c2.id = s2.competitor_id
-        join competitor_elo ce1 on c1.id = ce1.competitor_id and ce1.competition_id = game.competition_id
-    	join competitor_elo ce2 on c2.id = ce2.competitor_id and ce2.competition_id = game.competition_id
     where s1.competitor_id = ".$competitor_id."
     	and game.competition_id = ".$competition_id."
     	order by game.date desc, game.id desc
@@ -357,7 +354,7 @@ class Game_model extends CI_Model {
         $this->db->select('count(CASE WHEN competitor_id = '.$winner_details['competitor_id'].' THEN 1 ELSE NULL END) winner_games, count(CASE WHEN competitor_id = '.$loser_details['competitor_id'].' THEN 1 ELSE NULL END) loser_games');
         $this->db->from('score');
         $this->db->join('game', 'game.id = score.game_id');
-        $this->db->where('game.competition_id', $game['competition_id']);
+        $this->db->where('game.competition_id', $new_data['competition_id']);
         $game_number = $this->db->get()->row_array();
 
 		$elo_after = elo_helper($winner_details['elo'],$loser_details['elo'],$game_number['winner_games'],$game_number['loser_games']);

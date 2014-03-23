@@ -77,7 +77,9 @@ class Game_Saver extends CI_Controller{
             $game_ids = array();
 			foreach ($games as $game) {
                 $game_id = $this->game_model->save_game($game);
-				$this->note_model->save_note('game', $game_id, $notes);
+                if($notes) {
+                    $this->note_model->save_note('game', $game_id, $notes);
+                }
                 array_push($game_ids, $game_id);
             }
 
