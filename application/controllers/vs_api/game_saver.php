@@ -5,6 +5,7 @@ class Game_Saver extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->model('game_model');
+		$this->load->model('note_model');
     }
 
     public function index() {
@@ -65,6 +66,9 @@ class Game_Saver extends CI_Controller{
                 $this->output->set_status_header(400,'No game submitted ');
 				$this->output->set_output('DAFAQ'); die();
             }
+			
+			$notes = $this->input->get('note');
+			
             // $game= json_decode($game_JSON);
             // if (!$game) {
                 // $this->output->set_status_header(400,'JSON parse error when reading game: '+$game_JSON);
@@ -73,6 +77,7 @@ class Game_Saver extends CI_Controller{
             $game_ids = array();
 			foreach ($games as $game) {
                 $game_id = $this->game_model->save_game($game);
+				$this->note_model->save_note('game', $game_id, $notes);
                 array_push($game_ids, $game_id);
             }
 

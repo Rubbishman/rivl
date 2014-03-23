@@ -1,5 +1,5 @@
 <script id="newGame2Template" type="text/template">
-
+		<h1><%=name%></h1>
         <div class="newGameContainer sectionBody">
             <div id="playerSection" class="row text-center">
                 <div id="selectPlayer1" class="col-xs-5">
@@ -22,12 +22,12 @@
                 <div class="col-xs-12 text-center">
                     <button id="addScore" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-plus"></span> Add another result</button>
                     <button id="removeScore" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-minus"></span> Remove last result</button>
+                    <br><br><button id="addNote" class="btn btn-sm btn-default">Add game note</button>
+                    <button id="removeNote" class="btn btn-sm btn-default">Remove game note</button>
                     <button id="submitScore" class="btn btn-lg btn-success btn-block">Save result</button>
                 </div>
             </div>
         </div>
-
-
 
             <div id="playerSelectModal" class="modal fade">
                 <div class="modal-dialog">

@@ -13,6 +13,10 @@ Vs.CompetitorStatView = Backbone.View.extend({
     initialize: function () {
         $mainPage = $("#mainContainer");
         el = $("#mainContainer");
+
+        /*$(document).on('mouseout', '#previousGameBars', function () {
+            $('#previousGameBarDetails').html('');
+        });*/
     },
     
     render: function() {
@@ -45,6 +49,7 @@ Vs.CompetitorStatView = Backbone.View.extend({
       	}
         
         canvas.addEventListener('mousemove', function(evt) {
+        	$('#notesArea').hide();
         	var mousePos = getMousePos(canvas, evt);
         	ctx.clearRect(-1, -1, canvas.width+1, canvas.height+1);
         	
@@ -76,18 +81,16 @@ Vs.CompetitorStatView = Backbone.View.extend({
         	ctx.stroke();
         	
         	$('#previousGameBarDetails').html(self.gameViewTemplate(self.model.attributes.gameHistory[mouseBlockX/20]));
+        	
+        	if(self.model.attributes.gameHistory[mouseBlockX/20].notes != undefined){
+        		_.each(self.model.attributes.gameHistory[mouseBlockX/20].notes, function(value) {
+        			$('#notesArea').show();
+        			$('#noteAnchor').append('<div class="notesContents">' + value.note + '</div>');
+        		});
+        	}
+        	
         	// $('#previousGameBarEloHover').html(self.model.attributes.gameHistory[mouseBlockX/20].competitor_elo_change);
       	}, false);
-        
-        // canvas.addEventListener('click', function(evt) {
-        	// var mousePos = getMousePos(canvas, evt);
-        	// ctx.clearRect(-1, -1, canvas.width+1, canvas.height+1);
-//         	
-        	// var mouseBlockX = (mousePos.x - (mousePos.x % 20));
-        	// self.renderEloBar();
-        	// self.selectedGame = mouseBlockX/20;
-//         	
-        // });
         
         this.renderEloBar();
         

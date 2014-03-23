@@ -32,13 +32,6 @@ class Competitor_model extends CI_Model {
 				'competitor_id' => $competitor_id,
 				'competition_id' => $competition_id,
 				'elo' => 1500));
-				
-				$this->db->query("insert into agg_competitor_stats (competition_id, competitor_id_1, competitor_id_2, competitor_1_wins, competitor_2_wins, competitor_1_streak, competitor_2_streak, current_streak, current_streak_competitor)
-    select comp.id, c1.competitor_id, c2.competitor_id, 0, 0, 0, 0, 0, 0 from competition comp 
-        join competitor_elo c1 on comp.id = c1.competition_id
-        join competitor_elo c2 on c1.competitor_id != c2.competitor_id 
-        	and c1.competitor_id < c2.competitor_id and c2.competition_id = c1.competition_id 
-        	and c2.competitor_id = $competitor_id and comp.id = $competition_id;");
 		}
 	}
 	
@@ -53,7 +46,12 @@ class Competitor_model extends CI_Model {
 			 COUNT(CASE WHEN s1.rank != 1 THEN 1 ELSE NULL END) loses,
 			 AVG(CASE WHEN s1.rank = 2 THEN s1.score ELSE null END) avg_loss_score,
 			 AVG(CASE WHEN s2.rank = 2 THEN s2.score ELSE null END) avg_opp_loss_score');*/
-		$this->db->select('competitor_elo.competitor_id, competitor_elo.elo ,competitor.name');
+		$this->db->select("
+			competitor_elo.competitor_id, 
+			competitor_elo.elo , 
+			CASE WHEN competitor_elo.pseudonym is not null 
+				THEN CONCAT(competitor.name, ', ',competitor_elo.pseudonym) ELSE competitor.name END name",
+				FALSE);
 		$this->db->from('competitor');
 		$this->db->join('competitor_elo', 'competitor.id = competitor_elo.competitor_id');
         //$this->db->join('game', 'game.competition_id = competitor_elo.competition_id','left	');
