@@ -4,12 +4,12 @@ class Competitor_model extends CI_Model {
 	{
 		$this->load->database();
 	}
-	
+
 	public function save_competitor($name, $competition_id) {
 		$this->db->select('name,id');
 		$this->db->from('competitor');
 		$this->db->where('name',$name);
-		
+
 		$result = $this->db->get();
 		$result = $result->result();
 
@@ -19,12 +19,12 @@ class Competitor_model extends CI_Model {
 		} else {
 			$competitor_id = $result[0]->id;
 		}
-		
+
 		$this->db->select('elo');
 		$this->db->from('competitor_elo');
 		$this->db->where('competitor_id',$competitor_id);
 		$this->db->where('competition_id',$competition_id);
-		
+
 		$result = $this->db->get();
 		$result = $result->result();
 		if(count($result) === 0) {
@@ -34,7 +34,7 @@ class Competitor_model extends CI_Model {
 				'elo' => 1500));
 		}
 	}
-	
+
 	public function get_competitor($competition_id,$id = FALSE)
 	{
 
@@ -42,14 +42,15 @@ class Competitor_model extends CI_Model {
 			return;
 		}/*
 		$this->db->select('competitor_elo.competitor_id, competitor_elo.elo ,competitor.name,
-			 COUNT(CASE WHEN s1.rank = 1 THEN 1 ELSE NULL END) wins, 
+			 COUNT(CASE WHEN s1.rank = 1 THEN 1 ELSE NULL END) wins,
 			 COUNT(CASE WHEN s1.rank != 1 THEN 1 ELSE NULL END) loses,
 			 AVG(CASE WHEN s1.rank = 2 THEN s1.score ELSE null END) avg_loss_score,
 			 AVG(CASE WHEN s2.rank = 2 THEN s2.score ELSE null END) avg_opp_loss_score');*/
 		$this->db->select("
-			competitor_elo.competitor_id, 
-			competitor_elo.elo , 
-			CASE WHEN competitor_elo.pseudonym is not null 
+            competitor.challonge_username,
+			competitor_elo.competitor_id,
+			competitor_elo.elo ,
+			CASE WHEN competitor_elo.pseudonym is not null
 				THEN CONCAT(competitor.name, ', ',competitor_elo.pseudonym) ELSE competitor.name END name",
 				FALSE);
 		$this->db->from('competitor');
@@ -61,11 +62,11 @@ class Competitor_model extends CI_Model {
         $this->db->where('competitor.status','active');
         $this->db->group_by('competitor.id');
 		$this->db->order_by('competitor_elo.elo desc, competitor.name asc');
-		
+
 		if ($id !== FALSE) {
 			$this->db->where('competitor.id', $id);
 		}
-		
+
 		$query = $this->db->get();
 		$results = $query->result();
 
@@ -96,11 +97,11 @@ class Competitor_model extends CI_Model {
         $this->db->where('competitor_elo.competition_id', $competition_id);
         $this->db->group_by('competitor.id');
         $this->db->where('competitor.id', $id);
-        
+
         $query = $this->db->get();*/
-       
+
        	$query = $this->db->query("
-       	select elo, sum(win_num) wins, sum(loss_num) loses from 
+       	select elo, sum(win_num) wins, sum(loss_num) loses from
 (select case when acs.competitor_id_1 = $id then competitor_1_wins else competitor_2_wins end win_num,
 			case when acs.competitor_id_1 = $id then competitor_2_wins else competitor_1_wins end loss_num,
 			case when acs.competitor_id_1 = $id then c2.name else c1.name end opponent_name
@@ -112,7 +113,7 @@ class Competitor_model extends CI_Model {
 					or acs.competitor_id_2 = $id)
         and (acs.competitor_1_wins > 0 or acs.competitor_2_wins > 0)) as t, competitor_elo ce
         where ce.competition_id = $competition_id and ce.competitor_id = $id;");
-		
+
         $results = $query->result();
         $results = $results[0];
 

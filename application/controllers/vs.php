@@ -18,28 +18,32 @@ class Vs extends CI_Controller {
 		$data = array(
 			'email' => $this->input->cookie('user_email', TRUE),
 			'assertion' => $this->input->cookie('assertion', TRUE));
-		
+
 		$this->load->view('header',$data);
-		
+
 		$this->load->view('templates/navigator',$data);
 
 		$this->load->view('templates/playerPage/playerPage',$data);
 		$this->load->view('templates/playerPage/playerStatRow',$data);
 		$this->load->view('templates/playerPage/gameHistoryRow',$data);
 		$this->load->view('templates/playerPage/gameView',$data);
-		
+
 		$this->load->view('templates/competitionMainPage/competition',$data);
 		$this->load->view('templates/competitionMainPage/gameHistoryRow',$data);
 		$this->load->view('templates/competitionMainPage/competitorRow',$data);
 		$this->load->view('templates/competitionMainPage/titleRow',$data);
-		
+
 		$this->load->view('templates/newGamePage/newGame',$data);
 		$this->load->view('templates/newGamePage/newPlayerSelectRow',$data);
 		$this->load->view('templates/newGamePage/newResults',$data);
 		$this->load->view('templates/newGamePage/newScore',$data);
-		
+
+		$this->load->view('templates/tournaments/tournament',$data);
+		$this->load->view('templates/tournaments/matchRow',$data);
+		$this->load->view('templates/tournaments/competitorRow',$data);
+
 		$this->load->view('index',$data);
-		
+
 	}
 
 

@@ -14,11 +14,11 @@
         <a><%=name%></a>
     </script>
 
-	<script id="competitionGraphTemplate" type="text/template">
-		<h1><%=name%> Graph</h1>
-		<div id="mainGraph"></div>
-		<!-- <canvas id="mainGraph" width="1024" height="728"></canvas> -->
-	</script>
+    <script id="competitionGraphTemplate" type="text/template">
+        <h1><%=name%> Graph</h1>
+        <div id="mainGraph"></div>
+        <!-- <canvas id="mainGraph" width="1024" height="728"></canvas> -->
+    </script>
 
     <script src="https://login.persona.org/include.js"></script>
     <script src=<?=base_url("/js/lib/json2.js")?>></script>
@@ -101,6 +101,7 @@
     <script src=<?=base_url("/js/models/gameCollection.js?moo=")?><?=$randomlol?>></script>
     <script src=<?=base_url("/js/models/title.js?moo=")?><?=$randomlol?>></script>
 	<script src=<?=base_url("/js/models/titleCollection.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/tournament.js?moo=")?><?=$randomlol?>></script>
 
 
     <script src=<?=base_url("/js/views/competitionRow.js?moo=")?><?=$randomlol?>></script>
@@ -115,6 +116,7 @@
     <script src=<?=base_url("/js/views/gameRow.js?moo=")?><?=$randomlol?>></script>
     <script src=<?=base_url("/js/views/allCompetitionsView.js?moo=")?><?=$randomlol?>></script>
     <script src=<?=base_url("/js/views/competitionView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/tournamentView.js?moo=")?><?=$randomlol?>></script>
     <script src=<?=base_url("/js/router.js?moo=")?><?=$randomlol?>></script>
 
 

@@ -6,7 +6,7 @@ Vs.NewGameView2 = Backbone.View.extend({
     resultsTemplate : _.template($('#newResultsTemplate').html()),
     playerSelectRowTemplate : _.template($('#newPlayerSelectRowTemplate').html()),
     el: $('#mainContainer'),
-    
+
     initialize: function () {},
 
     events : {
@@ -36,16 +36,16 @@ Vs.NewGameView2 = Backbone.View.extend({
         if ($("#submitScore").hasClass('btn-disabled')) {
             return;
         }
-        
+
         var r = window.confirm("Are you sure you want to save these games?");
         if(r == false) {
         	return;
         }
-        
+
         $('#addNote').show();
     	$('#removeNote').hide();
     	$('#noteArea').remove();
-        
+
         console.log('continuing...');
 
         var self = this,
@@ -60,7 +60,9 @@ Vs.NewGameView2 = Backbone.View.extend({
             $p2Score = $('.scoreRow'),
             p1Id =  $('#selectPlayer1').attr('data-competitor_id'),
             p2Id =  $('#selectPlayer2').attr('data-competitor_id'),
-            notes = $('#notesValue');
+            notes = $('#notesValue'),
+            p1winCount = 0,
+            p2winCount = 0;
 
         if (p1Id === '' || p2Id === '') {
             alert('need to enter both playerz yo');
@@ -81,17 +83,19 @@ Vs.NewGameView2 = Backbone.View.extend({
 			if($p1Score < 0 && $p2Score < 0 || $p1Score > 0 && $p2Score > 0) {
 				scoresOk = false;
 			} else {
-				
+
 				if($p1Score === self.model.get('points')) {
 					winningScore = $p1Score;
 					winningId = p1Id;
 					losingScore = $p2Score;
 					losingId = p2Id;
+                    p1winCount++;
 				} else {
 					winningScore = $p2Score;
 					winningId = p2Id;
 					losingScore = $p1Score;
 					losingId = p1Id;
+                    p2winCount++;
 				}
 				scoresOk = true;
 			}
@@ -109,7 +113,7 @@ Vs.NewGameView2 = Backbone.View.extend({
             // } else {
                 // scoresOk = false;
             // }
-            
+
             var newGameModel = {
                 competition_id: self.model.id,
                 results: [
@@ -128,6 +132,24 @@ Vs.NewGameView2 = Backbone.View.extend({
 		Vs.router._fetchCompetitors(self.model.get('id'), function() {
 			self.oldCollection = Vs.competitors;
 		});
+
+
+
+        //if this is a tournament match, then upload scores to challonge
+        if (this.model.get('tournament')) {
+
+            if ((p1winCount > 0 || p2winCount > 0) && p1winCount != p2winCount) {
+                var params = this.model.get('tournament'),
+                    winnerId = p1winCount > p2winCount ? params.p1Id : params.p2Id,
+                    score = p1winCount > p2winCount ? p1winCount + '-' + p2winCount : p2winCount + '-' + p1winCount;
+
+                Vs.tournament.enterResult(params.id, params.matchId, winnerId, score);
+            } else {
+                alert('enter the tournament scorez correctly yo.');
+                return;
+            }
+        }
+
 
         var games = new Vs.GameSaver();
 
@@ -169,6 +191,7 @@ Vs.NewGameView2 = Backbone.View.extend({
                 console.log(response);
             }
         });
+
     },
 
     _getDelta: function(index, model1, model2) {
@@ -177,6 +200,12 @@ Vs.NewGameView2 = Backbone.View.extend({
     },
 
     showPlayerSelectModal: function(e) {
+
+        //disallow player select for tournament games
+        if (this.model.get('tournament')) {
+            return false;
+        }
+
         var competitorId = $(e.target).parent().attr('data-competitor_id');
         $('#playerSelectModal').modal('show');
 
@@ -208,8 +237,8 @@ Vs.NewGameView2 = Backbone.View.extend({
             	playerB = this.collection.where({competitor_id: $selectedPlayer.attr('data-competitor_id')})[0];
             	this._setPlayer('2', playerB);
             }
-            
-            if($('#left_player_select').children('.active').length == 1 
+
+            if($('#left_player_select').children('.active').length == 1
             	&& $('#right_player_select').children('.active').length == 1) {
             		$('#playerSelectModal').modal('hide');
         	}
@@ -237,7 +266,47 @@ Vs.NewGameView2 = Backbone.View.extend({
             $('#selectPlayer2 img').attr('src', "img/avatars/2_" + playerModel.get('competitor_id') + "_1.png"+"?ver=5");
         }
     },
-    render: function(competitorId) {
+    renderTournament: function(tournamentId, matchId) {
+
+        var self = this,
+            participants = this.tournament.get('participants').participant,
+            matches = this.tournament.get('matches').match,
+            match,
+            p1Id,
+            p2Id;
+
+        //get the correct match from the tournament
+        _.each(matches, function(curMatch) {
+            if (curMatch.id === matchId) {
+                self.match = curMatch;
+            }
+        });
+
+        //get the correct competitors for the match
+        _.each(participants, function(curParticipant) {
+
+            if (curParticipant['id'] === self.match['player1-id']) {
+                var rivlUser = Vs.competitors.where({challonge_username: curParticipant['challonge-username']});
+                self.p1Id = rivlUser.length > 0 ? rivlUser[0].get('competitor_id') : '';
+            }
+            if (curParticipant['id'] === self.match['player2-id']) {
+                var rivlUser = Vs.competitors.where({challonge_username: curParticipant['challonge-username']});
+                self.p2Id = rivlUser.length > 0 ? rivlUser[0].get('competitor_id') : '';
+            }
+        });
+
+        //set tournament attributes on the model
+        this.model.set('tournament', {
+            name: this.tournament.get('name'),
+            id: this.tournament.get('id'),
+            matchId: self.match['id'],
+            p1Id: self.match['player1-id'],
+            p2Id: self.match['player2-id']
+        });
+
+        self.render(self.p1Id, self.p2Id);
+    },
+    render: function(competitorId, competitorId2) {
 
         var array = this.collection.models;
 
@@ -255,6 +324,11 @@ Vs.NewGameView2 = Backbone.View.extend({
             $('.playerSelection[data-competitor_id="'+competitorId + '"]').addClass('active');
             player1 = this.collection.where({competitor_id:competitorId})[0];
             this._setPlayer('1', player1);
+        }
+        if (competitorId2) {
+            $('.playerSelection[data-competitor_id="'+competitorId2 + '"]').addClass('active');
+            player2 = this.collection.where({competitor_id:competitorId2})[0];
+            this._setPlayer('2', player2);
         }
     },
     _renderPlayerSelect: function() {
@@ -327,7 +401,7 @@ Vs.NewGameView2 = Backbone.View.extend({
     },
 
     selectWinner: function (e) {
-        
+
         var $winner = $(e.target),
             $loser,
             supportsLosingScore = false,
@@ -361,13 +435,13 @@ Vs.NewGameView2 = Backbone.View.extend({
                 $loser.closest('.btnGroupWrap').addClass('btn-group open');
             }, 100);
 
-            //TODO: put all the btn-group and associated classes/attributes 
+            //TODO: put all the btn-group and associated classes/attributes
             //      conditions in the template rather than in here?
             //      We'd still need conditional JS too.
-            
+
 
         } else {
-        //when NOT entering a loser's score 
+        //when NOT entering a loser's score
 
             if ($winner.hasClass('player1Btn')) {
                 $loser = $winner.closest('.scoreRow').find('.player2Btn');

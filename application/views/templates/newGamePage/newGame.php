@@ -1,5 +1,8 @@
 <script id="newGame2Template" type="text/template">
 		<h1><%=name%></h1>
+        <% if (tournament) { %>
+            <h2><%=tournament['name']%> tournament match</h2>
+        <% } %>
         <div class="newGameContainer sectionBody">
             <div id="playerSection" class="row text-center">
                 <div id="selectPlayer1" class="col-xs-5">
