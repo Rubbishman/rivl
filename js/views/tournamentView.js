@@ -30,6 +30,13 @@ Vs.TournamentView = Backbone.View.extend({
         }
     },
 
+    renderTournamentList: function() {
+        $(this.el).html(this.navbarTemplate(Vs.competition.toJSON()));
+        $(this.el).append('<h2><a href="#competition/' + Vs.competition.get('id') + '/tournament/767883">Arcade Action</a></h2>');
+        $(this.el).append('<h2><a href="#competition/' + Vs.competition.get('id') + '/tournament/832842">The Arcade Strikes Back</a></h2>');
+        $(this.el).append('<h2><a href="#competition/' + Vs.competition.get('id') + '/tournament/894159">Return of the Arcade</a></h2>');
+    },
+
     render: function() {
 
         var self = this,
@@ -80,7 +87,7 @@ Vs.TournamentView = Backbone.View.extend({
         simultaneousMatches = winnersMatrix[1].length;
 
         var $table = $table = $('<table></table>');
-        var $row = $('<tr></tr>');
+        var $row = $('<tr style="border-bottom: 1px solid;"></tr>');
         for (j = 1; j <= totalRounds; j++) {
 
             var $cell = $('<td></td>');

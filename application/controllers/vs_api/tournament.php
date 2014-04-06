@@ -11,8 +11,8 @@ class Tournament extends CI_Controller {
     public function index() {
 
         $method = $this->input->server('REQUEST_METHOD');
-        if ($method == 'GET') {
-            $this->get_tournament();
+        if ($method == 'GET' && isset($_GET['id'])) {
+            $this->get_tournament($_GET['id']);
         }
         else {
             $this->output->set_status_header(500,'unknown request method');
@@ -20,14 +20,13 @@ class Tournament extends CI_Controller {
         }
     }
 
-    public function get_tournament() {
-        $params = $_GET;
+    public function get_tournament($id) {
 
         try {
 
-            $tournament_id = 894159;
-            $params = array("include_matches" => 1,"include_participants" => 1);
-            $res = $this->challonge->getTournament($tournament_id, $params);
+            //$tournament_id = 894159;
+            $challlongeParams = array("include_matches" => 1,"include_participants" => 1);
+            $res = $this->challonge->getTournament($id, $challlongeParams);
             $this->_render($res);
         }
         catch (Exception $e) {

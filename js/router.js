@@ -13,7 +13,8 @@ $(function () {
             "competition/:id/game/:competitorId" : "showNewGame",
             "competition/:id/game/:competitorId/:competitorId2" : "showNewGame",
             "competition/:id/tournament/game/:tournamentId/:matchId" : "showNewTournamentGame",
-            "competition/:id/tournament" : "showTournament",
+            "competition/:id/tournament" : "showTournamentList",
+            "competition/:id/tournament/:tournamentId" : "showTournament",
             "*other"    : "showAllCompetitions"
         },
 
@@ -149,7 +150,21 @@ $(function () {
             }
         },
 
-        showTournament: function(competitionId) {
+        showTournamentList: function(competitionId) {
+
+            Vs.tournamentView = new Vs.TournamentView();
+            if (!Vs.competition || Vs.competition.get('id') !== competitionId) {
+                Vs.router._fetchCompetition(competitionId, function() {
+                     Vs.tournamentView.renderTournamentList();
+                });
+            } else {
+                 Vs.tournamentView.renderTournamentList();
+            }
+        },
+
+        showTournament: function(competitionId, tournamentId) {
+
+            Vs.tournamentView = new Vs.TournamentView();
 
             var renderTournamentView = function () {
                 if (Vs.competition.loaded && Vs.tournament.loaded && Vs.competitors.loaded) {
@@ -158,11 +173,9 @@ $(function () {
                 }
             };
 
-            Vs.tournamentView = new Vs.TournamentView();
-
             if (!Vs.tournament || !Vs.competitors || !Vs.competition || Vs.competition.get('id') !== competitionId) {
                 Vs.router._fetchCompetition(competitionId, renderTournamentView);
-                Vs.router._fetchTournament(competitionId, renderTournamentView);
+                Vs.router._fetchTournament(tournamentId, renderTournamentView);
                 Vs.router._fetchCompetitors(competitionId, renderTournamentView);
             } else {
                 renderTournamentView();
