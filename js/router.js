@@ -79,10 +79,10 @@ $(function () {
                 Vs.competitorView.render();
             });
 
-            Vs.router._fetchTitles(Vs.competition.get('id'), function() {
+            /*Vs.router._fetchTitles(Vs.competition.get('id'), function() {
             	Vs.titleView = new Vs.TitleView({el:$('#titleSection'),model: Vs.competition, collection: Vs.titles});
             	Vs.titleView.render();
-            });
+            });*/
 
             Vs.router._fetchGames(Vs.competition.get('id'), function() {
                 Vs.gameHistoryView = new Vs.GameHistoryView({model: Vs.competition, collection: Vs.games});
