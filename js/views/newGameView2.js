@@ -310,6 +310,8 @@ Vs.NewGameView2 = Backbone.View.extend({
 
         var array = this.collection.models;
 
+        if (!this.model.get('tournament')) this.model.set('tournament', false);
+
         this.$el.html(this.navbarTemplate(this.model.toJSON()));
         this.$el.append(this.gameTemplate(this.model.toJSON()));
 
