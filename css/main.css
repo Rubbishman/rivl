@@ -334,3 +334,71 @@ span.rankNeutral {
   background-color: #428bca;
   border-color: #357ebd;
 }
+
+
+/* challonge stuff */
+.matchIdentifier {
+	float:left; 
+	margin-top:18px; 
+	width:17px;
+	background: #555;
+	color: #fff;
+	border-radius: 50%;
+	height: 17px;
+	line-height: 17px;
+	text-shadow: 0 -1px 0 #444;
+	font-size: 10px;
+	text-align: center;
+	margin-right: 3px;
+}
+.matchMain {
+	border: 1px solid #aaa;
+	float: left;
+	width: 165px;
+	height: 60px;
+	overflow: hidden;
+	background: #f9f9f9;
+}
+.matchResults {
+	border: 1px solid #aaa;
+	border-left: 0;
+	border-radius: 0 4px 4px 0;
+	float: left;
+	width: 20px;
+	height: 60px;
+	background: #eee;
+	font-size: 10px;
+	text-align: center;
+}
+.matchResult {
+	line-height: 29px;
+	height: 29px;
+}
+.matchPlayer {
+	line-height: 29px;
+	clear: both;
+	overflow: hidden;
+}
+.matchPlayerName {
+	font-size: 13px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	/*width: 85px;*/
+	float: left;
+}
+.matchPlayerName .noPlayer {
+	font-size: 11px;
+}
+.matchPlayer:first-child {
+	border-bottom: 1px solid #ccc;
+}
+
+.matchAvatar {
+	width:20px; 
+	height:20px; 
+	margin: 5px;
+	float: left;
+}
+
+

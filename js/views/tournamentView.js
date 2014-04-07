@@ -64,7 +64,7 @@ Vs.TournamentView = Backbone.View.extend({
             totalRounds = 0,
             simultaneousMatches = 0,
             curMatch,
-            cellHeight = 50,
+            cellHeight = 60,
             j;
 
         _.each(matches, function(item) {
@@ -95,15 +95,15 @@ Vs.TournamentView = Backbone.View.extend({
 
                 if (winnersMatrix[j].length < simultaneousMatches) {
                     var diff = (simultaneousMatches - winnersMatrix[j].length) / 2 / 2;
-                    $cell.append('<div class=matchSpacer style="width:150px; height:' + (cellHeight * diff) + 'px; margin:10px;"></div>');
+                    $cell.append('<div class="matchSpacer" style="height:' + (cellHeight * diff) + 'px; margin:10px;"></div>');
                 }
                 if (curMatch) {
                     curMatch = self.prepareMatchObj(curMatch, participantsMap, matchesMap);
-                    $cell.append('<div class=match style="width:150px; height:' + cellHeight + 'px; margin:10px;">' + self.matchTemplate(curMatch) + '</div>');
+                    $cell.append('<div class="match" style="height:' + cellHeight + 'px; margin:10px;">' + self.matchTemplate(curMatch) + '</div>');
                 }
                 if (winnersMatrix[j].length < simultaneousMatches) {
                     var diff = (simultaneousMatches - winnersMatrix[j].length) / 2 / 2;
-                    $cell.append('<div class=matchSpacer style="width:150px; height:' + (cellHeight * diff) + 'px; margin:10px;"></div>');
+                    $cell.append('<div class="matchSpacer" style="height:' + (cellHeight * diff) + 'px; margin:10px;"></div>');
                 }
             });
             $row.append($cell);
@@ -118,15 +118,15 @@ Vs.TournamentView = Backbone.View.extend({
 
                 if (losersMatrix[j].length < simultaneousMatches) {
                     var diff = (simultaneousMatches - losersMatrix[j].length) / 2 / 2;
-                    $cell.append('<div class=matchSpacer style="width:150px; height:' + (cellHeight * diff) + 'px; margin:10px;"></div>');
+                    $cell.append('<div class="matchSpacer" style="height:' + (cellHeight * diff) + 'px; margin:10px;"></div>');
                 }
                 if (curMatch) {
                     curMatch = self.prepareMatchObj(curMatch, participantsMap, matchesMap);
-                    $cell.append('<div class=match style="width:150px; height:' + cellHeight + 'px; margin:10px;">' + self.matchTemplate(curMatch) + '</div>');
+                    $cell.append('<div class="match" style="height:' + cellHeight + 'px; margin:10px;">' + self.matchTemplate(curMatch) + '</div>');
                 }
                 if (losersMatrix[j].length < simultaneousMatches) {
                     var diff = (simultaneousMatches - losersMatrix[j].length) / 2 / 2;
-                    $cell.append('<div class=matchSpacer style="width:150px; height:' + (cellHeight * diff) + 'px; margin:10px;"></div>');
+                    $cell.append('<div class="matchSpacer" style="height:' + (cellHeight * diff) + 'px; margin:10px;"></div>');
                 }
             });
             $row.append($cell);
@@ -153,10 +153,10 @@ Vs.TournamentView = Backbone.View.extend({
             ? participantsMap[match['player2-id']].nick
             : '';
         match.prereq1 = typeof(match['player1-id']) !== 'string'
-            ? (match['player1-is-prereq-match-loser'] === 'true' ? 'loser' : 'winner') + ' of round ' + matchesMap[match['player1-prereq-match-id']].identifier
+            ? (match['player1-is-prereq-match-loser'] === 'true' ? 'loser' : 'winner') + ' of ' + matchesMap[match['player1-prereq-match-id']].identifier
             : '';
         match.prereq2 = typeof(match['player2-id']) !== 'string'
-            ? (match['player2-is-prereq-match-loser'] === 'true' ? 'loser' : 'winner') + ' of round ' + matchesMap[match['player2-prereq-match-id']].identifier
+            ? (match['player2-is-prereq-match-loser'] === 'true' ? 'loser' : 'winner') + ' of ' + matchesMap[match['player2-prereq-match-id']].identifier
             : '';
         match.winner = typeof(match['winner-id']) === 'string'
             ? participantsMap[match['winner-id']].competitor_id
