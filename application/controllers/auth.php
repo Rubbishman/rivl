@@ -32,9 +32,9 @@ class Auth extends CI_Controller {
         	$this->output->set_output('DAFAQ'); die();
 		}
 	}
-	
+
 	public function logout()
 	{
-		
+
 	}
 }

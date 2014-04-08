@@ -20,7 +20,7 @@
         <!-- <canvas id="mainGraph" width="1024" height="728"></canvas> -->
     </script>
 
-    <script src="https://login.persona.org/include.js"></script>
+    <!-- <script src="https://login.persona.org/include.js"></script> -->
     <script src=<?=base_url("/js/lib/json2.js")?>></script>
     <script src=<?=base_url("/js/lib/jquery-1.7.1.js")?>></script>
     <script src=<?=base_url("/js/lib/underscore.js")?>></script>
@@ -33,7 +33,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.2.1/moment.min.js"></script>
     <script src=<?=base_url("/js/lib/meteorcharts-v0.0.11-CUSTOM.js")?>></script>
 
-	<script type="text/javascript">
+	<!-- <script type="text/javascript">
 	    navigator.id.watch({
 	        loggedInUser: <?= $email ? "'$email'" : 'null' ?>,
 	        // A user has logged in! Here you need to:
@@ -75,7 +75,7 @@
 			    });
 		   }
 	    });
-    </script>
+    </script> -->
 
 	<script type="text/javascript">
 			$(function() {
@@ -102,6 +102,7 @@
     <script src=<?=base_url("/js/models/title.js?moo=")?><?=$randomlol?>></script>
 	<script src=<?=base_url("/js/models/titleCollection.js?moo=")?><?=$randomlol?>></script>
     <script src=<?=base_url("/js/models/tournament.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/models/tournamentCollection.js?moo=")?><?=$randomlol?>></script>
 
 
     <script src=<?=base_url("/js/views/competitionRow.js?moo=")?><?=$randomlol?>></script>
@@ -117,6 +118,7 @@
     <script src=<?=base_url("/js/views/allCompetitionsView.js?moo=")?><?=$randomlol?>></script>
     <script src=<?=base_url("/js/views/competitionView.js?moo=")?><?=$randomlol?>></script>
     <script src=<?=base_url("/js/views/tournamentView.js?moo=")?><?=$randomlol?>></script>
+    <script src=<?=base_url("/js/views/allTournamentsView.js?moo=")?><?=$randomlol?>></script>
     <script src=<?=base_url("/js/router.js?moo=")?><?=$randomlol?>></script>
 
 

@@ -4,8 +4,11 @@ class Tournament extends CI_Controller {
 
     public function __construct(){
         parent::__construct();
-        $this->load->library('challonge', array('api_key'=>'WJvXsWEvj3uudClo0uWd1fHIJOH07rYyOO0mFQiA'));
-        $this->challonge->verify_ssl = false;
+        $this->load->model('tournament_model');
+
+        $api_key = $this->config->item('CHALLONGE_API_KEY');
+        $this->load->library('challonge', array('api_key'=>$api_key));
+        $this->challonge->verify_ssl = true;
     }
 
     public function index() {
@@ -24,9 +27,26 @@ class Tournament extends CI_Controller {
 
         try {
 
-            //$tournament_id = 894159;
             $challlongeParams = array("include_matches" => 1,"include_participants" => 1);
             $res = $this->challonge->getTournament($id, $challlongeParams);
+            $this->_render($res);
+        }
+        catch (Exception $e) {
+            $this->output->set_status_header(500,$e->getMessage());
+            $this->output->set_output();
+        }
+    }
+
+    public function list_tournaments() {
+
+        $params = $_GET;
+
+        try {
+
+            if (isset($params['competition_id'])) {
+                $res = $this->tournament_model->get_tournaments(array('competition_id' => $params['competition_id']));
+            }
+
             $this->_render($res);
         }
         catch (Exception $e) {

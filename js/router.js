@@ -152,13 +152,20 @@ $(function () {
 
         showTournamentList: function(competitionId) {
 
-            Vs.tournamentView = new Vs.TournamentView();
+            Vs.allTournamentsView = new Vs.AllTournamentsView();
+
+            var renderAllTournamentsView = function () {
+                if (Vs.competition.loaded && Vs.tournaments.loaded) {
+                    Vs.allTournamentsView.collection = Vs.tournaments;
+                    Vs.allTournamentsView.render();
+                }
+            };
+
             if (!Vs.competition || Vs.competition.get('id') !== competitionId) {
-                Vs.router._fetchCompetition(competitionId, function() {
-                     Vs.tournamentView.renderTournamentList();
-                });
+                Vs.router._fetchCompetition(competitionId, renderAllTournamentsView);
+                Vs.router._fetchAllTournaments(competitionId, renderAllTournamentsView);
             } else {
-                 Vs.tournamentView.renderTournamentList();
+                Vs.router._fetchAllTournaments(competitionId, renderAllTournamentsView);
             }
         },
 
@@ -197,6 +204,23 @@ $(function () {
                 }
 			});
 		},
+
+        _fetchAllTournaments: function(id, callback) {
+
+            Vs.tournaments = new Vs.TournamentCollection();
+            Vs.tournaments.loaded = false;
+
+            Vs.tournaments.fetch({
+                data: {competition_id: id},
+                success: function(model, response) {
+                    Vs.tournaments.loaded = true;
+                    callback();
+                },
+                error: function(model, response) {
+                    console.log(response);
+                }
+            })
+        },
 
         _fetchCompetition: function(id, callback) {
 
