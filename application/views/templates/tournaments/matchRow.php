@@ -5,9 +5,9 @@
     </div>
     <div class="matchMain">
         <% if (nick1) { %>
-            <div class="playerLink matchPlayer" data-id=<%=rivlId1 %>>
+            <div class="matchPlayer" data-id=<%=rivlId1 %>>
                 <img src="img/avatars/2_<%=rivlId1%>_1.png?ver=5" class="matchAvatar" />
-                <span class="matchPlayerName"><%=nick1%></span>
+                <a href="javascript:void(0);" data-id=<%=rivlId1 %> class="playerLink matchPlayerName"><%=nick1%></a>
             </div>
         <% } else { %>
             <div class="matchPlayer">
@@ -16,9 +16,9 @@
             </div>
         <% } %>
         <% if (nick2) { %>
-            <div class="playerLink matchPlayer" data-id=<%=rivlId2 %>>
+            <div class="matchPlayer" data-id=<%=rivlId2 %>>
                 <img src="img/avatars/2_<%=rivlId2%>_1.png?ver=5" class="matchAvatar" />
-                <span class="matchPlayerName"><%=nick2%></span>
+                <a href="javascript:void(0);" data-id=<%=rivlId2 %> class="matchPlayerName playerLink"><%=nick2%></a>
             </div>
         <% } else { %>
             <div class="matchPlayer noPlayer">

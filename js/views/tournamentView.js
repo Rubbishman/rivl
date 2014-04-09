@@ -8,7 +8,9 @@ Vs.TournamentView = Backbone.View.extend({
 
     events : {
         'click .playerLink': 'clickedCompetitor',
-        'click .enterChallongeResult': 'clickedEnterResult'
+        'click .enterChallongeResult': 'clickedEnterResult',
+        'mouseenter .matchPlayer': 'hoverMatchPlayer',
+        'mouseleave .matchPlayer': 'unhoverMatchPlayer'
     },
 
     initialize: function () {
@@ -28,6 +30,19 @@ Vs.TournamentView = Backbone.View.extend({
         if (p1Id && p2Id) {
             Vs.router.navigate('competition/' + Vs.competition.get('id') + "/tournament/game/" + Vs.tournament.get('id') + "/" + matchId, true);
         }
+    },
+
+    hoverMatchPlayer: function(e) {
+        
+        var id = $(e.target).data('id');
+        $('.matchPlayer[data-id="' + id + '"]').addClass('playerHover');
+
+    },
+
+    unhoverMatchPlayer: function(e) {
+        
+        $('.matchPlayer').removeClass('playerHover');
+
     },
 
     render: function() {

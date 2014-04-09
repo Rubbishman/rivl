@@ -22,7 +22,13 @@ h3.bigVal, h4.bigVal {
 	float: right;
 }
 a {
+	color: #0082CA;
 	cursor: pointer;
+	text-decoration: none;
+}
+a:hover {
+	color: #F51DF5;
+	text-decoration: underline;
 }
 h2 {
 	font-size: 1.1em;
@@ -378,6 +384,9 @@ span.rankNeutral {
 	line-height: 29px;
 	clear: both;
 	overflow: hidden;
+}
+.matchPlayer.playerHover {
+	background: #ccc;
 }
 .matchPlayerName {
 	font-size: 13px;
