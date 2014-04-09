@@ -2,6 +2,7 @@
 
 
 $config["CHALLONGE_API_KEY"] = "KEY_GOES_HERE";
+$config["VERIFY_SSL"] = true;
 
 /*
 |--------------------------------------------------------------------------

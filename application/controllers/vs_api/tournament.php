@@ -7,8 +7,10 @@ class Tournament extends CI_Controller {
         $this->load->model('tournament_model');
 
         $api_key = $this->config->item('CHALLONGE_API_KEY');
+        $verify_ssl = $this->config->item('VERIFY_SSL');
+
         $this->load->library('challonge', array('api_key'=>$api_key));
-        $this->challonge->verify_ssl = true;
+        $this->challonge->verify_ssl = $verify_ssl;
     }
 
     public function index() {
