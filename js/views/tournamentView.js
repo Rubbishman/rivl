@@ -33,19 +33,23 @@ Vs.TournamentView = Backbone.View.extend({
     },
 
     hoverMatchPlayer: function(e) {
-        
+
         var id = $(e.target).data('id');
         $('.matchPlayer[data-id="' + id + '"]').addClass('playerHover');
 
     },
 
     unhoverMatchPlayer: function(e) {
-        
+
         $('.matchPlayer').removeClass('playerHover');
 
     },
 
     render: function() {
+        $(this.el).html(this.navbarTemplate(Vs.competition.toJSON()));
+    },
+
+    renderTournament: function() {
 
         var self = this,
             participants = this.model.get('participants').participant,
@@ -54,15 +58,17 @@ Vs.TournamentView = Backbone.View.extend({
             participantsMap = {};
 
 
-        $(this.el).html(this.navbarTemplate(Vs.competition.toJSON()));
         $(this.el).append(this.tournamentTemplate(this.model.toJSON()));
 
         _.each(participants, function(item) {
             var rivlUser = Vs.competitors.where({challonge_username: item['challonge-username']});
-            rivlUser.length > 0
-                ? participantsMap[item['id']] = rivlUser[0].attributes
-                : participantsMap[item['id']] = {};
-            participantsMap[item['id']].nick = item['name'];
+            if (rivlUser.length > 0) {
+                participantsMap[item['id']] = rivlUser[0].attributes;
+                participantsMap[item['id']].nick = rivlUser[0].get('pseudonym') || rivlUser[0].get('name');
+            } else {
+                participantsMap[item['id']] = {};
+                participantsMap[item['id']].nick = item['name'];
+            }
             //$(this.el).append(self.competitorTemplate(item));
         });
 
@@ -148,12 +154,12 @@ Vs.TournamentView = Backbone.View.extend({
     prepareMatchObj : function(match, participantsMap, matchesMap) {
         //match.player1 = participantsMap[match['player1-id']];
         //match.player2 = participantsMap[match['player2-id']];
-        match.rivlId1 = participantsMap[match['player1-id']]
+        match.rivlId1 = participantsMap[match['player1-id']] && participantsMap[match['player1-id']].competitor_id
             ? participantsMap[match['player1-id']].competitor_id
-            : '';
-        match.rivlId2 = participantsMap[match['player2-id']]
+            : '0';
+        match.rivlId2 = participantsMap[match['player2-id']] && participantsMap[match['player2-id']].competitor_id
             ? participantsMap[match['player2-id']].competitor_id
-            : '';
+            : '0';
         match.nick1 = typeof(match['player1-id']) === 'string'
             ? participantsMap[match['player1-id']].nick
             : '';

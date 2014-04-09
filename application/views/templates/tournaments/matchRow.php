@@ -4,10 +4,15 @@
         <span><%=identifier%></span>
     </div>
     <div class="matchMain">
-        <% if (nick1) { %>
+        <% if (nick1 && rivlId1 != 0) { %>
             <div class="matchPlayer" data-id=<%=rivlId1 %>>
                 <img src="img/avatars/2_<%=rivlId1%>_1.png?ver=5" class="matchAvatar" />
                 <a href="javascript:void(0);" data-id=<%=rivlId1 %> class="playerLink matchPlayerName"><%=nick1%></a>
+            </div>
+        <% } else if (nick1) { %>
+            <div class="matchPlayer" data-id=<%=nick1 %>>
+                <img src="img/avatars/anonymous.png?ver=5" class="matchAvatar" />
+                <span data-id=<%=nick1 %> class="matchPlayerName"><%=nick1%></a>
             </div>
         <% } else { %>
             <div class="matchPlayer">
@@ -15,10 +20,15 @@
                 <span class="matchPlayerName"><em><%=prereq1%></em></span>
             </div>
         <% } %>
-        <% if (nick2) { %>
+        <% if (nick2 && rivlId2 != 0) { %>
             <div class="matchPlayer" data-id=<%=rivlId2 %>>
                 <img src="img/avatars/2_<%=rivlId2%>_1.png?ver=5" class="matchAvatar" />
                 <a href="javascript:void(0);" data-id=<%=rivlId2 %> class="matchPlayerName playerLink"><%=nick2%></a>
+            </div>
+        <% } else if (nick2) { %>
+            <div class="matchPlayer" data-id=<%=nick2 %>>
+                <img src="img/avatars/anonymous.png?ver=5" class="matchAvatar" />
+                <span data-id=<%=nick2 %> class="matchPlayerName"><%=nick2%></a>
             </div>
         <% } else { %>
             <div class="matchPlayer noPlayer">

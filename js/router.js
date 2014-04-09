@@ -174,19 +174,23 @@ $(function () {
             Vs.tournamentView = new Vs.TournamentView();
 
             var renderTournamentView = function () {
-                if (Vs.competition.loaded && Vs.tournament.loaded && Vs.competitors.loaded) {
-                    Vs.tournamentView.model = Vs.tournament;
+                if (Vs.competition.loaded && Vs.competitors.loaded) {
                     Vs.tournamentView.render();
                 }
             };
 
-            if (!Vs.tournament || !Vs.competitors || !Vs.competition || Vs.competition.get('id') !== competitionId) {
+            if (!Vs.competitors || !Vs.competition || Vs.competition.get('id') !== competitionId) {
                 Vs.router._fetchCompetition(competitionId, renderTournamentView);
-                Vs.router._fetchTournament(tournamentId, renderTournamentView);
                 Vs.router._fetchCompetitors(competitionId, renderTournamentView);
             } else {
                 renderTournamentView();
             }
+
+            Vs.router._fetchTournament(tournamentId, function() {
+
+                Vs.tournamentView.model = Vs.tournament;
+                Vs.tournamentView.renderTournament();
+            });
         },
 
 		fetchTitles: function(id, callback) {

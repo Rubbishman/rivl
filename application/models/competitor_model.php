@@ -49,9 +49,9 @@ class Competitor_model extends CI_Model {
 		$this->db->select("
             competitor.challonge_username,
 			competitor_elo.competitor_id,
-			competitor_elo.elo ,
-			CASE WHEN competitor_elo.pseudonym is not null
-				THEN CONCAT(competitor.name, ', ',competitor_elo.pseudonym) ELSE competitor.name END name",
+            competitor_elo.elo,
+            competitor_elo.pseudonym,
+			competitor.name",
 				FALSE);
 		$this->db->from('competitor');
 		$this->db->join('competitor_elo', 'competitor.id = competitor_elo.competitor_id');
