@@ -234,7 +234,6 @@ span.rankNeutral {
 .modal-open, .modal-open .navbar-fixed-top {
 	margin-right: auto !important;
 }
-
 .radius-left {
 	border-bottom-left-radius: 3px;
 	border-top-left-radius: 3px;
@@ -341,11 +340,10 @@ span.rankNeutral {
   border-color: #357ebd;
 }
 
-
 /* challonge stuff */
 .matchIdentifier {
 	float:left; 
-	margin-top:18px; 
+	margin: 23px 3px 0 0; 
 	width:17px;
 	background: #555;
 	color: #fff;
@@ -355,7 +353,6 @@ span.rankNeutral {
 	text-shadow: 0 -1px 0 #444;
 	font-size: 10px;
 	text-align: center;
-	margin-right: 3px;
 }
 .matchMain {
 	border: 1px solid #aaa;
