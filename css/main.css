@@ -83,7 +83,7 @@ h2 {
 #vsLabel {
 	background-image: url("../img/graphic_sm.png");
 	background-repeat:no-repeat;
-	background-position:center; 
+	background-position:center;
 	padding: 60px 0;
 }
 #selectPlayer1 img, #selectPlayer2 img {
@@ -92,7 +92,7 @@ h2 {
 	height: auto;
 }
 /*#scoresSection {
-	border-top: solid 1px #CCC;	
+	border-top: solid 1px #CCC;
 	margin-top: 20px;
 	margin-bottom: 20px;
 }*/
@@ -185,7 +185,7 @@ h2 {
 	background-color: #FFFF9E;
 	background-image: url("../img/trophy_32.png");
 	background-repeat:no-repeat;
-	background-position:left; 
+	background-position:left;
 	background-position-x: 5%;
 }
 .scoreRow .losingScore {
@@ -343,9 +343,12 @@ span.rankNeutral {
 
 
 /* challonge stuff */
+.tournamentTable td {
+    vertical-align: top;
+}
 .matchIdentifier {
-	float:left; 
-	margin-top:18px; 
+	float:left;
+	margin-top:18px;
 	width:17px;
 	background: #555;
 	color: #fff;
@@ -404,10 +407,36 @@ span.rankNeutral {
 }
 
 .matchAvatar {
-	width:20px; 
-	height:20px; 
+	width:20px;
+	height:20px;
 	margin: 5px;
 	float: left;
 }
+.matchGrid {
+    width: 20px;
+    height: 60px;
+    float: left;
+}
+.matchGridHoriz {
+    height: 30px;
+    border-bottom: solid 1px;
+}
+.matchGridUp {
+    height: 30px;
+    border-right: solid 1px;
+    border-bottom: solid 1px;
+}
+.matchGridDown {
+    height: 30px;
+    border-top: solid 1px;
+    border-right: solid 1px;
+}
+.matchGridNone {
+    height: 30px;
+}
+.matchSpacerVert {
+    border-right: solid 1px;
+}
+
 
 
