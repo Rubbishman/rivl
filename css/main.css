@@ -343,14 +343,18 @@ span.rankNeutral {
 /* challonge stuff */
 .tournamentTable td {
     vertical-align: top;
+    padding: 0;
+}
+.match {
+	position: relative;
 }
 .matchIdentifier {
-	float:left;
-	margin-top:18px;
+	position: absolute;
+	top: 23px;
+	left: 4px;
 	width:17px;
 	background: #555;
 	color: #fff;
-	border-radius: 50%;
 	height: 17px;
 	line-height: 17px;
 	text-shadow: 0 -1px 0 #444;
@@ -414,26 +418,30 @@ span.rankNeutral {
     height: 60px;
     float: left;
 }
-.matchGridHoriz {
-    height: 30px;
+.gridLineHoriz {
+    height: 32px;
     border-bottom: solid 1px;
 }
-.matchGridUp {
-    height: 30px;
+.gridLineUp {
+    height: 32px;
     border-right: solid 1px;
     border-bottom: solid 1px;
+    border-radius: 0 0 3px 0;
 }
-.matchGridDown {
+.gridLineDown {
     height: 30px;
     border-top: solid 1px;
     border-right: solid 1px;
+    border-radius: 0 3px 0 0;
 }
-.matchGridNone {
+.gridLineNone {
     height: 30px;
 }
 .matchSpacerVert {
     border-right: solid 1px;
 }
-
+.gridLine {
+	border-color: #E646BF;
+}
 
 

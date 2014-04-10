@@ -223,6 +223,6 @@ Vs.TournamentView = Backbone.View.extend({
     },
 
     getSpacerClass: function(parity) {
-        return parity === 0 ? '' : 'matchSpacerVert';
+        return parity === 0 ? '' : 'gridLine matchSpacerVert';
     }
 });
