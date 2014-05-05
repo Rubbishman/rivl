@@ -7,12 +7,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">rivl</a>
+              <a class="navbar-brand" href="#">Home</a>
             </div>
             <div class="collapse navbar-collapse">
               <% if (id !== 0) { %>
               <ul class="nav navbar-nav">
-                <li><a href="#competition/<%=id%>">Home</a></li>
+                <li><a href="#competition/<%=id%>">Leaderboard</a></li>
                 <li><a href="#competition/<%=id%>/game">Enter result</a></li>
                 <li><a href="#competition/<%=id%>/tournament">Tournament</a></li>
                 <!--<li><a href="#">Compare rivls</a></li>-->

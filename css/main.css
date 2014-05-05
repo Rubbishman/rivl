@@ -33,6 +33,17 @@ a:hover {
 h2 {
 	font-size: 1.1em;
 }
+.table {
+	float: none;
+	display: table;
+}
+.tableCell {
+	float: none;
+	display: table-cell;
+}
+.clearer {
+	clear: both;
+}
 #previousGameBarDetails {
 	padding: 10px;
 	border: 1px solid #B6B6B6;
@@ -336,8 +347,8 @@ span.rankNeutral {
 
 /* button overrides, so that last-entered score doesn't look different */
 .btn-primary:focus {
-  background-color: #428bca;
-  border-color: #357ebd;
+    background-color: #428bca;
+    border-color: #357ebd;
 }
 
 /* challonge stuff */
