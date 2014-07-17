@@ -335,12 +335,36 @@ Vs.NewGameView2 = Backbone.View.extend({
         });
     },
     _deleteScoreRow: function() {
-        $('#scoresSection').children().last().remove();
+        var gameRows = $('#scoresSection .scoreRow').length;
+        
+        if (gameRows === 1) {
+            return false;
+        } else {
+
+            $('#scoresSection').children().last().remove();
+
+            if (gameRows === 1) {
+                $('#gameRowCounter').html('1 game');
+            } else {
+                $('#gameRowCounter').html((gameRows - 1) + ' games'); //hacky?
+            }
+        }
+        
     },
     _renderNewScoreRow: function() {
-        $('#resultsSection').html('');
+        $('#resultsSection').html(''); 
         $('#submitScore').removeClass('btn-disabled').addClass('btn-success');
+        /* TODO: above stuff seems a bit silly. instead lets make the 'finished' screen have a link to another game scores. */
+        
         $('#scoresSection').append(this.scoreTemplate({points: this.model.get('points')}));
+        
+        var gameRows = $('#scoresSection .scoreRow').length;
+        
+        if (gameRows === 1) {
+            $('#gameRowCounter').html('1 game');
+        } else {
+            $('#gameRowCounter').html(gameRows + ' games');
+        }
     },
 
     _renderResults: function(results) {
