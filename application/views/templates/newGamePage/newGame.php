@@ -25,7 +25,7 @@
                 <div class="col-xs-12 text-center">
                     <button id="addScore" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-plus"></span> Add another result</button>
                     <button id="removeScore" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-minus"></span> Remove last result</button>
-                    <br><br><button id="addNote" class="btn btn-sm btn-default">Add game note</button>
+<!--                    <br><br><button id="addNote" class="btn btn-sm btn-default">Add game note</button> -->
                     <button id="removeNote" class="btn btn-sm btn-default">Remove game note</button>
                     <button id="submitScore" class="btn btn-lg btn-success btn-block">Save result</button>
                 </div>

@@ -37,11 +37,6 @@ Vs.NewGameView2 = Backbone.View.extend({
             return;
         }
 
-        var r = window.confirm("Are you sure you want to save these games?");
-        if(r == false) {
-        	return;
-        }
-
         $('#addNote').show();
     	$('#removeNote').hide();
     	$('#noteArea').remove();
