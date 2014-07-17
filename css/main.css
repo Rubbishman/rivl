@@ -99,14 +99,21 @@ h2 {
 }
 #selectPlayer1 img, #selectPlayer2 img {
 	cursor: pointer;
-	width:110px;
+	width: 100%;
 	height: auto;
+	border: 1px solid #444;
+	border-radius: 50%;
 }
 /*#scoresSection {
 	border-top: solid 1px #CCC;
 	margin-top: 20px;
 	margin-bottom: 20px;
 }*/
+#gameRowCounter {
+	border: 1px solid #ccc;
+	border-left: 0;
+	border-right: 0;
+}
 #playerSection {
 	margin-bottom: 1.2em;
 }
