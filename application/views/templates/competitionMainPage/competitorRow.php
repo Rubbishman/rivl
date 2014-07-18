@@ -24,6 +24,7 @@
     <div class="col-xs-4 playerPosition">
         <%=rank%><%=rankPostfix%>
     </div>
+    <img src="img/avatars/2_<%=competitor_id%>_1.png?ver=5" id="hiddenImage_<%=competitor_id%>" style="width:32px; height:32px" hidden>
     <div class="col-xs-8">
         <a class="playerLink link"><%=name%></a>
     </div>

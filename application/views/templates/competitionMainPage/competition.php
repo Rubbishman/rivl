@@ -3,8 +3,9 @@
     <h1><%=name%> Leaderboard</h1>
     <div class="sectionBody table">
         <div id="competitors" class="col-xs-9 tableCell" style="padding: 0;"></div>
-        <div class="col-xs-3 tableCell" style="background: red;"></div>
+        <div class="col-xs-3 tableCell" id="leaderCanvasHolder"><canvas class="leaderCanvas" id="leaderCanvas"></canvas></div>
     </div>
+    <div id="hoveredCompetitor" hidden>-1</div>
     <div class="clearer"></div>
 	<a id="addPlayer">Is your name missing?</a>
     <div id="addPlayerDiv" class="hidden">

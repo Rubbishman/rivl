@@ -69,6 +69,43 @@ $(function () {
                 }
             });
         },
+        drawLeaderCanvas: function() {
+            var canvas = document.getElementById("leaderCanvas"),
+                ctx = canvas.getContext("2d"),
+                holder = $('#leaderCanvasHolder'),
+                lastXY = [],
+                baseX = 50,
+                unit = 32;
+
+//            ctx.fillStyle = "FFF";
+//            ctx.fillRect(0,0,holder.width(), holder.height());
+
+            $.each(Vs.competitors.models, function(index, competitor) {
+                var image = $('#hiddenImage_'+competitor.attributes.competitor_id)[0],
+                    thisHeight = holder.height() - (holder.height() * (competitor.attributes.elo_percent/100)),
+                    thisX = baseX;
+                if(lastXY.length != 0) {
+                    var foundX = -1;
+                    $.each(lastXY, function(index, height) {
+                        if(foundX == -1 && thisHeight - height >= unit) {
+                            foundX = index * unit + 50;
+                        }
+                    });
+                    if(foundX == -1) {
+                        foundX = lastXY.length * unit + 50;
+                    }
+                    thisX = foundX;
+                }
+                if(lastXY[(thisX-50)/unit] == undefined) {lastXY[(thisX-50)/unit] = []};
+                lastXY[(thisX-50)/unit] = thisHeight;
+                ctx.drawImage(image, thisX, thisHeight, unit, unit);
+//                if($('#hoveredCompetitor').val() === competitor.attributes.competitor_id) {
+//                    ctx.strokeStyle = "FF0000";
+//                    ctx.rect(thisX, thisHeight, unit, unit);
+//                    ctx.stroke();
+//                }
+            });
+        },
         refreshCompetition: function() {
             Vs.competitionView = new Vs.CompetitionView({model: Vs.competition});
             Vs.competitionView.render();
@@ -77,6 +114,14 @@ $(function () {
 
                 Vs.competitorView = new Vs.CompetitorView({el:$("#competitors"),model: Vs.competition, collection: Vs.competitors});
                 Vs.competitorView.render();
+
+                var canvas = document.getElementById("leaderCanvas"),
+                    holder = $('#leaderCanvasHolder');
+
+                canvas.setAttribute('width', holder.width());
+                canvas.setAttribute('height', holder.height());
+
+                Vs.router.drawLeaderCanvas();
             });
 
             /*Vs.router._fetchTitles(Vs.competition.get('id'), function() {
