@@ -284,7 +284,7 @@ class Game_model extends CI_Model {
             $this->db->where('game.competition_id', $game['competition_id']);
             $game_number = $this->db->get()->row_array();
 
-            $elo_after = elo_helper($winner_details['elo'],$loser_details['elo'],$game_number['winner_games'],$game_number['loser_games']);
+            $elo_after = elo_helper($winner_details['elo'],$loser_details['elo'],$game_number['winner_games'],$game_number['loser_games'], $game['competition_id'] === 2);
 
             $game['winner_elo_after'] = $elo_after['winner_elo'];
             $game['loser_elo_after'] = $elo_after['loser_elo'];
@@ -357,7 +357,7 @@ class Game_model extends CI_Model {
         $this->db->where('game.competition_id', $new_data['competition_id']);
         $game_number = $this->db->get()->row_array();
 
-		$elo_after = elo_helper($winner_details['elo'],$loser_details['elo'],$game_number['winner_games'],$game_number['loser_games']);
+		$elo_after = elo_helper($winner_details['elo'],$loser_details['elo'],$game_number['winner_games'],$game_number['loser_games'], $new_data['competition_id'] === 2);
 
         $game_insert_array = array('competition_id' => $new_data['competition_id'], 'status' => 'pending');
         if (isset($new_data['date'])) {
