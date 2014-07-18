@@ -1,8 +1,5 @@
 <script id="tournamentMatchTemplate" type="text/template">
 
-    <div class="matchIdentifier">
-        <span><%=identifier%></span>
-    </div>
     <div class="matchMain">
         <% if (nick1 && rivlId1 != 0) { %>
             <div class="matchPlayer" data-id=<%=rivlId1 %>>
