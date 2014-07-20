@@ -17,11 +17,11 @@
 
         <div id="winnerBtns" class="row text-center" style="display: none;">
             <div class="col-xs-5">
-                <button id="p1Win" class="btn btn-default btn-block addScore"></button>
+                <button id="player1Btn" class="btn btn-default btn-block addScore"></button>
             </div>
             <div class="col-xs-2">Select winner</div>
             <div class="col-xs-5 text-center">
-                <button id="p2Win" class="btn btn-default btn-block addScore"></button>
+                <button id="player2Btn" class="btn btn-default btn-block addScore"></button>
             </div>
         </div>
         

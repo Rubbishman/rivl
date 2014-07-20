@@ -251,12 +251,12 @@ Vs.NewGameView2 = Backbone.View.extend({
     _setPlayer: function(playerNumber, playerModel) {
         if (playerNumber === '1') {
             $('#selectPlayer1').attr('data-competitor_id', playerModel.get('competitor_id'));
-            $('#p1Win').html(playerModel.get('name'));
+            $('#player1Btn').html(playerModel.get('name'));
             $('#selectPlayer1 img').attr('src', "img/avatars/2_" + playerModel.get('competitor_id') + "_1.png"+"?ver=5");
 
         } else {
             $('#selectPlayer2').attr('data-competitor_id', playerModel.get('competitor_id'));
-            $('#p2Win').html(playerModel.get('name'));
+            $('#player2Btn').html(playerModel.get('name'));
             $('#selectPlayer2 img').attr('src', "img/avatars/2_" + playerModel.get('competitor_id') + "_1.png"+"?ver=5");
         }
         $('#winnerBtns').show();
@@ -351,7 +351,11 @@ Vs.NewGameView2 = Backbone.View.extend({
         var winner = $(e.currentTarget).attr('id'); //either p1Win or p2Win
 
         //TODO: use above 'winner' variable to populate incoming score row with correct winner
-        $('#scoresSection').append(this.scoreTemplate({points: this.model.get('points')}));
+        this.selectWinner({
+            target: 
+                $('#scoresSection').append(
+                    this.scoreTemplate({points: this.model.get('points')})
+                ).find('.scoreRow').last().find('.'+winner)});
 
         //enable save btn. assumes that a game row can only have been added when also electing a winner
         $('#submitScore').removeClass('btn-disabled').addClass('btn-success').show();

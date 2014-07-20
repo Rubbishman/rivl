@@ -69,20 +69,15 @@ $(function () {
                 }
             });
         },
-        drawLeaderCanvas: function() {
-            var canvas = document.getElementById("leaderCanvas"),
-                ctx = canvas.getContext("2d"),
-                holder = $('#leaderCanvasHolder'),
+        drawLeaderArea: function() {
+            var holder = $('#leaderCanvasHolder'),
                 lastXY = [],
                 baseX = 50,
                 unit = 32;
 
-//            ctx.fillStyle = "FFF";
-//            ctx.fillRect(0,0,holder.width(), holder.height());
-
             $.each(Vs.competitors.models, function(index, competitor) {
                 var image = $('#hiddenImage_'+competitor.attributes.competitor_id)[0],
-                    thisHeight = holder.height() - (holder.height() * (competitor.attributes.elo_percent/100)),
+                    thisHeight = (holder.height()-32) - ((holder.height()-32) * (competitor.attributes.elo_percent/100)),
                     thisX = baseX;
                 if(lastXY.length != 0) {
                     var foundX = -1;
@@ -98,12 +93,28 @@ $(function () {
                 }
                 if(lastXY[(thisX-50)/unit] == undefined) {lastXY[(thisX-50)/unit] = []};
                 lastXY[(thisX-50)/unit] = thisHeight;
-                ctx.drawImage(image, thisX, thisHeight, unit, unit);
-//                if($('#hoveredCompetitor').val() === competitor.attributes.competitor_id) {
-//                    ctx.strokeStyle = "FF0000";
-//                    ctx.rect(thisX, thisHeight, unit, unit);
-//                    ctx.stroke();
-//                }
+
+                var rankImage = $('<img src="img/avatars/2_' + 
+                    competitor.attributes.competitor_id + 
+                    '_1.png?ver=5" id="rankImage_' + 
+                    competitor.attributes.competitor_id + 
+                    '" style="width:' + unit + 'px; height:' + unit + 'px; position:absolute; left:'+ 
+                    thisX + 'px; top:' + thisHeight + 'px;border-radius: 50%;box-shadow: 0 0 0 2px #555;">');
+                holder.append(rankImage);
+                var eloDisplay = $('<div id="eloDisplay" style="position:absolute;left:0px;top:0px;z-index:999;"></div>');
+                
+                rankImage.mouseenter(function() {
+                    rankImage.css({'box-shadow': "0 0 0 2px #F55"});
+                    eloDisplay.css({'left': rankImage.css('left'), 'top': rankImage.css('top')});
+                    eloDisplay.html(competitor.attributes.elo);
+                    eloDisplay.show();
+                });
+                rankImage.mouseleave(function() {
+                    rankImage.css({'box-shadow': "0 0 0 2px #555"});
+                    eloDisplay.html('');
+                    eloDisplay.hide();
+                });
+                holder.append(eloDisplay);
             });
         },
         refreshCompetition: function() {
@@ -115,13 +126,7 @@ $(function () {
                 Vs.competitorView = new Vs.CompetitorView({el:$("#competitors"),model: Vs.competition, collection: Vs.competitors});
                 Vs.competitorView.render();
 
-                var canvas = document.getElementById("leaderCanvas"),
-                    holder = $('#leaderCanvasHolder');
-
-                canvas.setAttribute('width', holder.width());
-                canvas.setAttribute('height', holder.height());
-
-                Vs.router.drawLeaderCanvas();
+                Vs.router.drawLeaderArea();
             });
 
             /*Vs.router._fetchTitles(Vs.competition.get('id'), function() {
