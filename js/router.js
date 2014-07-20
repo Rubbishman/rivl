@@ -146,7 +146,7 @@ $(function () {
 
             competitions.fetch({
                 success: function(collection, response)  {
-                    console.log(response);
+        //            console.log(response);
                     //Vs.AllCompetitionsView.collection = collection;// = new Vs.AllCompetitionsView({collection: collection});
                     Vs.allCompetitionsView = new Vs.AllCompetitionsView({collection: competitions});
                     Vs.allCompetitionsView.render();
@@ -317,7 +317,7 @@ $(function () {
                 data: { competition_id: id},
                 success: function(collection, response)  {
                     Vs.competitors.loaded = true;
-                    console.log(collection);
+         //           console.log(collection);
                     callback();
                 },
                 error: function(collection, response) {
@@ -333,7 +333,7 @@ $(function () {
             Vs.games.fetch({
                 data: { competition_id: id},
                 success: function(collection, response)  {
-                    console.log(collection);
+       //             console.log(collection);
                     callback();
                 },
                 error: function(collection, response) {
