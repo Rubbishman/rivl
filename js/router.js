@@ -98,21 +98,23 @@ $(function () {
                     competitor.attributes.competitor_id + 
                     '_1.png?ver=5" id="rankImage_' + 
                     competitor.attributes.competitor_id + 
-                    '" style="width:' + unit + 'px; height:' + unit + 'px; position:absolute; left:'+ 
-                    thisX + 'px; top:' + thisHeight + 'px;border-radius: 50%;box-shadow: 0 0 0 2px #555;">');
+                    '" class="leaderboardAvatar" style="left:' + thisX + 'px; top:' + thisHeight + 'px;">');
                 holder.append(rankImage);
-                var eloDisplay = $('<div id="eloDisplay" style="position:absolute;left:0px;top:0px;z-index:999;"></div>');
+                var eloDisplay = $('<div class="eloDisplay"></div>');
                 
                 rankImage.mouseenter(function() {
-                    rankImage.css({'box-shadow': "0 0 0 2px #F55"});
-                    eloDisplay.css({'left': rankImage.css('left'), 'top': rankImage.css('top')});
+                    eloDisplay.css({
+                        'left': thisX + 45, 
+                        'top': thisHeight + 2
+                    });
                     eloDisplay.html(competitor.attributes.elo);
                     eloDisplay.show();
+                    $(this).addClass('toTheTop');
                 });
                 rankImage.mouseleave(function() {
-                    rankImage.css({'box-shadow': "0 0 0 2px #555"});
                     eloDisplay.html('');
                     eloDisplay.hide();
+                    $(this).removeClass('toTheTop');
                 });
                 holder.append(eloDisplay);
             });

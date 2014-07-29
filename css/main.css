@@ -64,13 +64,52 @@ h2 {
 #previousGameBars {
 	margin-top: 5px;
 }
-/*.newGameContainer select {
-	font-size: 20px;
-	width: 75%;
-}*/
-/*.newGameContainer div {
-	padding: 0;
-}*/
+.leaderboardAvatar {
+	width:32px; 
+	height:32px;
+	position: absolute;
+	cursor: pointer;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	border-radius: 50%;
+	box-shadow: 0 0 0 2px #555;
+	-webkit-transition: all .2s ease-in-out;
+}
+.leaderboardAvatar:hover {
+	box-shadow: 0 0 0 2px #F55;
+	-webkit-transform: scale(1.2);
+}
+.eloDisplay {
+	display: none;
+	position:absolute;
+	z-index:999;
+	
+	border: 1px solid #bbb;
+	height: 28px;
+	line-height: 28px;
+	padding: 0px 10px;
+	font-size: 13px;
+	color: #555;
+	background: #bbb;
+	border-radius: 3px;
+	text-shadow: 0 1px 0 #ddd;
+}
+/* arrow: */
+.eloDisplay:after {
+	content: "";
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-width: 8px;
+	border-style: solid;
+	border-color: transparent #bbb transparent transparent;
+	top: 5px;
+	left: -16px;
+}
+.toTheTop {
+	z-index: 99999;
+}
+
 .mirrorImage {
     display:block;
     -webkit-transform: matrix(-1, 0, 0, 1, 0, 0);

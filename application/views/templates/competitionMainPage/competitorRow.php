@@ -21,21 +21,12 @@
 
     %>
 
-    <div class="col-xs-4 playerPosition">
+    <div class="col-xs-3 playerPosition">
         <%=rank%><%=rankPostfix%>
     </div>
-    <img src="img/avatars/2_<%=competitor_id%>_1.png?ver=5" id="hiddenImage_<%=competitor_id%>" style="width:32px; height:32px" hidden>
-    <div class="col-xs-8">
+
+    <div class="col-xs-9">
         <a class="playerLink link"><%=name%></a>
     </div>
-	<!--<div class="col-xs-5 playedMeterWrapParent">
-        <div class="fl playedMeterWrap">
-            <div class="playerGamesBar bgGood" style="width:<%=elo_percent%>%;">
-            	<div class="fl gamesPlayedLabel pointsDisplay" style="display: none;">
-                    <%=elo%>
-                </div>
-            </div>
-            
-        </div>
-    </div>-->
+	
 </script>
