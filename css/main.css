@@ -78,6 +78,7 @@ h2 {
 .leaderboardAvatar:hover {
 	box-shadow: 0 0 0 2px #F55;
 	-webkit-transform: scale(1.2);
+	z-index: 99999;
 }
 .eloDisplay {
 	display: none;
@@ -105,9 +106,6 @@ h2 {
 	border-color: transparent #bbb transparent transparent;
 	top: 5px;
 	left: -16px;
-}
-.toTheTop {
-	z-index: 99999;
 }
 
 .mirrorImage {

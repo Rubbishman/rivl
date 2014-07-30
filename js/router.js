@@ -109,12 +109,10 @@ $(function () {
                     });
                     eloDisplay.html(competitor.attributes.elo);
                     eloDisplay.show();
-                    $(this).addClass('toTheTop');
                 });
                 rankImage.mouseleave(function() {
                     eloDisplay.html('');
                     eloDisplay.hide();
-                    $(this).removeClass('toTheTop');
                 });
                 holder.append(eloDisplay);
             });
