@@ -96,7 +96,7 @@ $(function () {
 
                 var rankImage = $('<img src="img/avatars/2_' + 
                     competitor.attributes.competitor_id + 
-                    '_1.png?ver=5" id="rankImage_' + 
+                    '_1.png?ver=10" id="rankImage_' +
                     competitor.attributes.competitor_id + 
                     '" class="leaderboardAvatar" style="left:' + thisX + 'px; top:' + thisHeight + 'px;">');
                 holder.append(rankImage);

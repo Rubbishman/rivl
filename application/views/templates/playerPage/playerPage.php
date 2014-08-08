@@ -4,7 +4,7 @@
 
         <div class="row">
             <div class="col-xs-2">
-                <img src="img/avatars/2_<%=player_id%>_1.png?ver=5" class="roundAvatar headingAvatar largeAvatar" />
+                <img src="img/avatars/2_<%=player_id%>_1.png?ver=<?=IMAGE_VERSION?>" class="roundAvatar headingAvatar largeAvatar" />
             </div>
             <div class="col-xs-3">
                 <h3 class="bigVal"><%=current_elo%></h3>
