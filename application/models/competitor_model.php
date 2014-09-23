@@ -46,36 +46,48 @@ class Competitor_model extends CI_Model {
 			 COUNT(CASE WHEN s1.rank != 1 THEN 1 ELSE NULL END) loses,
 			 AVG(CASE WHEN s1.rank = 2 THEN s1.score ELSE null END) avg_loss_score,
 			 AVG(CASE WHEN s2.rank = 2 THEN s2.score ELSE null END) avg_opp_loss_score');*/
-		$this->db->select("
-            competitor.challonge_username,
-			competitor_elo.competitor_id,
+
+
+        $whereClause = "where competitor_elo.competition_id = {$competition_id}
+            and competitor_elo.status = 'active'";
+        if ($id !== FALSE) {
+            $whereClause .= " and competitor.id = {$id}";
+        }
+
+        $query = $this->db->query("select competitor.challonge_username,
+            competitor.email,
+            competitor_elo.competitor_id,
             competitor_elo.elo,
             competitor_elo.pseudonym,
-			competitor.name",
-				FALSE);
-		$this->db->from('competitor');
-		$this->db->join('competitor_elo', 'competitor.id = competitor_elo.competitor_id');
-        //$this->db->join('game', 'game.competition_id = competitor_elo.competition_id','left	');
-        //$this->db->join('score s1', 's1.competitor_id = competitor.id and s1.game_id = game.id','left');
-		//$this->db->join('score s2', 's1.game_id = s2.game_id and s1.competitor_id != s2.competitor_id and s2.game_id = game.id','left');
-		$this->db->where('competitor_elo.competition_id', $competition_id);
-        $this->db->where('competitor.status','active');
-        $this->db->group_by('competitor.id');
-		$this->db->order_by('competitor_elo.elo desc, competitor.name asc');
+            competitor.name,
+            maxgame.last_played
+            from competitor
+            join competitor_elo on competitor.id = competitor_elo.competitor_id
+            join (
+                SELECT MAX(game.date) as last_played, score.competitor_id
+                FROM game JOIN score ON game.id = score.game_id
+                WHERE game.competition_id = {$competition_id}
+                GROUP BY score.competitor_id
+            ) AS maxgame ON maxgame.competitor_id = competitor.id
+            ".$whereClause."
+            group by competitor.id
+            order by competitor_elo.elo desc, competitor.name asc");
 
-		if ($id !== FALSE) {
-			$this->db->where('competitor.id', $id);
-		}
 
-		$query = $this->db->get();
 		$results = $query->result();
 
-		//apply rank
+		//apply rankings
 		if ($id === FALSE) {
-			$rank = 1;
+            $rank = 1;
+            $activeRank = 1;
 			foreach ($results as $competitor) {
 				$competitor->rank = $rank;
+                $competitor->activeRank = FALSE;
 				$rank++;
+                if (strtotime($competitor->last_played) > strtotime('-1 week')) {
+                    $competitor->activeRank = $activeRank;
+                    $activeRank++;
+                }
 			}
 		}
 

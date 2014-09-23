@@ -65,7 +65,7 @@ h2 {
 	margin-top: 5px;
 }
 .leaderboardAvatar {
-	width:32px; 
+	width:32px;
 	height:32px;
 	position: absolute;
 	cursor: pointer;
@@ -84,7 +84,7 @@ h2 {
 	display: none;
 	position:absolute;
 	z-index:999;
-	
+
 	border: 1px solid #bbb;
 	height: 28px;
 	line-height: 28px;
@@ -305,6 +305,9 @@ span.rankNeutral {
 #showRivlStatsOverflow {
 	margin-top: 8px;
 }
+.inactivePlayer, .inactiveRank {
+    display: none;
+}
 .percentBar {
     background: #FC9797;
     line-height: 29px;
@@ -438,7 +441,7 @@ span.rankNeutral {
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
-	/*width: 85px;*/
+	width: 130px;
 	float: left;
 }
 .matchPlayerName .noPlayer {

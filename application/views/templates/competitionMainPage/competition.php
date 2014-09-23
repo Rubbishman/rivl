@@ -7,7 +7,8 @@
     </div>
     <div id="hoveredCompetitor" hidden>-1</div>
     <div class="clearer"></div>
-	<a id="addPlayer">Is your name missing?</a>
+    <a id="showInactive">Include non-active players</a>&nbsp;|&nbsp;
+    <a id="addPlayer">Is your name missing?</a>
     <div id="addPlayerDiv" class="hidden">
         Name: <input type="text" id ="addPlayerName" name="firstname"> <button id="addPlayerButton">Add player</button>
     </div>
@@ -15,7 +16,7 @@
 	<!--<div class="sectionBody">-->
 		<!--<div id="titleSection"></div>-->
 	<!--</div>-->
-	
+
     <h2>Game History</h2>
     <div class="sectionBody">
     	<div id="gameHistoryTodayContent">

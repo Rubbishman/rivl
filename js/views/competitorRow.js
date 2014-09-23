@@ -1,6 +1,6 @@
 Vs.CompetitorRow = Backbone.View.extend({
 
-	template : _.template($('#competitorRowTemplate').html()),            
+	template : _.template($('#competitorRowTemplate').html()),
     tagName : "div",
     className: "row percentBarRow",
 
@@ -30,6 +30,10 @@ Vs.CompetitorRow = Backbone.View.extend({
             $('#eloDisplay').html('');
             $('#eloDisplay').hide();
     	});
+
+        if (!this.model.get('activeRank')) {
+            $(this.el).addClass('inactivePlayer');
+        }
 
         return this;
     }

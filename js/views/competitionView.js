@@ -1,7 +1,7 @@
 Vs.CompetitionView = Backbone.View.extend({
 
-    template : _.template($('#competitionTemplate').html()),  
-    navbarTemplate : _.template($('#navbarTemplate').html()),   
+    template : _.template($('#competitionTemplate').html()),
+    navbarTemplate : _.template($('#navbarTemplate').html()),
 
     initialize: function () {
         $mainPage = $("#mainContainer");
@@ -9,16 +9,25 @@ Vs.CompetitionView = Backbone.View.extend({
 
     render: function() {
 
+        var self = this;
+
         $mainPage.html(this.navbarTemplate(this.model.toJSON()));
         $mainPage.append(this.template(this.model.toJSON()));
-        
+
         $('#addPlayer').click(function() {
             $('#addPlayer').hide();
             $('#addPlayerDiv').removeClass('hidden');
         });
 
+        $('#showInactive').click(function() {
+            $('.inactivePlayer').show();
+            $('.inactiveRank').show();
+            $('.activeRank').hide();
+            Vs.competitorView.drawLeaderArea(true);
+        });
+
         $('#addPlayerButton').click(this.addPlayer);
-        
+
         return this;
     },
     addPlayer: function() {
@@ -34,5 +43,5 @@ Vs.CompetitionView = Backbone.View.extend({
             error: function(model, response) {
                 console.log(response);
             }});
-    },
+    }
 });
