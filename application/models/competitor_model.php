@@ -49,7 +49,8 @@ class Competitor_model extends CI_Model {
 
 
         $whereClause = "where competitor_elo.competition_id = {$competition_id}
-            and competitor_elo.status = 'active'";
+            and competitor_elo.status = 'active'
+            and competitor.status = 'active'";
         if ($id !== FALSE) {
             $whereClause .= " and competitor.id = {$id}";
         }
