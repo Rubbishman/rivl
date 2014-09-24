@@ -1,6 +1,6 @@
 Vs.CompetitorRow = Backbone.View.extend({
 
-	template : _.template($('#competitorRowTemplate').html()),            
+	template : _.template($('#competitorRowTemplate').html()),
     tagName : "div",
     className: "row percentBarRow",
 
@@ -16,15 +16,25 @@ Vs.CompetitorRow = Backbone.View.extend({
     render: function() {
 
         $(this.el).html(this.template(this.model.toJSON()));
-        
         var self = this;
         $(this.el).mouseenter(function() {
-    		self.$el.find('.pointsDisplay').show();
+            var rankImage = $('#rankImage_'+self.model.attributes.competitor_id);
+            rankImage.css({'box-shadow': "0 0 0 2px #F55"});
+            $('#eloDisplay').css({'left': rankImage.css('left'), 'top': rankImage.css('top')});
+            $('#eloDisplay').html(self.model.attributes.elo);
+            $('#eloDisplay').show();
     	});
         $(this.el).mouseleave(function() {
-    		self.$el.find('.pointsDisplay').hide();
+            var rankImage = $('#rankImage_'+self.model.attributes.competitor_id);
+            rankImage.css({'box-shadow': "0 0 0 2px #555"});
+            $('#eloDisplay').html('');
+            $('#eloDisplay').hide();
     	});
+
+        if (!this.model.get('activeRank')) {
+            $(this.el).addClass('inactivePlayer');
+        }
+
         return this;
     }
-
 });

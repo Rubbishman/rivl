@@ -87,8 +87,8 @@ Vs.TournamentView = Backbone.View.extend({
         winnersMatrix[totalRounds].pop();
 
         for (var i = 1; i <= totalRounds; i++) {
-            simultaneousWinnerMatches = Math.max(simultaneousWinnerMatches, winnersMatrix[i].length);
-            simultaneousLoserMatches = Math.max(simultaneousLoserMatches, losersMatrix[i].length);
+            if (winnersMatrix[i]) simultaneousWinnerMatches = Math.max(simultaneousWinnerMatches, winnersMatrix[i].length);
+            if (losersMatrix[i]) simultaneousLoserMatches = Math.max(simultaneousLoserMatches, losersMatrix[i].length);
         }
 
         var $table = $table = $('<table class="tournamentTable"></table>');
@@ -111,12 +111,22 @@ Vs.TournamentView = Backbone.View.extend({
         var participantsMap = {};
         _.each(participants, function(item) {
             var rivlUser = Vs.competitors.where({challonge_username: item['challonge-username']});
+
+            if (rivlUser.length === 0) {
+                rivlUser = Vs.competitors.where({email: item['name']});
+            }
             if (rivlUser.length > 0) {
                 participantsMap[item['id']] = rivlUser[0].attributes;
                 participantsMap[item['id']].nick = rivlUser[0].get('pseudonym') || rivlUser[0].get('name');
             } else {
                 participantsMap[item['id']] = {};
-                participantsMap[item['id']].nick = item['name'];
+                if (typeof(item['name']) === "string") {
+                    participantsMap[item['id']].nick = item['name'];
+                } else if (typeof(item['challonge-username']) === "string") {
+                    participantsMap[item['id']].nick = item['challonge-username'];
+                } else {
+                    participantsMap[item['id']].nick = "???";
+                }
             }
         });
         return participantsMap;

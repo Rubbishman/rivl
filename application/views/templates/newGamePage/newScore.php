@@ -14,7 +14,9 @@
             </div>   
         </div>
         
-        <div class="col-xs-2 text-center gameNumber">Game <%=game_num%></div>
+        <div class="col-xs-2 text-center gameNumber">
+            Game <%=game_num%>
+        </div>
         
         <div class="col-xs-5 text-center">
             <div class="btnGroupWrap">
