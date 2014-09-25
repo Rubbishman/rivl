@@ -38,6 +38,7 @@ class Vs extends CI_Controller {
 		$this->load->view('templates/newGamePage/newResults',$data);
 		$this->load->view('templates/newGamePage/newScore',$data);
 
+		$this->load->view('templates/tournaments/allTournaments',$data);
 		$this->load->view('templates/tournaments/tournament',$data);
 		$this->load->view('templates/tournaments/tournamentRow',$data);
 		$this->load->view('templates/tournaments/matchRow',$data);

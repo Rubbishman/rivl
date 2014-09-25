@@ -1,6 +1,7 @@
 Vs.AllTournamentsView = Backbone.View.extend({
 
     navbarTemplate : _.template($('#navbarTemplate').html()),
+    allTournamentsTemplate : _.template($('#allTournamentsTemplate').html()),
     rowTemplate : _.template($('#tournamentRowTemplate').html()),
     el : '#mainContainer',
 
@@ -24,6 +25,7 @@ Vs.AllTournamentsView = Backbone.View.extend({
 
         var self = this;
         $(this.el).html(this.navbarTemplate(Vs.competition.toJSON()));
+        $(this.el).append(this.allTournamentsTemplate());
 
         this.collection.each(function(tournament) {
             self._renderRow(self, tournament);
@@ -33,7 +35,7 @@ Vs.AllTournamentsView = Backbone.View.extend({
 
     _renderRow: function(self, tournament) {
 
-        $(self.el).append(self.rowTemplate(tournament.toJSON()));
+        $("#tournaments").append(self.rowTemplate(tournament.toJSON()));
     }
 
 });

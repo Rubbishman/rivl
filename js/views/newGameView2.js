@@ -140,6 +140,11 @@ Vs.NewGameView2 = Backbone.View.extend({
                     score = p1winCount > p2winCount ? p1winCount + '-' + p2winCount : p2winCount + '-' + p1winCount;
 
                 Vs.tournament.enterResult(params.id, params.matchId, winnerId, score);
+
+                //if this is the last round in the tournament, then submit a second result for the second double elimination round
+                if (params.finalRoundId) {
+                    Vs.tournament.enterResult(params.id, params.finalRoundId, winnerId, score);
+                }
             } else {
                 alert('enter the tournament scorez correctly yo.');
                 return;
@@ -159,6 +164,12 @@ Vs.NewGameView2 = Backbone.View.extend({
             data: ajaxData,
             success: function(collection, response) {
 
+                //if tournament mode, then redirect back to tournament page
+                if (self.model.get('tournament')) {
+                    var url = 'competition/' + Vs.competition.get('id') + "/tournament/" + self.model.get('tournament').id;
+                    Vs.router.navigate(url, {trigger: true});
+                }
+
                 Vs.router._fetchCompetitors(self.model.get('id'), function() {
 
                     self.collection = Vs.competitors;
@@ -177,7 +188,9 @@ Vs.NewGameView2 = Backbone.View.extend({
                         p1name: p1NewModel.get('name'),
                         p2name: p2NewModel.get('name'),
                         p1rank: p1NewModel.get('rank'),
-                        p2rank: p2NewModel.get('rank')
+                        p2rank: p2NewModel.get('rank'),
+                        p1id: p1NewModel.get('competitor_id'),
+                        p2id: p2NewModel.get('competitor_id')
                     });
                 });
 
@@ -207,37 +220,55 @@ Vs.NewGameView2 = Backbone.View.extend({
 
         //unset clicked on player (if exists)
         if (competitorId) {
-            $('.playerSelection[data-competitor_id="'+competitorId + '"]').removeClass('active');
+            var playerId = $(e.target).parent().attr('id'),
+                $playerEl = $('.playerSelection[data-competitor_id="'+competitorId + '"]');
+
+            $playerEl.removeClass('active');
+            if (playerId === 'selectPlayer1') {
+                $playerEl.removeClass('player1select');
+            } else {
+                $playerEl.removeClass('player2select');
+            }
         }
 
     },
     handlePlayerSelect: function(e) {
         var $selectedPlayer = $(e.target),
+            player1selected = $('.player1select').length,
+            player2selected = $('.player2select').length,
             player1,
             player2,
             playerA,
-            playerB,
-            foundA = false,
-            foundB = false;
+            playerB;
 
         if ($selectedPlayer.hasClass('active')) {
             $selectedPlayer.removeClass('active');
-        } else {
-            $selectedPlayer.parent().children().removeClass('active');
-            $selectedPlayer.addClass('active');
+            $selectedPlayer.removeClass('player1select');
+            $selectedPlayer.removeClass('player2select');
 
-            if($selectedPlayer.parent().attr('id') == "left_player_select") {
-            	playerA = this.collection.where({competitor_id: $selectedPlayer.attr('data-competitor_id')})[0];
-            	this._setPlayer('1', playerA);
-            } else {
-            	playerB = this.collection.where({competitor_id: $selectedPlayer.attr('data-competitor_id')})[0];
-            	this._setPlayer('2', playerB);
+        } else if (!player1selected) {
+
+            $selectedPlayer.addClass('active');
+            $selectedPlayer.addClass('player1select');
+
+        	playerA = this.collection.where({competitor_id: $selectedPlayer.attr('data-competitor_id')})[0];
+        	this._setPlayer('1', playerA);
+
+            if (player2selected) {
+                $('#playerSelectModal').modal('hide');
             }
 
-            if($('#left_player_select').children('.active').length == 1
-            	&& $('#right_player_select').children('.active').length == 1) {
-            		$('#playerSelectModal').modal('hide');
-        	}
+        } else if (!player2selected) {
+
+            $selectedPlayer.addClass('active');
+            $selectedPlayer.addClass('player2select');
+
+            playerB = this.collection.where({competitor_id: $selectedPlayer.attr('data-competitor_id')})[0];
+            this._setPlayer('2', playerB);
+
+            if (player1selected) {
+                $('#playerSelectModal').modal('hide');
+            }
         }
     },
     _getImage: function(name, direction, result) {
@@ -282,19 +313,25 @@ Vs.NewGameView2 = Backbone.View.extend({
 
             if (curParticipant['id'] === self.match['player1-id']) {
                 var rivlUser = Vs.competitors.where({challonge_username: curParticipant['challonge-username']});
+                if (rivlUser.length === 0) rivlUser = Vs.competitors.where({email: curParticipant['name']});
                 self.p1Id = rivlUser.length > 0 ? rivlUser[0].get('competitor_id') : '';
             }
             if (curParticipant['id'] === self.match['player2-id']) {
                 var rivlUser = Vs.competitors.where({challonge_username: curParticipant['challonge-username']});
+                if (rivlUser.length === 0) rivlUser = Vs.competitors.where({email: curParticipant['name']});
                 self.p2Id = rivlUser.length > 0 ? rivlUser[0].get('competitor_id') : '';
             }
         });
+
+        //check for finalRoundId
+        var finalRoundId = self.match['finalRoundId'] || false;
 
         //set tournament attributes on the model
         this.model.set('tournament', {
             name: this.tournament.get('name'),
             id: this.tournament.get('id'),
             matchId: self.match['id'],
+            finalRoundId: finalRoundId,
             p1Id: self.match['player1-id'],
             p2Id: self.match['player2-id']
         });
@@ -331,20 +368,28 @@ Vs.NewGameView2 = Backbone.View.extend({
     _renderPlayerSelect: function() {
         var self = this;
         _.each(this.collection.models, function(competitor) {
-            $('#playerSelectModal ul').append(self.playerSelectRowTemplate(competitor.attributes));
+            if (competitor.get('activeRank')) {
+                $('#playerSelectModal ul').append(self.playerSelectRowTemplate(competitor.attributes));
+            }
+        });
+        $('#playerSelectModal ul').append('<hr />');
+        _.each(this.collection.models, function(competitor) {
+            if (!competitor.get('activeRank')) {
+                $('#playerSelectModal ul').append(self.playerSelectRowTemplate(competitor.attributes));
+            }
         });
     },
     _deleteScoreRow: function() {
         var gameRows = $('#scoresSection .scoreRow').length,
             $lastScore = $('#scoresSection .scoreRow:last');
-        
+
         if (gameRows === 1) {
             $('#submitScore').addClass('btn-disabled').removeClass('btn-success');
             $('#removeScore').hide();
         }
 
-        $lastScore.remove();        
-        
+        $lastScore.remove();
+
     },
     _renderNewScoreRow: function(e) {
 
@@ -352,7 +397,7 @@ Vs.NewGameView2 = Backbone.View.extend({
 
         //TODO: use above 'winner' variable to populate incoming score row with correct winner
         this.selectWinner({
-            target: 
+            target:
                 $('#scoresSection').append(
                     this.scoreTemplate({points: this.model.get('points')})
                 ).find('.scoreRow').last().find('.'+winner)});
@@ -370,13 +415,13 @@ Vs.NewGameView2 = Backbone.View.extend({
         //update images
         if (results.p1eloDelta < 0) {
             if(Vs.competition.get('id') == 2) {
-                $('#selectPlayer1 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + playerModel.get('competitor_id') + "_0"+"?ver=10");
+                $('#selectPlayer1 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + results.p1id + "_0"+"?ver=10");
             } else {
                 $('#selectPlayer1 img').attr('src', "img/avatars/" + this._getImage(results.p1name, 'left', 'lose'));
             }
         } else {
             if(Vs.competition.get('id') == 2) {
-                $('#selectPlayer2 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + playerModel.get('competitor_id') + "_0"+"?ver=10");
+                $('#selectPlayer2 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + results.p2id + "_0"+"?ver=10");
             } else {
                 $('#selectPlayer2 img').attr('src', "img/avatars/" + this._getImage(results.p2name, 'right', 'lose'));
             }
