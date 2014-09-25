@@ -254,10 +254,6 @@ Vs.NewGameView2 = Backbone.View.extend({
         	playerA = this.collection.where({competitor_id: $selectedPlayer.attr('data-competitor_id')})[0];
         	this._setPlayer('1', playerA);
 
-            if (player2selected) {
-                $('#playerSelectModal').modal('hide');
-            }
-
         } else if (!player2selected) {
 
             $selectedPlayer.addClass('active');
@@ -265,11 +261,9 @@ Vs.NewGameView2 = Backbone.View.extend({
 
             playerB = this.collection.where({competitor_id: $selectedPlayer.attr('data-competitor_id')})[0];
             this._setPlayer('2', playerB);
-
-            if (player1selected) {
-                $('#playerSelectModal').modal('hide');
-            }
         }
+        
+        $('#playerSelectModal').modal('hide');
     },
     _getImage: function(name, direction, result) {
         var code = name.charCodeAt(0);
