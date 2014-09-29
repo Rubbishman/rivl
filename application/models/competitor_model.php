@@ -64,7 +64,7 @@ class Competitor_model extends CI_Model {
             maxgame.last_played
             from competitor
             join competitor_elo on competitor.id = competitor_elo.competitor_id
-            join (
+            left join (
                 SELECT MAX(game.date) as last_played, score.competitor_id
                 FROM game JOIN score ON game.id = score.game_id
                 WHERE game.competition_id = {$competition_id}
