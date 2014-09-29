@@ -158,12 +158,16 @@ h2 {
     cursor: pointer;
 }
 #playerSelectModal .list-group-item:hover {
-    background: #f9f9f9;
+    background: #eee;
+    color: #333;
 }
 #playerSelectModal .playerSelectAvatar {
     width: 28px;
     height: 28px;
     margin-right: 4px;
+}
+#left_player_select {
+    padding-top: 10px;
 }
 .headingAvatar {
     float: left;

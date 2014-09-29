@@ -24,7 +24,7 @@
                 <button id="player2Btn" class="btn btn-default btn-block addScore"></button>
             </div>
         </div>
-        
+
         <div id="scoresSection" class="row"></div>
         <div id="resultsSection" class="row"></div>
 
@@ -36,15 +36,8 @@
         <div id="playerSelectModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content row">
-                    <div class="modal-header col-xs-6 columns">
-                        <h4 class="modal-title">Player 1</h4>
-                    </div>
-                    <div class="modal-header col-xs-6 columns">
-                        <h4 class="modal-title">Player 2</h4>
-                    </div>
                     <div class="modal-body">
-                        <ul id="left_player_select" class="list-group col-xs-6"></ul>
-                        <ul id="right_player_select" class="list-group col-xs-6"></ul>
+                        <ul id="left_player_select" class="list-group col-xs-12"></ul>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
