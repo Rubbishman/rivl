@@ -416,7 +416,6 @@ span.rankNeutral {
 	width: 165px;
 	height: 60px;
 	overflow: hidden;
-	background: #f9f9f9;
 }
 .matchResults {
 	border: 1px solid #aaa;
@@ -430,11 +429,11 @@ span.rankNeutral {
 	text-align: center;
 }
 .matchResult {
-	line-height: 29px;
-	height: 29px;
+	line-height: 30px;
+	height: 30px;
 }
 .matchPlayer {
-	line-height: 29px;
+	line-height: 30px;
 	clear: both;
 	overflow: hidden;
 }
@@ -446,20 +445,17 @@ span.rankNeutral {
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
-	width: 130px;
+	width: 125px;
 	float: left;
 }
 .matchPlayerName .noPlayer {
 	font-size: 11px;
 }
-.matchPlayer:first-child {
-	border-bottom: 1px solid #ccc;
-}
 
 .matchAvatar {
-	width:20px;
-	height:20px;
-	margin: 5px;
+	width:30px;
+	height:30px;
+	margin: 0 5px 0 0;
 	float: left;
 }
 .matchGrid {
