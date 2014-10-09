@@ -395,6 +395,7 @@ span.rankNeutral {
 }
 .match {
 	position: relative;
+    width: 225px;
 }
 .matchIdentifier {
 	position: absolute;

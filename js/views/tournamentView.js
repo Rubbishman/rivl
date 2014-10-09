@@ -61,6 +61,7 @@ Vs.TournamentView = Backbone.View.extend({
             losersMatrix = {},
             round,
             totalRounds = 0,
+            winnerRounds = 0,
             simultaneousWinnerMatches = 0,
             simultaneousLoserMatches = 0;
 
@@ -73,6 +74,7 @@ Vs.TournamentView = Backbone.View.extend({
 
             round = match.round;
             if (round > 0) {
+                winnerRounds = winnersMatrix[round] ? winnerRounds : winnerRounds + 1;
                 winnersMatrix[round] = winnersMatrix[round] || new Array();
                 winnersMatrix[round].push(match);
             } else {
@@ -84,11 +86,11 @@ Vs.TournamentView = Backbone.View.extend({
         });
 
         //remove last round of winners bracket (2nd game)
-        var finalRound = winnersMatrix[totalRounds].pop();
+        var finalRound = winnersMatrix[winnerRounds].pop();
         var finalRoundId = finalRound.id;
 
         //attach final round id to the penultimate round
-        winnersMatrix[totalRounds][0].finalRoundId = finalRoundId;
+        winnersMatrix[winnerRounds][0].finalRoundId = finalRoundId;
 
         for (var i = 1; i <= totalRounds; i++) {
             if (winnersMatrix[i]) simultaneousWinnerMatches = Math.max(simultaneousWinnerMatches, winnersMatrix[i].length);
