@@ -38,8 +38,8 @@
         <% if (!complete) { %>
             <a class='enterChallongeResult' data-p1=<%=rivlId1 %> data-p2=<%=rivlId2 %> data-matchid=<%=id %> data-finalmatchid=<%=finalRoundId %>>?</a>
         <% } else { %>
-            <div class="matchResult matchResultP1"><% if (winner === rivlId1) { %>W<% } %></div>
-            <div class="matchResult matchResultP2"><% if (winner === rivlId2) { %>W<% } %></div>
+            <div class="matchResult matchResultP1 <% if (winner === rivlId1) { %>matchWinner<% } %>"><% if (winner === rivlId1) { %><span class="winIconSml"></span><% } %></div>
+            <div class="matchResult matchResultP2 <% if (winner === rivlId2) { %>matchWinner<% } %>"><% if (winner === rivlId2) { %><span class="winIconSml"></span><% } %></div>
         <% } %>
     </div>
 </script>

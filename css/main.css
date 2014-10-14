@@ -395,7 +395,7 @@ span.rankNeutral {
 }
 .match {
 	position: relative;
-    width: 225px;
+    width: 230px;
 }
 .matchIdentifier {
 	position: absolute;
@@ -422,15 +422,21 @@ span.rankNeutral {
 	border-left: 0;
 	border-radius: 0 4px 4px 0;
 	float: left;
-	width: 20px;
+	width: 25px;
 	height: 60px;
 	background: #eee;
 	font-size: 10px;
 	text-align: center;
 }
 .matchResult {
-	line-height: 30px;
-	height: 30px;
+	line-height: 29px;
+    height: 29px;
+}
+.matchResults .matchResult:first-child {
+    border-radius: 0 4px 0 0;
+}
+.matchResults .matchResult:last-child {
+    border-radius: 0 0 4px 0;
 }
 .matchPlayer {
 	line-height: 30px;
@@ -487,6 +493,16 @@ span.rankNeutral {
 }
 .gridLine {
 	border-color: #E646BF;
+}
+.matchWinner {
+    background: rgb(255, 255, 147);
+}
+.winIconSml {
+    width: 16px;
+    height: 16px;
+    background-image: url(../img/trophy_16x16_black.png);
+    display: inline-block;
+    margin-top: 6px;
 }
 
 
