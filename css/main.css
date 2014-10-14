@@ -33,6 +33,9 @@ a:hover {
 h2 {
 	font-size: 1.1em;
 }
+.strikethrough {
+    text-decoration: line-through !important;
+}
 .table {
 	float: none;
 	display: table;
@@ -395,27 +398,29 @@ span.rankNeutral {
 }
 .match {
 	position: relative;
-    width: 230px;
+    width: 205px;
 }
 .matchIdentifier {
 	position: absolute;
-	top: 23px;
-	left: 4px;
-	width:17px;
-	background: #555;
-	color: #fff;
-	height: 17px;
-	line-height: 17px;
-	text-shadow: 0 -1px 0 #444;
-	font-size: 10px;
-	text-align: center;
+    top: 23px;
+    left: 50%;
+    width: 16px;
+    background: #ddd;
+    color: #444;
+    height: 16px;
+    line-height: 15px;
+    font-size: 10px;
+    text-align: center;
+    border-radius: 50%;
+    border: 1px solid #aaa;
 }
 .matchMain {
 	border: 1px solid #aaa;
 	float: left;
-	width: 165px;
-	height: 60px;
+	width: 140px;
+	height: 63px;
 	overflow: hidden;
+    border-radius: 4px 0 0 4px;
 }
 .matchResults {
 	border: 1px solid #aaa;
@@ -423,16 +428,17 @@ span.rankNeutral {
 	border-radius: 0 4px 4px 0;
 	float: left;
 	width: 25px;
-	height: 60px;
+	height: 63px;
 	background: #eee;
 	font-size: 10px;
 	text-align: center;
+    overflow: hidden;
 }
 .matchResult {
-	line-height: 29px;
-    height: 29px;
+    height: 31px;
 }
 .matchResults .matchResult:first-child {
+    border-bottom: 1px solid #E646BF;
     border-radius: 0 4px 0 0;
 }
 .matchResults .matchResult:last-child {
@@ -443,6 +449,9 @@ span.rankNeutral {
 	clear: both;
 	overflow: hidden;
 }
+.matchMain .matchPlayer:first-child {
+    border-bottom: 1px solid #E646BF;
+}
 .matchPlayer.playerHover {
 	background: #ccc;
 }
@@ -451,11 +460,15 @@ span.rankNeutral {
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
-	width: 125px;
+	width: 100px;
 	float: left;
 }
 .matchPlayerName .noPlayer {
 	font-size: 11px;
+}
+.matchLoser .matchPlayerName {
+    color: #aaa;
+    text-decoration: line-through;
 }
 
 .matchAvatar {
@@ -466,7 +479,7 @@ span.rankNeutral {
 }
 .matchGrid {
     width: 20px;
-    height: 60px;
+    height: 63px;
     float: left;
 }
 .gridLineHoriz {
@@ -496,6 +509,9 @@ span.rankNeutral {
 }
 .matchWinner {
     background: #fff;
+}
+.matchLoser {
+    background: #eee;
 }
 .winIconSml {
     width: 16px;

@@ -2,33 +2,33 @@
 
     <div class="matchMain">
         <% if (nick1 && rivlId1 != 0) { %>
-            <div class="matchPlayer" data-id=<%=rivlId1 %>>
+            <div class="matchPlayer <% if (winner === rivlId2) { %>strikethrough matchLoser<% } %>" data-id=<%=rivlId1 %>>
                 <img src="img/avatars/2_<%=rivlId1%>_1.png?ver=<?=IMAGE_VERSION?>" class="matchAvatar" />
                 <a href="javascript:void(0);" data-id=<%=rivlId1 %> class="playerLink matchPlayerName"><%=nick1%></a>
             </div>
         <% } else if (nick1) { %>
-            <div class="matchPlayer" data-id=<%=nick1 %>>
+            <div class="matchPlayer <% if (winner === rivlId2) { %>strikethrough matchLoser<% } %>" data-id=<%=nick1 %>>
                 <img src="img/avatars/anonymous.png?ver=<?=IMAGE_VERSION?>" class="matchAvatar" />
                 <span data-id=<%=nick1 %> class="matchPlayerName"><%=nick1%></a>
             </div>
         <% } else { %>
-            <div class="matchPlayer">
+            <div class="matchPlayer <% if (winner === rivlId2) { %>strikethrough matchLoser<% } %>">
                 <img src="img/avatars/anonymous.png?ver=<?=IMAGE_VERSION?>" class="matchAvatar" />
                 <span class="matchPlayerName"><em><%=prereq1%></em></span>
             </div>
         <% } %>
         <% if (nick2 && rivlId2 != 0) { %>
-            <div class="matchPlayer" data-id=<%=rivlId2 %>>
+            <div class="matchPlayer <% if (winner === rivlId1) { %>strikethrough matchLoser<% } %>" data-id=<%=rivlId2 %>>
                 <img src="img/avatars/2_<%=rivlId2%>_1.png?ver=<?=IMAGE_VERSION?>" class="matchAvatar" />
                 <a href="javascript:void(0);" data-id=<%=rivlId2 %> class="matchPlayerName playerLink"><%=nick2%></a>
             </div>
         <% } else if (nick2) { %>
-            <div class="matchPlayer" data-id=<%=nick2 %>>
+            <div class="matchPlayer <% if (winner === rivlId1) { %>strikethrough matchLoser<% } %>" data-id=<%=nick2 %>>
                 <img src="img/avatars/anonymous.png?ver=<?=IMAGE_VERSION?>" class="matchAvatar" />
                 <span data-id=<%=nick2 %> class="matchPlayerName"><%=nick2%></a>
             </div>
         <% } else { %>
-            <div class="matchPlayer noPlayer">
+            <div class="matchPlayer noPlayer <% if (winner === rivlId1) { %>strikethrough matchLoser<% } %>">
                 <img src="img/avatars/anonymous.png?ver=<?=IMAGE_VERSION?>" class="matchAvatar" />
                 <span class="matchPlayerName"><em><%=prereq2%></em></span>
             </div>
