@@ -398,21 +398,20 @@ span.rankNeutral {
 }
 .match {
 	position: relative;
-    width: 205px;
+    width: 229px;
 }
 .matchIdentifier {
 	position: absolute;
     top: 23px;
-    left: 50%;
-    width: 16px;
-    background: #ddd;
-    color: #444;
-    height: 16px;
-    line-height: 15px;
+    left: 12px;
+    width: 20px;
+    background: #666;
+    color: #fff;
+    height: 20px;
+    line-height: 18px;
     font-size: 10px;
     text-align: center;
-    border-radius: 50%;
-    border: 1px solid #aaa;
+    border-radius: 4px 0 0 4px;
 }
 .matchMain {
 	border: 1px solid #aaa;
@@ -438,7 +437,7 @@ span.rankNeutral {
     height: 31px;
 }
 .matchResults .matchResult:first-child {
-    border-bottom: 1px solid #E646BF;
+    border-bottom: 1px solid #aaa;
     border-radius: 0 4px 0 0;
 }
 .matchResults .matchResult:last-child {
@@ -450,7 +449,7 @@ span.rankNeutral {
 	overflow: hidden;
 }
 .matchMain .matchPlayer:first-child {
-    border-bottom: 1px solid #E646BF;
+    border-bottom: 1px solid #aaa;
 }
 .matchPlayer.playerHover {
 	background: #ccc;
@@ -478,7 +477,7 @@ span.rankNeutral {
 	float: left;
 }
 .matchGrid {
-    width: 20px;
+    width: 32px;
     height: 63px;
     float: left;
 }
@@ -490,22 +489,22 @@ span.rankNeutral {
     height: 32px;
     border-right: solid 1px;
     border-bottom: solid 1px;
-    border-radius: 0 0 3px 0;
+    border-radius: 0 0 5px 0;
 }
 .gridLineDown {
-    height: 30px;
+    height: 32px;
     border-top: solid 1px;
     border-right: solid 1px;
-    border-radius: 0 3px 0 0;
+    border-radius: 0 5px 0 0;
 }
 .gridLineNone {
-    height: 30px;
+    height: 31px;
 }
 .matchSpacerVert {
     border-right: solid 1px;
 }
 .gridLine {
-	border-color: #E646BF;
+	border-color: #aaa;
 }
 .matchWinner {
     background: #fff;
