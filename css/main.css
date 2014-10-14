@@ -495,12 +495,12 @@ span.rankNeutral {
 	border-color: #E646BF;
 }
 .matchWinner {
-    background: rgb(255, 255, 147);
+    background: #fff;
 }
 .winIconSml {
     width: 16px;
     height: 16px;
-    background-image: url(../img/trophy_16x16_black.png);
+    background-image: url(../img/trophy_16x16_gold.png);
     display: inline-block;
     margin-top: 6px;
 }
