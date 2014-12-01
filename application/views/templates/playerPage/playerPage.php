@@ -22,6 +22,12 @@
         </div>
 
         <h2>Top rivls</h2>
+        <div>
+            <div class="col-xs-2 text-center"></div>
+            <div class="col-xs-5 text-center">all time</div>
+            <div class="col-xs-5 text-center">recent</div>
+        </div>
+
         <div id="playerStats"></div>
         <!--
         <a href="#" id="topRivlsShowMore">Show more</a>
@@ -56,5 +62,5 @@
 	<h2>Points over time</h2>
 	<canvas id="playerGraph" width="1024" height="728"></canvas>
     -->
-    
+
 </script>

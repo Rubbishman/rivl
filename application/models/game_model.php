@@ -86,9 +86,12 @@ class Game_model extends CI_Model {
 		$competitor_id = $params['competitor_id'];
 
 		$res = $this->db->query("
-			select case when acs.competitor_id_1 = $competitor_id then competitor_1_wins else competitor_2_wins end win_num,
-			case when acs.competitor_id_1 = $competitor_id then competitor_2_wins else competitor_1_wins end loss_num,
-			CAST((case when acs.competitor_id_1 = $competitor_id then competitor_1_wins else competitor_2_wins end/(case when acs.competitor_id_1 = $competitor_id then competitor_1_wins else competitor_2_wins end + case when acs.competitor_id_1 = $competitor_id then competitor_2_wins else competitor_1_wins end))*100 as DECIMAL(4,1)) win_percent,
+            select case when acs.competitor_id_1 = $competitor_id then competitor_1_wins else competitor_2_wins end win_num,
+            case when acs.competitor_id_1 = $competitor_id then competitor_2_wins else competitor_1_wins end loss_num,
+            CAST((case when acs.competitor_id_1 = $competitor_id then competitor_1_wins else competitor_2_wins end/(case when acs.competitor_id_1 = $competitor_id then competitor_1_wins else competitor_2_wins end + case when acs.competitor_id_1 = $competitor_id then competitor_2_wins else competitor_1_wins end))*100 as DECIMAL(4,1)) win_percent,
+            case when acs.competitor_id_1 = $competitor_id then recent_competitor_1_wins else recent_competitor_2_wins end recent_win_num,
+            case when acs.competitor_id_1 = $competitor_id then recent_competitor_2_wins else recent_competitor_1_wins end recent_loss_num,
+            CAST((case when acs.competitor_id_1 = $competitor_id then recent_competitor_1_wins else recent_competitor_2_wins end/(case when acs.competitor_id_1 = $competitor_id then recent_competitor_1_wins else recent_competitor_2_wins end + case when acs.competitor_id_1 = $competitor_id then recent_competitor_2_wins else recent_competitor_1_wins end))*100 as DECIMAL(4,1)) recent_win_percent,
 			case when acs.competitor_id_1 = $competitor_id then c1.name else c2.name end player,
 			case when acs.competitor_id_1 = $competitor_id then c2.name else c1.name end opponent_name,
 			case when acs.competitor_id_1 = $competitor_id then c2.id else c1.id end opponent_id,
@@ -225,7 +228,10 @@ class Game_model extends CI_Model {
 						'competitor_1_streak' => 0,
 						'competitor_2_streak' => 0,
 						'current_streak' => 0,
-						'current_streak_competitor' => $p1_id
+						'current_streak_competitor' => $p1_id,
+                        'recent_games' => '[]',
+                        'recent_competitor_1_wins' => 0,
+                        'recent_competitor_2_wins' => 0
 					);
 
 				$this->db->insert(
@@ -254,6 +260,29 @@ class Game_model extends CI_Model {
 				&& $agg_stat['current_streak'] > $agg_stat['competitor_2_streak']) {
 				$agg_stat['competitor_2_streak'] = $agg_stat['current_streak'];
 			}
+
+            $recent_games_array = json_decode($agg_stat['recent_games']);
+            if($agg_stat['competitor_id_1'] == $game['winner_id']) {
+                array_push($recent_games_array, $agg_stat['competitor_id_1']);
+            } else {
+                array_push($recent_games_array, $agg_stat['competitor_id_2']);
+            }
+            if (sizeof($recent_games_array) > 20) {
+                array_shift($recent_games_array);
+            }
+            $agg_stat['recent_games'] = json_encode($recent_games_array);
+
+            $recent_wins_count = array_count_values($recent_games_array);
+            $winner_count = array_key_exists($game['winner_id'], $recent_wins_count) ? $recent_wins_count[$game['winner_id']] : 0;
+            $loser_count = array_key_exists($game['loser_id'], $recent_wins_count) ? $recent_wins_count[$game['loser_id']] : 0;
+            if($agg_stat['competitor_id_1'] == $game['winner_id']) {
+                $agg_stat['recent_competitor_1_wins'] = $winner_count;
+                $agg_stat['recent_competitor_2_wins'] = $loser_count;
+            } else {
+                $agg_stat['recent_competitor_2_wins'] = $winner_count;
+                $agg_stat['recent_competitor_1_wins'] = $loser_count;
+            }
+
 
 			$this->db->where(array(
 				'competition_id' => $agg_stat['competition_id'],
@@ -446,7 +475,10 @@ class Game_model extends CI_Model {
 						'competitor_1_streak' => 0,
 						'competitor_2_streak' => 0,
 						'current_streak' => 0,
-						'current_streak_competitor' => $p1_id
+						'current_streak_competitor' => $p1_id,
+                        'recent_games' => '[]',
+                        'recent_competitor_1_wins' => 0,
+                        'recent_competitor_2_wins' => 0
 					);
 
 				$this->db->insert(
@@ -475,6 +507,28 @@ class Game_model extends CI_Model {
 				&& $agg_stat['current_streak'] > $agg_stat['competitor_2_streak']) {
 				$agg_stat['competitor_2_streak'] = $agg_stat['current_streak'];
 			}
+
+            $recent_games_array = json_decode($agg_stat['recent_games']);
+            if($agg_stat['competitor_id_1'] == $winner_details['competitor_id']) {
+                array_push($recent_games_array, $agg_stat['competitor_id_1']);
+            } else {
+                array_push($recent_games_array, $agg_stat['competitor_id_2']);
+            }
+            if (sizeof($recent_games_array) > 20) {
+                array_shift($recent_games_array);
+            }
+            $agg_stat['recent_games'] = json_encode($recent_games_array);
+
+            $recent_wins_count = array_count_values($recent_games_array);
+            $winner_count = array_key_exists($winner_details['competitor_id'], $recent_wins_count) ? $recent_wins_count[$winner_details['competitor_id']] : 0;
+            $loser_count = array_key_exists($loser_details['competitor_id'], $recent_wins_count) ? $recent_wins_count[$loser_details['competitor_id']] : 0;
+            if($agg_stat['competitor_id_1'] == $winner_details['competitor_id']) {
+                $agg_stat['recent_competitor_1_wins'] = $winner_count;
+                $agg_stat['recent_competitor_2_wins'] = $loser_count;
+            } else {
+                $agg_stat['recent_competitor_2_wins'] = $winner_count;
+                $agg_stat['recent_competitor_1_wins'] = $loser_count;
+            }
 
 			$this->db->where(array(
 				'competition_id' => $agg_stat['competition_id'],
