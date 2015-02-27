@@ -23,44 +23,58 @@ class Competitor_Graph extends CI_Controller{
 
 	public function get_all_graphs() {
 		$allCompetitors = $this->competitor_model->get_competitor($this->input->get('competition_id'));
-		
-		$maxGames = 0;
-		
-		$graphData = (Object)array('title' => 'All Competitors','series' => array());
+
+        $newFormat = array();
 
 		foreach($allCompetitors as $competitor) {
 			$res = $this->game_model->get_elo_graph(array(
             'competitor_id' => $competitor->competitor_id,
             'competition_id' => $this->input->get('competition_id')));
-			
-			$red = round(rand(0,255));
-			$green = round(rand(0,255));
-			$blue = round(rand(0,255));
-			
-			$playerGames = (Object)array(
-				'title' => $competitor->name,
-				'points' => array());
-			
-			$graphData->series[] = $playerGames;
-			
-			$firstElo = true;
-			$lastTime = 0;
-			$lastTimeCount = 0;
-			foreach($res as $elo_change){
-	            if($firstElo) {
-	            	$playerGames->points[] = (Object)array("x" => $elo_change['game_date']-(60*60*24), "y" => 1500);
-					$firstElo = false;
-	            }
-				if(abs($lastTime - $elo_change['game_date']) < (60*60*24)) {
-					continue;
-				} else {
-					$lastTime = $elo_change['game_date'];
-				}
-	            $playerGames->points[] = (Object)array("x" => $elo_change['game_date'], "y" => $elo_change['elo_after']);
-        	}
+
+            if(count($res) < 100) {
+                continue;
+            }
+
+            $newFormat[$competitor->competitor_id] = array(
+                'current_elo' => 1500,
+                'key' => $competitor->name,
+                'values' => array()
+            );
 		}
 
-		$this->_render($graphData);
+        $all_games = $this->game_model->get_elo_graph_all(array(
+                'competition_id' => $this->input->get('competition_id')));
+
+        $last_date = null;
+        $ids_changed = array();
+        foreach($all_games as $game) {
+            if(!isset($newFormat[$game['id']])) {
+                continue;
+            }
+
+            if($last_date == null || $last_date == $game['date']) {
+                $last_date = $game['date'];
+                $newFormat[$game['id']]['current_elo'] =$game['elo_after'];
+                $newFormat[$game['id']]['values'][] =  array($game['date'], $game['elo_after']);
+                $ids_changed[$game['id']] = true;
+            } else {
+                //May want this for other styles of graphs...
+                //Iterate through all unchanged elos and set them for this date to same value...
+//                foreach($newFormat as $key => $value) {
+//                    if(!isset($ids_changed[$key])) {
+//                        $newFormat[$key]['values'][] = array($last_date, $value['current_elo']);
+//                    }
+//                }
+                $last_date = $game['date'];
+                $ids_changed = array();
+                //And update the one referenced...
+                $newFormat[$game['id']]['current_elo'] = $game['elo_after'];
+                $newFormat[$game['id']]['values'][] = array($game['date'], $game['elo_after']);
+                $ids_changed[$game['id']] = true;
+            }
+        }
+
+		$this->_render(array('graphData' => array_values($newFormat)));
 	}
 
     private function get_graph(){

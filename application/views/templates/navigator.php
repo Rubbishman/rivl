@@ -15,7 +15,6 @@
                 <li><a href="#competition/<%=id%>">Leaderboard</a></li>
                 <li><a href="#competition/<%=id%>/game">Enter result</a></li>
                 <li><a href="#competition/<%=id%>/tournament">Tournament</a></li>
-                <!--<li><a href="#">Compare rivls</a></li>-->
 				<li><a href="#competition_graph/<%=id%>">Graph</a></li>
                 <li><a href="http://192.168.2.202:9009/">Doubles Shield</a></li>
                 <li id="notifications" class="hide"><a href="#competitor_home/<%=id%>">Notifications <span class="badge">4</span></a></li>

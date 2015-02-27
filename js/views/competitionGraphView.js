@@ -8,39 +8,49 @@ Vs.CompetitionGraphView = Backbone.View.extend({
     },
 
     render: function() {
-    	this.model.attributes.name = this.competition.attributes.name;
+    	var self = this;
+        this.model.attributes.name = this.competition.attributes.name;
     	
         $("#mainContainer").html(this.navbarTemplate(this.competition.toJSON()));
         $("#mainContainer").append(this.template(this.model.toJSON()));
-        
-        // view configuration (styling)
-      var view = {
-        width: 1024,
-        height: 768,
-        backgroundColor: 'white',
-        tooltip : {
-        	node: {
-		      stroke: '#222'
-		    }
-        }
-      };
 
-      // line charts are instantiated with a container DOM element,
-      // a model, and a view
-      var lineChart = new MeteorCharts.Line({
-        container: 'mainGraph',
-        model: {title : this.model.attributes.title,
-        		series : this.model.attributes.series},
-        view: view
-      });
-        
-		// mainGraph = $("#mainGraph").get(0).getContext("2d");
-		// data = {
-			// labels : this.model.attributes.labels,
-			// datasets : this.model.attributes.data
-		// };
-        // options = {'pointDot' : false };
-		// myNewChart = new Chart(mainGraph).Line(data,options);
+        nv.addGraph(function() {
+            var chart = nv.models.lineWithFocusChart()//lineChart()
+                .margin({right: 100})
+                .interpolate("basis")
+                .x(function(d) { return d[0] })   //We can modify the data accessor functions...
+                .y(function(d) { return d[1] });   //...in case your data is formatted differently.
+//                .useInteractiveGuideline(true)    //Tooltips which show all data points. Very nice!
+//                .rightAlignYAxis(true)      //Let's move the y-axis to the right side.
+//                .showControls(true)       //Allow user to choose 'Stacked', 'Stream', 'Expanded' mode.
+//                .clipEdge(true);
+
+            //Format x-axis labels with custom function.
+            chart.xAxis
+                .tickFormat(function(d) {
+                    return d3.time.format('%x')(new Date(d*1000))
+                });
+
+            chart.yAxis
+                .tickFormat(d3.format(','));
+
+            chart.x2Axis
+                .tickFormat(function(d) {
+                    return d3.time.format('%x')(new Date(d*1000))
+                });
+
+            chart.y2Axis
+                .tickFormat(d3.format(','));
+
+            d3.select('#mainGraph')
+                .datum(self.model.attributes.graphData)
+                .transition().duration(500)
+                .call(chart);
+
+            nv.utils.windowResize(chart.update);
+
+            return chart;
+        });
         
         return this;
     }

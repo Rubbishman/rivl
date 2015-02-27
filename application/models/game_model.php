@@ -131,6 +131,25 @@ class Game_model extends CI_Model {
 		return $res->result_array();
 	}
 
+    public function get_elo_graph_all($params = FALSE) {
+        $query = $this->db->query("select CAST(s.elo_after as DECIMAL) as elo_after, c.id, UNIX_TIMESTAMP(game_date.date) as date from competitor c
+        join score s on s.competitor_id = c.id
+        join game g on s.game_id = g.id
+        join (select c.id, max(g.id) as game_id, t.date from competitor c
+        join score s on s.competitor_id = c.id
+        join game g on s.game_id = g.id
+        join (select date(g.date) as date from competitor c
+                join score s on s.competitor_id = c.id
+                join game g on s.game_id = g.id
+                where g.competition_id = " . $params['competition_id'] . "
+                group by date(g.date)) as t on date(g.date) <= t.date
+        where g.competition_id = " . $params['competition_id'] . "
+        group by date(g.date), c.id
+        order by t.date) as game_date on c.id = game_date.id and g.id = game_date.game_id");
+
+        return $query->result_array();
+    }
+
     public function get_elo_graph($params = FALSE) {
         //$this->db->select('(score.elo_after - score.elo_before) elo_change');
         $this->db->select('UNIX_TIMESTAMP(game.date) game_date, score.elo_after');

@@ -10,6 +10,7 @@
 
     <link rel="shortcut icon" href="<?=base_url("/favicon.ico" )?>"/>
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="<?=base_url("/css/nv.d3.css")?>"  media="screen"/>
     <link rel="stylesheet" href="<?=base_url("/css/bootstrap.css")?>"  media="screen"/>
     <link rel="stylesheet" href="<?=base_url("/css/main.css")?>"  media="screen"/>
 

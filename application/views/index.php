@@ -16,11 +16,14 @@
 
     <script id="competitionGraphTemplate" type="text/template">
         <h1><%=name%> Graph</h1>
-        <div id="mainGraph"></div>
+        <span>Hide Jason, he mucks it up!</span>
+        <svg id="mainGraph" width="1024" height="728">></svg>
         <!-- <canvas id="mainGraph" width="1024" height="728"></canvas> -->
     </script>
 
     <!-- <script src="https://login.persona.org/include.js"></script> -->
+    <script src="http://d3js.org/d3.v3.js"></script>
+    <script src=<?=base_url("/js/lib/nv.d3.js")?>></script>
     <script src=<?=base_url("/js/lib/json2.js")?>></script>
     <script src=<?=base_url("/js/lib/jquery-1.7.1.js")?>></script>
     <script src=<?=base_url("/js/lib/underscore.js")?>></script>
@@ -31,7 +34,7 @@
 
 	<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.7.4.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.2.1/moment.min.js"></script>
-    <script src=<?=base_url("/js/lib/meteorcharts-v0.0.11-CUSTOM.js")?>></script>
+
 
 	<!-- <script type="text/javascript">
 	    navigator.id.watch({
