@@ -49,7 +49,7 @@ Vs.CompetitorView = Backbone.View.extend({
 
             var rankImage = $('<img src="img/avatars/2_' +
                 competitor.attributes.competitor_id +
-                '_1.png?ver=10" id="rankImage_' +
+                '_1.png?ver=13" id="rankImage_' +
                 competitor.attributes.competitor_id +
                 '" class="leaderboardAvatar" style="left:' + thisX + 'px; top:' + thisHeight + 'px;">');
             holder.append(rankImage);

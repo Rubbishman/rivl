@@ -277,12 +277,12 @@ Vs.NewGameView2 = Backbone.View.extend({
         if (playerNumber === '1') {
             $('#selectPlayer1').attr('data-competitor_id', playerModel.get('competitor_id'));
             $('#player1Btn').html(playerModel.get('name'));
-            $('#selectPlayer1 img').attr('src', "img/avatars/2_" + playerModel.get('competitor_id') + "_1.png"+"?ver=10");
+            $('#selectPlayer1 img').attr('src', "img/avatars/2_" + playerModel.get('competitor_id') + "_1.png"+"?ver=13");
 
         } else {
             $('#selectPlayer2').attr('data-competitor_id', playerModel.get('competitor_id'));
             $('#player2Btn').html(playerModel.get('name'));
-            $('#selectPlayer2 img').attr('src', "img/avatars/2_" + playerModel.get('competitor_id') + "_1.png"+"?ver=10");
+            $('#selectPlayer2 img').attr('src', "img/avatars/2_" + playerModel.get('competitor_id') + "_1.png"+"?ver=13");
         }
         $('#winnerBtns').show();
     },
@@ -409,13 +409,13 @@ Vs.NewGameView2 = Backbone.View.extend({
         //update images
         if (results.p1eloDelta < 0) {
             if(Vs.competition.get('id') == 2) {
-                $('#selectPlayer1 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + results.p1id + "_0"+"?ver=10");
+                $('#selectPlayer1 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + results.p1id + "_0"+"?ver=13");
             } else {
                 $('#selectPlayer1 img').attr('src', "img/avatars/" + this._getImage(results.p1name, 'left', 'lose'));
             }
         } else {
             if(Vs.competition.get('id') == 2) {
-                $('#selectPlayer2 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + results.p2id + "_0"+"?ver=10");
+                $('#selectPlayer2 img').attr('src', "img/avatars/" + Vs.competition.get('id') + "_" + results.p2id + "_0"+"?ver=13");
             } else {
                 $('#selectPlayer2 img').attr('src', "img/avatars/" + this._getImage(results.p2name, 'right', 'lose'));
             }
