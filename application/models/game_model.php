@@ -131,8 +131,9 @@ class Game_model extends CI_Model {
 		return $res->result_array();
 	}
 
+    //Hack for elo less than 1000...
     public function get_elo_graph_all($params = FALSE) {
-        $query = $this->db->query("select CAST(s.elo_after as DECIMAL) as elo_after, c.id, UNIX_TIMESTAMP(game_date.date) as date from competitor c
+        $query = $this->db->query("select CASE WHEN s.elo_after < 1000 THEN 1000 ELSE CAST(s.elo_after as DECIMAL) END as elo_after, c.id, UNIX_TIMESTAMP(game_date.date) as date from competitor c
         join score s on s.competitor_id = c.id
         join game g on s.game_id = g.id
         join (select c.id, max(g.id) as game_id, t.date from competitor c

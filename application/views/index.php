@@ -16,7 +16,6 @@
 
     <script id="competitionGraphTemplate" type="text/template">
         <h1><%=name%> Graph</h1>
-        <span>Hide Jason, he mucks it up!</span>
         <svg id="mainGraph" width="1024" height="728">></svg>
         <!-- <canvas id="mainGraph" width="1024" height="728"></canvas> -->
     </script>
