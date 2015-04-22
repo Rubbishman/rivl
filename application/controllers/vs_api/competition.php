@@ -86,7 +86,7 @@ class Competition extends CI_Controller {
             if (isset($params['id'])) {
                 $res = $this->competition_model->get_competition($params['id']);
             } else {
-                $res = $this->competition_model->get_competitions($params);
+                $res = $this->competition_model->get_root_competitions($params);
             }
             
             $this->_render($res);

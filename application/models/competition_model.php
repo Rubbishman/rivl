@@ -14,15 +14,20 @@ class Competition_model extends CI_Model {
 		}
 		
 		$query = $this->db->get_where('competition', array('competition.id' => $id));
-		return $query->row_array();
+
+        $result = $query->row_array();
+
+        $query = $this->db->get_where('competition', array('parent' => $id));
+        $result['children'] = $query->result_array();
+        return $result;
 	}
 
-	public function get_competitions($params = FALSE)
+	public function get_root_competitions($params = FALSE)
 	{
 		foreach ($params as $key => $value) {
 			$this->db->where('competition.'.$key, $value);
 		}
-
+        $this->db->where('parent', NULL);
 		$query = $this->db->get('competition');
 		return $query->result();
 	}

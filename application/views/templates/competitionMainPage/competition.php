@@ -16,7 +16,14 @@
 	<!--<div class="sectionBody">-->
 		<!--<div id="titleSection"></div>-->
 	<!--</div>-->
-
+    <% if(children.length > 0) {%>
+        <h2> Sub competitions </h2>
+        <ul>
+        <% _.each(children, function(child) {%>
+            <li><a href="#competition/<%=child.id%>"><%=child.name%></a></li>
+        <% });%>
+        </ul>
+    <% } %>
     <h2>Game History</h2>
     <div class="sectionBody">
     	<div id="gameHistoryTodayContent">
