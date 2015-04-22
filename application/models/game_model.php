@@ -8,7 +8,7 @@ class Game_model extends CI_Model {
 	{
 		$this->load->database();
 		$this->load->helper('elo_helper');
-//        $this->load->model('competition_model');
+        $this->load->model('competition_model');
 	}
 
 	public function get_game($id = FALSE) {
@@ -559,11 +559,11 @@ class Game_model extends CI_Model {
 			$this->db->update('agg_competitor_stats', $agg_stat);
 
         //CASCADE up the competition tree...
-//        $competition_data = $this->competition_model->get_competition($new_data['competition_id']);
-//        if($competition_data['parent']) {
-//            $new_data['competition_id'] = $competition_data['parent'];
-//            $this->save_game($new_data);
-//        }
+        $competition_data = $this->competition_model->get_competition($new_data['competition_id']);
+        if($competition_data['parent']) {
+            $new_data['competition_id'] = $competition_data['parent'];
+            $this->save_game($new_data);
+        }
 
         return $game_id;
 	}

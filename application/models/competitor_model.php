@@ -3,7 +3,29 @@ class Competitor_model extends CI_Model {
 	public function __construct()
 	{
 		$this->load->database();
+        $this->load->model('competition_model');
 	}
+
+    public function ensure_competitor_id_exists($competitor_id, $competition_id) {
+        $this->db->select('elo');
+        $this->db->from('competitor_elo');
+        $this->db->where('competitor_id',$competitor_id);
+        $this->db->where('competition_id',$competition_id);
+
+        $result = $this->db->get();
+        $result = $result->result();
+        if(count($result) === 0) {
+            $this->db->insert('competitor_elo',array(
+                    'competitor_id' => $competitor_id,
+                    'competition_id' => $competition_id,
+                    'elo' => 1500));
+        }
+
+        $competition_data = $this->competition_model->get_competition($competition_id);
+        if($competition_data['parent']) {
+            $this->ensure_competitor_id_exists($competitor_id, $competition_data['parent']);
+        }
+    }
 
 	public function save_competitor($name, $competition_id) {
 		$this->db->select('name,id');
@@ -20,19 +42,7 @@ class Competitor_model extends CI_Model {
 			$competitor_id = $result[0]->id;
 		}
 
-		$this->db->select('elo');
-		$this->db->from('competitor_elo');
-		$this->db->where('competitor_id',$competitor_id);
-		$this->db->where('competition_id',$competition_id);
-
-		$result = $this->db->get();
-		$result = $result->result();
-		if(count($result) === 0) {
-			$this->db->insert('competitor_elo',array(
-				'competitor_id' => $competitor_id,
-				'competition_id' => $competition_id,
-				'elo' => 1500));
-		}
+        $this->ensure_competitor_id_exists($competitor_id, $competition_id);
 	}
 
 	public function get_competitor($competition_id,$id = FALSE)
